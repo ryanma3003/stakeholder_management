@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+        <div class="row page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{% url 'ikami:index' %}">IKAMI</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Detail</a></li>
+            </ol>
+        </div>
+        <!-- row -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{title}}</h4>
+                        <a href="{% url 'ikami:index' %}" class="btn btn-xs btn-warning"><i class="fa fa-undo"></i> Back</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-responsive-sm table-hover" style="min-width: 845px">
+                                <thead>
+                                    <tr>
+                                        <th>Tata Kelola</th>
+                                        <th>{{object.tata_kelola}}</th>	
+                                    </tr>
+                                    <tr>
+                                        <th>Pengelolaan Risiko</th>
+                                        <th>{{object.pengelolaan_risiko}}</th>												
+                                    </tr>
+                                    <tr>
+                                        <th>Kerangka Kerja Keamanan Informasi</th>	
+                                        <th>{{object.kerangka_kerja}}</th>											
+                                    </tr>
+                                    <tr>
+                                        <th>Pengelolaan Aset</th>
+                                        <th>{{object.pengelolaan_aset}}</th>											
+                                    </tr>
+                                    <tr>
+                                        <th>Teknologi dan Keamanan Informasi</th>	
+                                        <th>{{object.teknologi_keamanan}}</th>											
+                                    </tr>
+                                    <tr>
+                                        <th>Pengamanan Keterlibatan Pihak Ketiga</th>	
+                                        <th>{{object.keterlibatan_pihak_ketiga}}%</th>											
+                                    </tr>
+                                    <tr>
+                                        <th>Pengamanan Layanan Infrastruktur Awan</th>	
+                                        <th>{{object.layanan_infrastruktur_awan}}%</th>											
+                                    </tr>
+                                    <tr>
+                                        <th>Perlindungan Data Pribadi</th>	
+                                        <th>{{object.data_pribadi}}%</th>											
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-responsive-sm table-hover" style="min-width: 845px">
+                                <tr>
+                                    <th>Skor</th>
+                                    <th>{{skor}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Nilai Evaluasi</th>
+                                    <th>{{evaluasi}}</th>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div id="highchart-radar-ikami"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script> 
+            var spider_json = "{{ spider_json|escapejs }}";
+        </script>
+	    <script src="{% static 'js/plugins-init/highchart-ikami.js' %}"></script>
+    {% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+        <div class="row page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{% url 'se:index' %}">Kategori SE</a></li>
+                <!-- <li class="breadcrumb-item"><a href="javascript:void(0)">{{ subtitle }}</a></li> -->
+            </ol>
+        </div>
+        <!-- row -->
+
+        <!-- <div class="row">
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>	
+                    <strong>Success!</strong> 
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                    </button>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{title}}</h4>
+                        <a href="{% url 'se:index' %}" class="btn btn-xs btn-warning"><i class="fa fa-undo"></i> Back</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example3" class="display" style="min-width: 845px">
+                                <thead>
+                                    <tr>
+                                        <th>Periode</th>
+                                        <th>Stakeholder</th>
+                                        <th>Nilai</th>
+                                        <th>Kategorisasi Sistem Elektronik</th>
+                                        <th>Sitem</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        <td>{{object.month}} {{object.year}}</td>
+                                        <td>{{object.stakeholder}}</td>
+                                        <td>{{object.indeks_nilai}}</td>
+                                        <td>{{object.indeks_ket}}</td>
+                                        <td>{{object.sistem}}</td>
+                                        <td>{{object.keterangan}}</td>											
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}

@@ -1,0 +1,315 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+	<meta name="robots" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Jobick : Job Admin Bootstrap 5 Template" />
+	<meta property="og:title" content="Jobick : Job Admin Bootstrap 5 Template" />
+	<meta property="og:description" content="Jobick : Job Admin Bootstrap 5 Template" />
+	<meta property="og:image" content="{% static 'images/BSSN.png' %}" />
+	<meta name="format-detection" content="telephone=no">
+	
+	<!-- PAGE TITLE HERE -->
+	<title>{{title}}</title>
+	
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/png" href="{% static 'images/BSSN.png' %}" />
+	<link href="{% static 'vendor/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
+	<link href="{% static 'vendor/owl-carousel/owl.carousel.css' %}" rel="stylesheet">
+
+    <link href="{% static 'icn/flaticon/flaticon.css' %}" rel="stylesheet">
+    <link href="{% static 'icn/flaticon_1/flaticon_1.css' %}" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+	
+    <!-- Datatable -->
+    <link href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <!-- Material color picker -->
+    <link href="{% static 'vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css' %}" rel="stylesheet">
+    <!-- Daterange picker -->
+    <link href="{% static 'vendor/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- Clockpicker -->
+    <link href="{% static 'vendor/clockpicker/css/bootstrap-clockpicker.min.css' %}" rel="stylesheet">
+    <!-- asColorpicker -->
+    <link href="{% static 'vendor/jquery-asColorPicker/css/asColorPicker.min.css' %}" rel="stylesheet">
+	
+    <!-- Pick date -->
+    <link rel="stylesheet" href="{% static 'vendor/pickadate/themes/default.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/pickadate/themes/default.date.css' %}">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!-- Style css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+	<style>
+		.highcharts-container 
+		{
+			margin: 0 auto;
+		}
+		.se-strategis {
+			display: block;
+			margin: 0 auto;
+			height: 200px;
+			width: 200px;
+			line-height: 155px;
+			border: 20px solid rgb(51, 179, 26);
+
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+
+			background-color: white;
+			color: rgb(51, 179, 26);
+			text-align: center;
+			font-size: 3em;
+		}
+		.se-tinggi {
+			display: block;
+			margin: 0 auto;
+			height: 200px;
+			width: 200px;
+			line-height: 155px;
+			border: 20px solid rgb(26, 169, 179);
+
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+
+			background-color: white;
+			color: rgb(26, 169, 179);
+			text-align: center;
+			font-size: 3em;
+		}
+		.se-rendah {
+			display: block;
+			margin: 0 auto;
+			height: 200px;
+			width: 200px;
+			line-height: 155px;
+			border: 20px solid rgb(179, 113, 26);
+
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+
+			background-color: white;
+			color: rgb(179, 113, 26);
+			text-align: center;
+			font-size: 3em;
+		}
+	</style>
+	
+</head>
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+		<div class="lds-ripple">
+			<div></div>
+			<div></div>
+		</div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        {% include "includes/nav_header.html" %}
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+		
+		<!--**********************************
+            Chat box start
+        ***********************************-->
+		{% include "includes/chatbox.html" %}
+		<!--**********************************
+            Chat box End
+        ***********************************-->
+		
+		<!--**********************************
+            Header start
+        ***********************************-->
+        {% include "includes/header.html" %}
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        {% include "includes/sidebar.html" %}
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+		
+		<!--**********************************
+            Content body start
+        ***********************************-->
+		
+		<!-- Required vendors -->
+		<script src="{% static 'vendor/global/global.min.js' %}"></script>
+		<script src="{% static 'vendor/chart.js/Chart.bundle.min.js' %}"></script>
+		<script src="{% static 'vendor/jquery-nice-select/js/jquery.nice-select.min.js' %}"></script>
+		
+		<!-- Highchart -->
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/variable-pie.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="{% static 'js/grouped-categories.js' %}"></script>
+		
+        <div class="content-body">
+            <!-- row -->
+			<div class="container-fluid">
+				{% block content %}	
+				{%  endblock %}
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+		
+		
+		
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        {% block footer %}
+			{% include "includes/footer.html" %}
+		{% endblock %}
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+
+	</div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- momment js is must -->
+    <script src="{% static 'vendor/moment/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- Material color picker -->
+    <script src="{% static 'vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js' %}"></script>
+    <!-- pickdate -->
+    <script src="{% static 'vendor/pickadate/picker.js' %}"></script>
+    <script src="{% static 'vendor/pickadate/picker.time.js' %}"></script>
+    <script src="{% static 'vendor/pickadate/picker.date.js' %}"></script>
+	
+    <!-- Daterangepicker -->
+    <script src="{% static 'js/plugins-init/bs-daterange-picker-init.js' %}"></script>
+    <!-- Material color picker init -->
+    <script src="{% static 'js/plugins-init/material-date-picker-init.js' %}"></script>
+    <!-- Pickdate -->
+    <script src="{% static 'js/plugins-init/pickadate-init.js' %}"></script>
+	
+	<!-- Apex Chart -->
+	<script src="{% static 'vendor/apexchart/apexchart.js' %}"></script>
+	
+    <!-- Chart ChartJS plugin files -->
+    <script src="{% static 'vendor/chart.js/Chart.bundle.min.js' %}"></script>
+    <script src="{% static 'js/plugins-init/chartjs-init.js' %}"></script>
+
+    <!-- Datatable -->
+    <script src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/plugins-init/datatables.init.js' %}"></script>
+	
+	<!-- Dashboard 1 -->
+	<script src="{% static 'js/dashboard/dashboard-1.js' %}"></script>
+	
+	<script src="{% static 'vendor/owl-carousel/owl.carousel.js' %}"></script>
+	
+    <script src="{% static 'js/custom.min.js' %}"></script>
+	<script src="{% static 'js/dlabnav-init.js' %}"></script>
+	<script>
+		function JobickCarousel()
+			{
+
+				/*  testimonial one function by = owl.carousel.js */
+				jQuery('.front-view-slider').owlCarousel({
+					loop:false,
+					margin:30,
+					nav:true,
+					autoplaySpeed: 3000,
+					navSpeed: 3000,
+					autoWidth:true,
+					paginationSpeed: 3000,
+					slideSpeed: 3000,
+					smartSpeed: 3000,
+					autoplay: false,
+					animateOut: 'fadeOut',
+					dots:true,
+					navText: ['', ''],
+					responsive:{
+						0:{
+							items:1
+						},
+						
+						480:{
+							items:1
+						},			
+						
+						767:{
+							items:3
+						},
+						1750:{
+							items:3
+						}
+					}
+				})
+			}
+
+			jQuery(window).on('load',function(){
+				setTimeout(function(){
+					JobickCarousel();
+				}, 1000); 
+			});
+	</script>
+
+	
+	<script>
+		(function($) {
+			$.fn.inputFilter = function(inputFilter) {
+				return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+				if (inputFilter(this.value)) {
+					this.oldValue = this.value;
+					this.oldSelectionStart = this.selectionStart;
+					this.oldSelectionEnd = this.selectionEnd;
+				} else if (this.hasOwnProperty("oldValue")) {
+					this.value = this.oldValue;
+					this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+				}
+				});
+			};
+		}(jQuery));
+
+		jQuery(document).ready(function() {
+			// Restrict input to digits by using a regular expression filter.
+			jQuery(".numberOnly").inputFilter(function(value) {
+				return /^\d*$/.test(value);
+			});
+		});
+
+
+		jQuery(document).ready(function() {
+			jQuery(".numberAndDot").inputFilter(function(value) {
+				return /^\d*\.?(?:\d{1,10})?$/.test(value);
+			});
+		});
+	</script>
+
+</body>
+</html>

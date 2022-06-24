@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <div class="row page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{% url 'se:index' %}">Kategori SE</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Edit</a></li>
+            </ol>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Edit Kategorisasi SE</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-validation">
+                            <form action="{% url 'se:edit' edit_id=se.id %}" method="post" class="needs-validation" novalidate>
+                                {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-xl-12">
+
+                                        {% for field in se_form %}
+                                        <div class="mb-3 row">
+                                            <label class="col-lg-4 col-form-label" for="{{ field.auto_id }}">{{ field.label }}
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                {{ field }}
+                                                <div class="invalid-feedback">
+                                                    Please enter a {{field.label}}.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                        <div class="mb-3 row">
+                                            <div class="col-lg-8 ms-auto">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% endblock %}

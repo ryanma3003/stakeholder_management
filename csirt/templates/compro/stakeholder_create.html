@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <div class="row page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{% url 'se:index' %}">Stakeholder</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">{{breadcrumb}}</a></li>
+            </ol>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{title}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-validation">
+                            <form action="" method="post" class="needs-validation" novalidate>
+                                {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-xl-12">
+
+                                        {% for field in form %}
+                                        <div class="mb-3 row">
+                                            <label class="col-lg-4 col-form-label" for="{{ field.auto_id }}">{{ field.label }}
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                {{ field }}
+                                                <div class="invalid-feedback">
+                                                    Please enter a {{field.label}}.
+                                                </div>
+                                                {% for error in field.errors %}
+                                                <div class="alert alert-warning mt-2">
+                                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                                    <strong>{{ error|escape }}</strong>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                        <div class="mb-3 row">
+                                            <div class="col-lg-8 ms-auto">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+        <div class="row page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{% url 'csm:index' %}">CSM</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Detail</a></li>
+            </ol>
+        </div>
+        <!-- row -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{title}}</h4>
+                        <a href="{% url 'csm:index' %}" class="btn btn-xs btn-warning"><i class="fa fa-undo"></i> Back</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-responsive-sm table-hover" style="min-width: 845px">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center">Tata Kelola</th>
+                                        <th colspan="2" class="text-center">Identifikasi</th>
+                                        <th colspan="2" class="text-center">Proteksi</th>
+                                        <th colspan="2" class="text-center">Deteksi</th>
+                                        <th colspan="2" class="text-center">Respon</th>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th colspan="2" class="text-center"><h5 clas="font-w600">{{tatakelola|floatformat:2}}</h5></th>
+                                        <th colspan="2" class="text-center"><h5 clas="font-w600">{{identifikasi|floatformat:2}}</h5></th>
+                                        <th colspan="2" class="text-center"><h5 clas="font-w600">{{proteksi|floatformat:2}}</h5></th>
+                                        <th colspan="2" class="text-center"><h5 clas="font-w600">{{deteksi|floatformat:2}}</h5></th>
+                                        <th colspan="2" class="text-center"><h5 clas="font-w600">{{respon|floatformat:2}}</h5></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Kesadaran</td>
+                                        <td>{{object.kesadaran|floatformat:2}}</td>	
+                                        <td>Manajemen Aset</td>
+                                        <td>{{object.manajemen_aset|floatformat:2}}</td>	
+                                        <td>Jaringan</td>
+                                        <td>{{object.jaringan|floatformat:2}}</td>	
+                                        <td>Perubahan</td>
+                                        <td>{{object.perubahan|floatformat:2}}</td>	
+                                        <td>Penahanan</td>
+                                        <td>{{object.penahanan|floatformat:2}}</td>											
+                                    </tr>
+                                    <tr>
+                                        <td>Audit</td>
+                                        <td>{{object.audit|floatformat:2}}</td>	
+                                        <td>Inventaris</td>
+                                        <td>{{object.inventaris|floatformat:2}}</td>	
+                                        <td>Aplikasi</td>
+                                        <td>{{object.aplikasi|floatformat:2}}</td>	
+                                        <td>Monitor</td>
+                                        <td>{{object.monitor|floatformat:2}}</td>	
+                                        <td>Penganggulangan</td>
+                                        <td>{{object.penanggulanan|floatformat:2}}</td>											
+                                    </tr>
+                                    <tr>
+                                        <td>Kontrol</td>
+                                        <td>{{object.kontrol|floatformat:2}}</td>	
+                                        <td>Manajemen Risiko</td>
+                                        <td>{{object.manajemen_risiko|floatformat:2}}</td>	
+                                        <td>Pengguna</td>
+                                        <td>{{object.pengguna|floatformat:2}}</td>	
+                                        <td>Peringatan</td>
+                                        <td>{{object.peringatan|floatformat:2}}</td>	
+                                        <td>Pemulihan</td>
+                                        <td>{{object.pemulihan|floatformat:2}}</td>											
+                                    </tr>
+                                    <tr>
+                                        <td>Pemenuhan</td>
+                                        <td>{{object.pemenuhan|floatformat:2}}</td>	
+                                        <td>Prioritas</td>
+                                        <td>{{object.prioritas|floatformat:2}}</td>	
+                                        <td>Manajemen Identitas dan Aset</td>
+                                        <td>{{object.manajemen_identitas|floatformat:2}}</td>	
+                                        <td>Pemberitahuan</td>
+                                        <td>{{object.pemberitahuan|floatformat:2}}</td>	
+                                        <td>Kegiatan Paska Insiden</td>
+                                        <td>{{object.kegiatan_pasca|floatformat:2}}</td>											
+                                    </tr>
+                                    <tr>
+                                        <td>Kebijakan</td>
+                                        <td>{{object.kebijakan|floatformat:2}}</td>	
+                                        <td>Pelaporan</td>
+                                        <td>{{object.pelaporan_identifikasi|floatformat:2}}</td>	
+                                        <td>Cloud</td>
+                                        <td>{{object.cloud|floatformat:2}}</td>	
+                                        <td>Intelijen</td>
+                                        <td>{{object.intelijen|floatformat:2}}</td>	
+                                        <td>Pelaporan</td>
+                                        <td>{{object.pelaporan_deteksi|floatformat:2}}</td>											
+                                    </tr>
+                                    <tr>
+                                        <td>Proses</td>
+                                        <td>{{object.proses|floatformat:2}}</td>	
+                                        <td>Klasifikasi</td>
+                                        <td>{{object.klasifikasi|floatformat:2}}</td>	
+                                        <td>Data</td>
+                                        <td>{{object.data|floatformat:2}}</td>	
+                                        <td>Pelaporan</td>
+                                        <td>{{object.pelaporan_respon|floatformat:2}}</td>	
+                                        <td colspan="2"></td>											
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-responsive-sm table-hover" style="min-width: 845px">
+                                <tr>
+                                    <th class="text-center">Level Maturitas</th>
+                                    <th class="text-center">{{maturitas|floatformat:2}}</th>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div id="highchart-pie"></div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div id="highchart-radar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-responsive">
+                                <tr>
+                                    <th>
+                                        <div id="highchart-csm"></div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script> 
+            var spider_json = "{{ spider_json|escapejs }}";
+                bar_json = "{{ bar_json|escapejs }}";
+                str_tatakelola = "{{ str_tatakelola|escapejs }}";
+                str_identifikasi = "{{ str_identifikasi|escapejs }}";
+                str_proteksi = "{{ str_proteksi|escapejs }}";
+                str_deteksi = "{{ str_deteksi|escapejs }}";
+                str_respon = "{{ str_respon|escapejs }}";
+        </script>
+	    <script src="{% static 'js/plugins-init/highchart-csm.js' %}"></script>
+    {% endblock %}

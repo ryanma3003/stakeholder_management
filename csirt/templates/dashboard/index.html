@@ -1,0 +1,205 @@
+        {% extends 'base.html' %}
+        {% load static %}
+		{% load penyebut %}
+            {% block content %}
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="row">
+							<div class="col-xl-12">
+								<div class="card">
+									<div class="card-body">
+										<div class="row separate-row">
+											<div class="col-sm-6">
+												<div class="job-icon pb-4 d-flex justify-content-between">
+													<div>
+														<div class="d-flex align-items-center mb-1">
+															<h2 class="mb-0">{{total_stakeholder}}</h2>
+														</div>	
+														<span class="fs-14 d-block mb-2">Stakeholders</span>
+													</div>	
+													<div id="NewCustomers"></div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="job-icon pb-4 pt-4 pt-sm-0 d-flex justify-content-between">
+													<div>
+														<div class="d-flex align-items-center mb-1">
+															<h2 class="mb-0">{{total_csm}}</h2>
+														</div>	
+														<span class="fs-14 d-block mb-2">CSM</span>
+													</div>	
+													<div id="NewCustomers1"></div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="job-icon pt-4 pb-sm-0 pb-4 pe-3 d-flex justify-content-between">
+													<div>
+														<div class="d-flex align-items-center mb-1">
+															<h2 class="mb-0">{{total_se}}</h2>
+														</div>	
+														<span class="fs-14 d-block mb-2">Kategorisasi SE</span>
+													</div>	
+													<div id="NewCustomers2"></div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="job-icon pt-4  d-flex justify-content-between">
+													<div>
+														<div class="d-flex align-items-center mb-1">
+															<h2 class="mb-0">{{total_ikami}}</h2>
+														</div>	
+														<span class="fs-14 d-block mb-2">Indeks KAMI</span>
+													</div>	
+													<div id="NewCustomers3"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-12">
+								<div class="card" >
+									<div class="card-header border-0 pb-0 flex-wrap">
+										<h4 class="fs-20 mb-1">Jumlah Kategorisasi SE</h4>
+									</div>
+									<div class="card-body">
+										<div id="highchart-se"></div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-12">
+								<div class="card">
+									<div class="card-header">
+										<h4 class="card-title">Nilai Rata-rata Indeks KAMI</h4>
+									</div>
+									<div class="card-body">
+										<div id="highchart-radar-ikami"></div>
+										<table class="table table-bordered">
+											<tr>
+												<td>Tata Kelola</td>
+												<td>{{ikami1}}</td>
+											</tr>
+											<tr>
+												<td>Pengelolaan Risiko</td>
+												<td>{{ikami2}}</td>
+											</tr>
+											<tr>
+												<td>Kerangka Kerja Keamanan Informasi</td>
+												<td>{{ikami3}}</td>
+											</tr>
+											<tr>
+												<td>Pengelolaan Aset</td>
+												<td>{{ikami4}}</td>
+											</tr>
+											<tr>
+												<td>Teknologi dan Keamanan Informasi</td>
+												<td>{{ikami5}}</td>
+											</tr>
+											<tr>
+												<th>Skor</th>
+												<th>{{skor_ikami}}</th>
+											</tr>
+											<tr>
+												<th colspan="2">{{evaluasi_ikami}}</th>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-6">
+						<div class="row">
+
+							<div class="col-xl-12">
+								<div class="card" >
+									<div class="card-header border-0 pb-0 flex-wrap">
+										<h4 class="fs-20 mb-1">Nilai Rata-rata CSM</h4>
+									</div>
+									<div class="card-body">
+										<div id="highchart-radar"></div>
+										<table class="table table-bordered">
+											<tr>
+												<td>Tata Kelola</td>
+												<td>{{str_tatakelola_csm}}</td>
+												<td>{% level tatakelola %}</td>
+											</tr>
+											<tr>
+												<td>Identifikasi</td>
+												<td>{{str_identifikasi}}</td>
+												<td>{% level identifikasi %}</td>
+											</tr>
+											<tr>
+												<td>Proteksi</td>
+												<td>{{str_proteksi}}</td>
+												<td>{% level proteksi %}</td>
+											</tr>
+											<tr>
+												<td>Deteksi</td>
+												<td>{{str_deteksi}}</td>
+												<td>{% level deteksi %}</td>
+											</tr>
+											<tr>
+												<td>Respon</td>
+												<td>{{str_respon}}</td>
+												<td>{% level respon %}</td>
+											</tr>
+											<tr>
+												<td>Levet Maturitas</td>
+												<th>{{maturitas|floatformat:2}}</th>
+												<th>{% level maturitas %}</th>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-xl-12">
+								<div class="card">
+									<div class="card-header border-0">
+										<h4 class="fs-20 mb-3">Nilai Rata-rata CSM (Doughnut Chart) </h4>
+									</div>
+									<div class="card-body">
+										<div id="highchart-pie"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-xl-12">
+								<div class="card">
+									<div class="card-header border-0 pb-0">
+										<h4 class="fs-20 mb-1">Nilai Rata-rata CSM (Sub Aspek)</h4>
+									</div>
+									<div class="card-body">
+										<div id="highchart-csm"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
+				<script> 
+					var spider_json = "{{ spider_json|escapejs }}";
+						bar_json = "{{ bar_json|escapejs }}";
+						str_tatakelola = "{{ str_tatakelola_csm|escapejs }}";
+						str_identifikasi = "{{ str_identifikasi|escapejs }}";
+						str_proteksi = "{{ str_proteksi|escapejs }}";
+						str_deteksi = "{{ str_deteksi|escapejs }}";
+						str_respon = "{{ str_respon|escapejs }}";
+				</script>
+				<script src="{% static 'js/plugins-init/highchart-csm.js' %}"></script>
+
+				<script> 
+					var spider_json = "{{ spider_ikami_json|escapejs }}";
+				</script>
+				<script src="{% static 'js/plugins-init/highchart-ikami.js' %}"></script>
+
+				<script> 
+					var bar_se_json = "{{ bar_se_json|escapejs }}";
+				</script>
+				<script src="{% static 'js/plugins-init/highchart-se.js' %}"></script>
+            {% endblock %}
