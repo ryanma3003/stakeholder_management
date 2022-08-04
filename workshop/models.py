@@ -12,7 +12,7 @@ class Workshop(models.Model):
     tanggal = models.DateTimeField(blank=True, null=True)
     lokasi = models.CharField(max_length=255, blank=True, null=True)
     
-    def save(self):
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.nama)
         super(Workshop, self).save()
 

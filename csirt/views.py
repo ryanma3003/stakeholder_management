@@ -9,8 +9,11 @@ from compro.models import Stakeholder
 from csm.models import Csm
 from ikami.models import Ikami
 from se.models import Se
+
+from django.views.decorators.http import require_http_methods
 # method view
 
+@require_http_methods(["GET", "POST"])
 def loginView(request):
     context = {
         'title': 'Sign in to your account'

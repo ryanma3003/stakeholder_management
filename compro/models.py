@@ -17,7 +17,7 @@ class Stakeholder(models.Model):
     landing_page = models.CharField(max_length=255, blank=True, null=True)
     kode_pos = models.CharField(max_length=10, blank=True, null=True)
     
-    def save(self):
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Stakeholder, self).save()
 

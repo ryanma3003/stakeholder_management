@@ -28,30 +28,244 @@
                         <a href="{% url 'se:index' %}" class="btn btn-xs btn-warning"><i class="fa fa-undo"></i> Back</a>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example3" class="display" style="min-width: 845px">
+                        <div class="table-responsive mb-5">
+                            <table class="table table-bordered display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>Periode</th>
-                                        <th>Stakeholder</th>
-                                        <th>Nilai</th>
-                                        <th>Kategorisasi Sistem Elektronik</th>
-                                        <th>Sitem</th>
-                                        <th>Keterangan</th>
+                                        <th class="text-center" colspan="5">Kategorisasi Sistem Elektronik</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3">Nama Perusahaan</th>
+                                        <th colspan="2">: {{object.stakeholder}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3">Jenis Usaha</th>
+                                        <th colspan="2">: {{object.jenis_usaha}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3">Daftar Sistem Elektronik</th>
+                                        <th colspan="2">: {{object.sistem}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">
+                                            [Kategorisasi Sistem Elektronik]<br>
+                                            Rendah; Tinggi; Strategis
+                                        </th>
+                                        <th>Status</th>
+                                        <th>Bobot Nilai</th>
+                                        <th>Data Dukung</th>
+                                    </tr>
+                                    <tr>
+                                        <th>No</th>
+                                        <th colspan="4">Karakteristik Instansi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
                                     <tr>
-                                        <td>{{object.month}} {{object.year}}</td>
-                                        <td>{{object.stakeholder}}</td>
-                                        <td>{{object.indeks_nilai}}</td>
-                                        <td>{{object.indeks_ket}}</td>
-                                        <td>{{object.sistem}}</td>
-                                        <td>{{object.keterangan}}</td>											
+                                        <td>1,1</td>
+                                        <td>
+                                            Nilai investasi sistem elektronik yang terpasang<br>
+                                            [A] Lebih dari Rp.30 Miliar <br>
+                                            [B] Lebih dari Rp.3 Miliar s/d Rp.30 Miliar <br>
+                                            [C] Kurang dari Rp.3 Miliar
+                                        </td>
+                                        <td>{{object.nilai_investasi|upper}}</td>
+                                        <td>{{object.bobot_nilai_investasi}}</td>
+                                        <td>Daftar jumlah aset TI (hardware/infra, software) dan harga aset saat pengadaan/pembelian</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,2</td>
+                                        <td>
+                                            Total anggaran operasional tahunan yang <br>
+                                            dialokasikan untuk pengelolaan Sistem Elektronik <br>
+                                            [A] Lebih dari Rp.10 Miliar <br>
+                                            [B] Lebih dari Rp.1 Miliar s/d Rp.10 Miliar <br>
+                                            [C] Kurang dari Rp.1 Miliar
+                                        </td>
+                                        <td>{{object.total_anggaran|upper}}</td>
+                                        <td>{{object.bobot_total_anggaran}}</td>
+                                        <td>Budget tahunan untuk perawatan, dan pengembangan</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,3</td>
+                                        <td>
+                                            Memiliki kewajiban kepatuhan terhadap Peraturan atau Standar tertentu <br>
+                                            [A] Peraturan atau Standar nasional dan internasional <br>
+                                            [B] Peraturan atau Standar nasional <br>
+                                            [C] Tidak ada Peraturan khusus
+                                        </td>
+                                        <td>{{object.kewajiban|upper}}</td>
+                                        <td>{{object.bobot_kewajiban}}</td>
+                                        <td>
+                                            Daftar undang-undang dan peraturan/regulasi yang harus dipatuhi, <br>
+                                            khususnya terkait tata kelola IT dan kerahasiaan data/informasi, <br>
+                                            baik untuk instansi pemerintah, BUMN, swasta.<br>
+                                            BUMN - Permen BUMN<br>
+                                            Pemerintah - PP SPIP 60/2008<br>
+                                            Misal PBI/POJK - untuk fintech
+                                        </td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,4</td>
+                                        <td>
+                                            Menggunakan teknik kriptografi khusus untuk <br>
+                                            keamanan informasi dalam Sistem Elektronik <br>
+                                            [A] Teknik kriptografi khusus yang disertifikasi oleh Negara <br>
+                                            [B] Teknik kriptografi sesuai standar industri, <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tersedia secara publik atau dikembangkan sendiri <br>
+                                            [C] Tidak ada penggunaan teknik kriptografi
+                                        </td>
+                                        <td>{{object.kriptografi|upper}}</td>
+                                        <td>{{object.bobot_kriptografi}}</td>
+                                        <td>Teknologi enkripsi yang digunakan dan Kebijakan/prosedur terkait</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,5</td>
+                                        <td>
+                                            Jumlah pengguna Sistem Elektronik <br>
+                                            [A] Lebih dari 5.000 pengguna <br>
+                                            [B] 1.000 sampai dengan 5.000 pengguna <br>
+                                            [C] Kurang dari 1.000 pengguna
+                                        </td>
+                                        <td>{{object.pengguna|upper}}</td>
+                                        <td>{{object.bobot_pengguna}}</td>
+                                        <td>Daftar pengguna</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,6</td>
+                                        <td>
+                                            Data pribadi yang dikelola Sistem Elektronik <br>
+                                            [A] Data pribadi yang memiliki hubungan dengan Data Pribadi lainnya <br>
+                                            [B] Data pribadi yang bersifat individu dan/atau <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data pribadi yang terkait dengan kepemilikan badan usaha <br>
+                                            [C] Tidak ada data pribadi
+                                        </td>
+                                        <td>{{object.data_pribadi|upper}}</td>
+                                        <td>{{object.bobot_data_pribadi}}</td>
+                                        <td>Daftar informasi / data pribadi yang diproses</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,7</td>
+                                        <td>
+                                            Tingkat klasifikasi/kekritisan Data yang ada dalam Sistem Elektronik, <br>
+                                            relatif terhadap ancaman upaya penyerangan atau <br>
+                                            penerobosan keamanan informasi <br>
+                                            [A] Sangat Rahasia <br>
+                                            [B] Rahasia dan/ atau Terbatas <br>
+                                            [C] Biasa
+                                        </td>
+                                        <td>{{object.kritis_data|upper}}</td>
+                                        <td>{{object.bobot_kritis_data}}</td>
+                                        <td>Kebijakan/pedoman klasifikasi informasi dan contoh data sesuai klasifikasi</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,8</td>
+                                        <td>
+                                            Tingkat kekritisan proses yang ada dalam Sistem Elektronik, <br>
+                                            relatif terhadap ancaman upaya penyerangan atau penerobosan keamanan informasi <br>
+                                            [A] Proses yang berisiko mengganggu hajat <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hidup orang banyak dan memberi dampak <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;langsung pada layanan publik <br>
+                                            [B] Proses yang berisiko mengganggu hajat <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hidup orang banyak dan memberi dampak tidak langsung <br>
+                                            [C] Proses yang hanya berdampak pada bisnis perusahaan
+                                        </td>
+                                        <td>{{object.kritis_proses|upper}}</td>
+                                        <td>{{object.bobot_kritis_proses}}</td>
+                                        <td>Undang-undang atau regulasi terkait yang menyatakan kekritisan
+                                            Atau dokumen Business Impact Analysis (BIA) tentagn SE</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,9</td>
+                                        <td>
+                                            Dampak dari kegagalan Sistem Elektronik <br>
+                                            [A] Tidak tersedianya layanan publik berskala <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nasional atau membahayakan pertahanan keamanan negara <br>
+                                            [B] Tidak tersedianya layanan publik dalam 1 propinsi atau lebih <br>
+                                            [C] Tidak tersedianya layanan publik dalam 1 kabupaten/kota atau lebih
+                                        </td>
+                                        <td>{{object.dampak_kegagalan|upper}}</td>
+                                        <td>{{object.bobot_dampak_kegagalan}}</td>
+                                        <td>Dokumen BIA dan/atau risk register</td>										
+                                    </tr>
+                                    <tr>
+                                        <td>1,10</td>
+                                        <td>Potensi kerugian atau dampak negatif dari <br>
+                                            insiden ditembusnya keamanan informasi <br>
+                                            Sistem Elektronik (sabotase, terorisme) <br>
+                                            [A] Menimbulkan korban jiwa <br>
+                                            [B] Terbatas pada kerugian finansial <br>
+                                            [C] Mengakibatkan gangguan operasional <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sementara (tidak membahayakan dan merugikan finansial)
+                                        </td>
+                                        <td>{{object.potensi_kerugian|upper}}</td>
+                                        <td>{{object.bobot_potensi_kerugian}}</td>
+                                        <td>Dokumen BIA dan/atau risk register</td>										
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="3" style="text-align:right">Total Bobot Nilai</th>
+                                        <th colspan="2">{{object.indeks_nilai}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3" style="text-align:right">Kategorisasi Sistem Elektronik</th>
+                                        <th colspan="2">{{object.indeks_ket}}</th>
+                                    </tr>
+                                </tfoot>
                             </table>
+                        </div>
+
+                        <h5>Keterangan :</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="table-responsive mb-5">
+                                    <table class="table table-bordered display">
+                                        <tbody>
+                                            <tr>
+                                                <td>Status</td>
+                                                <td>Bobot Nilai</td>
+                                            </tr>
+                                            <tr>
+                                                <td>A</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>B</td>
+                                                <td>2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>C</td>
+                                                <td>1</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5>Ketentuan Penilaian :</h5>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="table-responsive mb-5">
+                                    <table class="table table-bordered display">
+                                        <tbody>
+                                            <tr>
+                                                <td>Kategorisasi Sistem Elektronik</td>
+                                                <td>Strategis</td>
+                                                <td>Tinggi</td>
+                                                <td>Rendah</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Bobot Nilai</td>
+                                                <td>36 - 50</td>
+                                                <td>16 - 35</td>
+                                                <td>10 - 15</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

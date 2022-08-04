@@ -28,9 +28,6 @@ class CsmListView(SearchList, ListView):
     context_object_name = 'csm_list'
     ordering = ['stakeholder']
     # paginate_by: 3
-    extra_context = {
-        'title' : 'Stakeholder Csm',
-    }
 
     def get_queryset(self):
         self.queryset = self.get_list_data(self.request.GET)
@@ -39,7 +36,6 @@ class CsmListView(SearchList, ListView):
     def get_context_data(self, *args, **kwargs):
         list_stakeholder = self.model.objects.values('stakeholder', 'stakeholder__name').distinct()
 
-        
         avgs = Csm.objects.aggregate(
                     avg_kesadaran=Avg('kesadaran'),
                     avg_audit=Avg('audit'),
@@ -122,26 +118,26 @@ class CsmListView(SearchList, ListView):
         bar_json = json.dumps(bar_arr)
 
         other_csm = self.model.objects.exclude(stakeholder=self.kwargs.get('pk'))
-        self.kwargs.update({
-            'other_csm' : other_csm,
-            'tatakelola' : tatakelola,
-            'identifikasi' : identifikasi,
-            'proteksi' : proteksi,
-            'deteksi' : deteksi,
-            'respon' : respon,
-            'maturitas' : maturitas,
-            'spider_json' : spider_json,
-            'str_tatakelola' : str_tatakelola,
-            'str_identifikasi' : str_identifikasi,
-            'str_proteksi' : str_proteksi,
-            'str_deteksi' : str_deteksi,
-            'str_respon' : str_respon,
-            'bar_json' : bar_json,
-            'list_stakeholder': list_stakeholder
-            })
 
-        kwargs = self.kwargs
-        return super(CsmListView, self).get_context_data(*args, **kwargs)
+        context = super(CsmListView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Stakeholder CSM'
+        context['other_csm'] = other_csm
+        context['tatakelola'] = tatakelola
+        context['identifikasi'] = identifikasi
+        context['proteksi'] = proteksi
+        context['deteksi'] = deteksi
+        context['respon'] = respon
+        context['maturitas'] = maturitas
+        context['spider_json'] = spider_json
+        context['str_tatakelola'] = str_tatakelola
+        context['str_identifikasi'] = str_identifikasi
+        context['str_proteksi'] = str_proteksi
+        context['str_deteksi'] = str_deteksi
+        context['str_respon'] = str_respon
+        context['bar_json'] = bar_json
+        context['list_stakeholder'] = list_stakeholder
+        return context
+
 
 class CsmDetailView(DetailView):
     model = Csm
@@ -197,29 +193,26 @@ class CsmDetailView(DetailView):
 
         bar_json = json.dumps(bar_arr)
 
-        self.extra_context = {'title' : "%s %s" % (self.object.stakeholder, 'CSM'),}
-        self.kwargs.update(self.extra_context)
-
         other_csm = self.model.objects.exclude(stakeholder=self.kwargs.get('pk'))
-        self.kwargs.update({
-            'other_csm' : other_csm,
-            'tatakelola' : tatakelola,
-            'identifikasi' : identifikasi,
-            'proteksi' : proteksi,
-            'deteksi' : deteksi,
-            'respon' : respon,
-            'maturitas' : maturitas,
-            'spider_json' : spider_json,
-            'str_tatakelola' : str_tatakelola,
-            'str_identifikasi' : str_identifikasi,
-            'str_proteksi' : str_proteksi,
-            'str_deteksi' : str_deteksi,
-            'str_respon' : str_respon,
-            'bar_json' : bar_json,
-            })
 
-        kwargs = self.kwargs
-        return super(CsmDetailView, self).get_context_data(*args, **kwargs)
+        context = super(CsmDetailView, self).get_context_data(*args, **kwargs)
+        context['title'] = "%s %s" % (self.object.stakeholder, 'CSM')
+        context['other_csm'] = other_csm
+        context['tatakelola'] = tatakelola
+        context['identifikasi'] = identifikasi
+        context['proteksi'] = proteksi
+        context['deteksi'] = deteksi
+        context['respon'] = respon
+        context['maturitas'] = maturitas
+        context['spider_json'] = spider_json
+        context['str_tatakelola'] = str_tatakelola
+        context['str_identifikasi'] = str_identifikasi
+        context['str_proteksi'] = str_proteksi
+        context['str_deteksi'] = str_deteksi
+        context['str_respon'] = str_respon
+        context['bar_json'] = bar_json
+        return context
+
 
 class CsmCreateView(CreateView):
     form_class = CsmForm

@@ -18,24 +18,20 @@ class ComproListView(ListView):
     context_object_name = 'stakeholder_list'
     ordering = ['id']
     # paginate_by: 3
-    extra_context = {
-        'title' : 'Stakeholder',
-    }
 
     def get_context_data(self, *args, **kwargs):
         list_stakeholder = self.model.objects.values('id', 'name').distinct()
-
-        self.kwargs.update({'list_stakeholder': list_stakeholder})
-        kwargs = self.kwargs
-        return super(ComproListView, self).get_context_data(*args, **kwargs)
+        
+        context = super(ComproListView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Stakeholder'
+        context['list_stakeholder'] = list_stakeholder
+        return context
 
 class ComproDetailView(DetailView):
     model = Stakeholder
     extra_context = {}
 
     def get_context_data(self, *args, **kwargs):
-        self.extra_context = {'title' : "%s %s" % (self.object.name, 'Profile'),}
-        self.kwargs.update(self.extra_context)
 
         other_stakeholder = self.model.objects.exclude(id=self.kwargs.get('pk'))
 
@@ -151,35 +147,33 @@ class ComproDetailView(DetailView):
         except ListWorkshop.DoesNotExist:
             listworkshop = None
         
+        context = super(ComproDetailView, self).get_context_data(*args, **kwargs)
+        context['title'] = "%s %s" % (self.object.name, 'Profile')
+        context['narahubung'] = narahubung
+        context['csirt'] = csirt
+        context['sistemelektronik'] = sistemelektronik
+        context['prosedur'] = prosedur
+        context['listworkshop'] = listworkshop
 
-        self.kwargs.update({
-            'narahubung' : narahubung,
-            'csirt' : csirt,
-            'sistemelektronik' : sistemelektronik,
-            'prosedur' : prosedur,
-            'listworkshop' : listworkshop,
-
-            'other_stakeholder' : other_stakeholder,
-            'progress' : progress,
+        context['other_stakeholder'] = other_stakeholder
+        context['progress'] = progress
             
-            'tatakelola' : tatakelola,
-            'identifikasi' : identifikasi,
-            'proteksi' : proteksi,
-            'deteksi' : deteksi,
-            'respon' : respon,
-            'maturitas' : maturitas,
-            'spider_json' : spider_json,
+        context['tatakelola'] = tatakelola
+        context['identifikasi'] = identifikasi
+        context['proteksi'] = proteksi
+        context['deteksi'] = deteksi
+        context['respon'] = respon
+        context['maturitas'] = maturitas
+        context['spider_json'] = spider_json
 
-            'skor': skor,
-            'evaluasi' : evaluasi,
-            'spider_json_ikami' : spider_json_ikami,
+        context['skor'] = skor
+        context['evaluasi'] = evaluasi
+        context['spider_json_ikami'] = spider_json_ikami
 
-            'indeks_nilai' : indeks_nilai,
-            'indeks_ket' : indeks_ket,
-            })
+        context['indeks_nilai'] = indeks_nilai
+        context['indeks_ket'] = indeks_ket
 
-        kwargs = self.kwargs
-        return super(ComproDetailView, self).get_context_data(*args, **kwargs)
+        return context
 
 class ComproCreateView(CreateView):
     form_class = ComproForm

@@ -1,2 +1,12 @@
 # Ignore Env
 .env
+
+htmlcov/
+.coverage
+.coveragerc
+.coverage.*
+coverage.xml
+*.cover
+.tox/
+.scannerwork/
+tox.ini

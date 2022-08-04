@@ -15,32 +15,34 @@ class WorkshopListView(ListView):
     context_object_name = 'workshop_list'
     ordering = ['id']
     # paginate_by: 3
-    extra_context = {
-        'title' : 'Peningkatan Kompetensi SDM',
-    }
 
     def get_context_data(self, *args, **kwargs):
         list_workshop = self.model.objects.values('id', 'nama').distinct()
-
-        self.kwargs.update({'list_workshop': list_workshop})
-        kwargs = self.kwargs
-        return super(WorkshopListView, self).get_context_data(*args, **kwargs)
+        
+        context = super(WorkshopListView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Peningkatan Kompetensi SDM'
+        context['list_workshop'] = list_workshop
+        return context
 
 class WorkshopDetailView(DetailView):
     model = Workshop
     extra_context = {}
 
     def get_context_data(self, *args, **kwargs):
-        self.extra_context = {'title' : "%s" % (self.object.nama),}
-        self.kwargs.update(self.extra_context)
 
         other_workshop = self.model.objects.exclude(id=self.kwargs.get('pk'))
-        self.kwargs.update({
-            'other_workshop' : other_workshop,
-            })
+        # self.extra_context = {'title' : "%s" % (self.object.nama),}
+        # self.kwargs.update(self.extra_context)
+        # self.kwargs.update({
+        #     'other_workshop' : other_workshop,
+        #     })
 
-        kwargs = self.kwargs
-        return super(WorkshopDetailView, self).get_context_data(*args, **kwargs)
+        # kwargs = self.kwargs
+        context = super(WorkshopDetailView, self).get_context_data(*args, **kwargs)
+        context['title'] = "%s" % (self.object.nama)
+        context['other_workshop'] = other_workshop
+
+        return context
 
 class WorkshopCreateView(CreateView):
     form_class = WorkshopForm
