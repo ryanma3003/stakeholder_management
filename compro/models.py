@@ -1,22 +1,36 @@
 from django.db import models
+from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
 
 # Create your models here.
 class Stakeholder(models.Model):
+    
+    INDUSTRI = 'IN'
+    KONSTRUKSI = 'KN'
+    KAMSIBER = 'KM'
+    
+    FIELD_CHOICES = [
+        (INDUSTRI, 'Industri'),
+        (KONSTRUKSI, 'Konstruksi'),
+        (KAMSIBER, 'Kamsiber'),
+    ]
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='stakeholder_logo', blank=True, null=True)
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(blank=True, editable=False)
     type = models.CharField(max_length=255)
-    field = models.CharField(max_length=255)
+    field = models.CharField(max_length=5, choices=FIELD_CHOICES)
     address = models.TextField()
     info = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, default='info@corporate.com')
     landing_page = models.CharField(max_length=255, blank=True, null=True)
     kode_pos = models.CharField(max_length=10, blank=True, null=True)
-    
+    pic = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Stakeholder, self).save()

@@ -1,10 +1,34 @@
 from django import forms
 from .models import Stakeholder, Sdm, Sistemelektronik, Prosedur, ListWorkshop
+from django.core.exceptions import ValidationError
 
 class ComproForm(forms.ModelForm):
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if image:
+            if image.name.lower().endswith(('.png', '.jpg', '.jpeg')) :
+                if image.size > 0.5*1024*1024:
+                    raise ValidationError("Image file too large ( > 500kb )")
+                return image
+            else :
+                raise ValidationError("File is not an image.")
+
+    image = forms.FileField(
+        label = 'Stakeholder Logo',
+        required = False,
+        help_text = 'Please use format .png, .jpg, or .jpeg and max. 500 kilobytes',
+        widget = forms.FileInput(
+            attrs={
+                'class' : 'form-file-input form-control',
+                'type' : 'file',
+            }
+        )
+    )
         
     def __init__(self, *args, **kwargs):
         super(ComproForm, self).__init__(*args, **kwargs)
+        self.fields['field'].empty_label = 'Please Select'
 
     error_css_class = 'is-invalid'
 
@@ -21,6 +45,7 @@ class ComproForm(forms.ModelForm):
                 'email',
                 'kode_pos',
                 'landing_page',
+                'pic',
             ]
 
         labels = {
@@ -40,9 +65,9 @@ class ComproForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'field': forms.TextInput(
+            'field': forms.Select(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'default-select wide form-control'
                 }
             ),
             'address': forms.Textarea(
@@ -73,6 +98,11 @@ class ComproForm(forms.ModelForm):
             'landing_page': forms.TextInput(
                 attrs={
                     'class': 'form-control'
+                }
+            ),
+            'pic': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
                 }
             ),
         }

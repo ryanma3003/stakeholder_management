@@ -35,15 +35,15 @@ function getUrlParams(dParam)
 	dlabSettingsOptions = {
 			typography: "poppins",
 			version: "light",
-			layout: "vertical",
-			primary: "color_10",
+			layout: "horizontal",
+			primary: "color_4",
 			headerBg: "color_1",
-			navheaderBg: "color_10",
-			sidebarBg: "color_10",
+			navheaderBg: "color_1",
+			sidebarBg: "color_1",
 			sidebarStyle: "compact",
 			sidebarPosition: "fixed",
-			headerPosition: "fixed",
-			containerLayout: "full",
+			headerPosition: "static",
+			containerLayout: "wide",
 		};
 
 	

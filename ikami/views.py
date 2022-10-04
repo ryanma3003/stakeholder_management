@@ -37,15 +37,22 @@ class IkamiListView(SearchList, ListView):
 
     def get_context_data(self, *args, **kwargs):
         list_stakeholder = self.model.objects.values('stakeholder', 'stakeholder__name').distinct()
-
         
-        tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count()
-        pengelolaan_risiko = Ikami.objects.aggregate(Sum('pengelolaan_risiko'))['pengelolaan_risiko__sum'] / Ikami.objects.count()
-        kerangka_kerja = Ikami.objects.aggregate(Sum('kerangka_kerja'))['kerangka_kerja__sum'] / Ikami.objects.count()
-        pengelolaan_aset = Ikami.objects.aggregate(Sum('pengelolaan_aset'))['pengelolaan_aset__sum'] / Ikami.objects.count()
-        teknologi_keamanan = Ikami.objects.aggregate(Sum('teknologi_keamanan'))['teknologi_keamanan__sum'] / Ikami.objects.count()
+        try:
+            tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count()
+            pengelolaan_risiko = Ikami.objects.aggregate(Sum('pengelolaan_risiko'))['pengelolaan_risiko__sum'] / Ikami.objects.count()
+            kerangka_kerja = Ikami.objects.aggregate(Sum('kerangka_kerja'))['kerangka_kerja__sum'] / Ikami.objects.count()
+            pengelolaan_aset = Ikami.objects.aggregate(Sum('pengelolaan_aset'))['pengelolaan_aset__sum'] / Ikami.objects.count()
+            teknologi_keamanan = Ikami.objects.aggregate(Sum('teknologi_keamanan'))['teknologi_keamanan__sum'] / Ikami.objects.count()
         
-        skor = (tata_kelola + pengelolaan_aset + kerangka_kerja + pengelolaan_risiko + teknologi_keamanan)
+            skor = (tata_kelola + pengelolaan_aset + kerangka_kerja + pengelolaan_risiko + teknologi_keamanan)
+        except Ikami.DoesNotExist:
+            tata_kelola = 0
+            pengelolaan_risiko = 0
+            kerangka_kerja = 0
+            pengelolaan_aset = 0
+            teknologi_keamanan = 0
+            skor = 0
         
         if(skor >= 0 and skor <= 272):
             evaluasi = 'Tidak Layak'
@@ -58,11 +65,11 @@ class IkamiListView(SearchList, ListView):
         else:
             evaluasi = ''
 
-        str_tatakelola = "{:}".format(tata_kelola)
-        str_pengelolaan_risiko = "{:}".format(pengelolaan_risiko)
-        str_kerangka_kerja = "{:}".format(kerangka_kerja)
-        str_pengelolaan_aset = "{:}".format(pengelolaan_aset)
-        str_teknologi_keamanan = "{:}".format(teknologi_keamanan)
+        str_tatakelola = "{:.2f}".format(tata_kelola)
+        str_pengelolaan_risiko = "{:.2f}".format(pengelolaan_risiko)
+        str_kerangka_kerja = "{:.2f}".format(kerangka_kerja)
+        str_pengelolaan_aset = "{:.2f}".format(pengelolaan_aset)
+        str_teknologi_keamanan = "{:.2f}".format(teknologi_keamanan)
 
         spider_arr = [str_tatakelola, str_pengelolaan_risiko, str_kerangka_kerja, str_pengelolaan_aset, str_teknologi_keamanan]
         spider_json = json.dumps(spider_arr)
@@ -125,7 +132,7 @@ class IkamiCreateView(CreateView):
     form_class = IkamiForm
     template_name = 'ikami/ikami_create.html'
     extra_context = {
-        'title' : 'Create Profile',
+        'title' : 'Create Indeks KAMI',
         'breadcrumb': 'Create'
     }
 

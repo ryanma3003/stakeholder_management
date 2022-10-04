@@ -10,6 +10,7 @@ from .models import *
 from csm.models import Csm
 from ikami.models import Ikami
 from se.models import Se
+from tahap_csirt.models import *
 
 # method view
 # Company Profile
@@ -29,6 +30,7 @@ class ComproListView(ListView):
 
 class ComproDetailView(DetailView):
     model = Stakeholder
+    # content_type='application/xml'
     extra_context = {}
 
     def get_context_data(self, *args, **kwargs):
@@ -106,16 +108,46 @@ class ComproDetailView(DetailView):
             indeks_nilai = None
             indeks_ket = None
 
+        # Tahap CSIRT
+        try:
+            edu = Edukasi.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Edukasi.DoesNotExist:
+            edu = None
+
+        try:
+            prn = Perencanaan.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Perencanaan.DoesNotExist:
+            prn = None
+
+        try:
+            pnr = Penerapan.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Penerapan.DoesNotExist:
+            pnr = None
+
+        try:
+            png = Penguatan.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Penguatan.DoesNotExist:
+            png = None
+
+        try:
+            eva = Evaluasi.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Evaluasi.DoesNotExist:
+            eva = None
+
         # Progress
         fulfill = 0
-        if csm:
+        if edu:
             fulfill += 1
-        if ikami:
+        if prn:
             fulfill += 1
-        if se:
+        if pnr:
+            fulfill += 1
+        if png:
+            fulfill += 1
+        if eva:
             fulfill += 1
 
-        progress = (fulfill / 3) * 100
+        progress = (fulfill / 5) * 100
 
         # CSIRT
         try:
@@ -173,6 +205,12 @@ class ComproDetailView(DetailView):
         context['indeks_nilai'] = indeks_nilai
         context['indeks_ket'] = indeks_ket
 
+        context['edu'] = edu
+        context['prn'] = prn
+        context['pnr'] = pnr
+        context['png'] = png
+        context['eva'] = eva
+
         return context
 
 class ComproCreateView(CreateView):
@@ -188,6 +226,9 @@ class ComproCreateView(CreateView):
         return super(ComproCreateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        photo = self.request.FILES.get('image')
+        if photo :
+            form.instance.image = photo
         return super().form_valid(form)
 
 class ComproUpdateView(UpdateView):
@@ -204,6 +245,9 @@ class ComproUpdateView(UpdateView):
         return super(ComproUpdateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        photo = self.request.FILES.get('image')
+        if photo :
+            form.instance.image = photo
         return super().form_valid(form)
 
 class ComproDeleteView(DeleteView):

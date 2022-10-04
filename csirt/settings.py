@@ -37,6 +37,16 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
+# AES KEY
+# AES_KEY = b'\x1a>\xf8\xcd\xe2\x8e_~V\x14\x98\xc2\x1f\xf9\xea\xf8\xd7c\xb3`!d\xd4\xe3+\xf7Q\x83\xb5~\x8f\xdd'
+AES_KEY = b'b5W8&c*32clwNBvn'
+
+# File Upload Handler
+# FILE_UPLOAD_HANDLERS = [
+#     "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
+#     "django.core.files.uploadhandler.MemoryFileUploadHandler",
+#     "django.core.files.uploadhandler.TemporaryFileUploadHandler"
+# ]
 
 # Application definition
 
@@ -54,6 +64,8 @@ INSTALLED_APPS = [
     'workshop',
     'tmpi',
     'month',
+    'tahap_csirt',
+    'phrasalword',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -134,6 +147,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     # '/var/www/static/',
 ]
+
+# Media Upload
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

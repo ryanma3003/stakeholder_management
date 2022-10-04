@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import TemplateView
 from django.db.models import Sum, Avg, Count
+from django.contrib.auth import get_user_model
 import json
 
 from compro.models import Stakeholder
@@ -11,8 +12,8 @@ from ikami.models import Ikami
 from se.models import Se
 
 from django.views.decorators.http import require_http_methods
-# method view
 
+# method view
 @require_http_methods(["GET", "POST"])
 def loginView(request):
     context = {
@@ -43,6 +44,26 @@ def logoutView(request):
     if request.method == 'POST':
         logout(request)
         return redirect('login')
+
+class LandingPageView(TemplateView):
+    template_name = 'landing/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(LandingPageView, self).get_context_data(**kwargs)
+        pass
+        return context
+
+class UserView(TemplateView):
+    template_name = 'user/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        
+        User = get_user_model()
+        users = User.objects.all()
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['title'] = 'User List'
+        context['list_user'] = users
+        return context
     
 class DashboardIndexView(TemplateView):
     # inheritance dari TemplateResponseMixin

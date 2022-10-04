@@ -23,11 +23,9 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Field</th>
-                                                <th>Address</th>
-                                                <th>Mobile</th>
+                                                <th>Nama</th>
+                                                <th>Status Usaha</th>
+                                                <th>Sektor</th>
                                                 <th>Email</th>
                                                 <th>Action</th>
                                             </tr>
@@ -39,10 +37,10 @@
                                                 <td><img class="rounded-circle" width="35" src="{% static 'images/profile/small/pic1.jpg' %}" alt=""></td>
                                                 <td>{{stake.name}}</td>
                                                 <td>{{stake.type}}</td>
-                                                <td>{{stake.field}}</td>
-                                                <td>{{stake.address|truncatechars:50}}</td>
-                                                <td><a href="javascript:void(0);"><strong>{{stake.phone}}</strong></a></td>
+                                                <td>{{stake.get_field_display}}</td>
+                                                <!-- <td>{{stake.address|truncatechars:50}}</td> -->
                                                 <td><a href="javascript:void(0);"><strong>{{stake.email}}</strong></a></td>
+                                                <!-- <td>{{stake.pic}}</td> -->
                                                 <td>
 													<div class="d-flex">
                                                         <a href="{% url 'stakeholder:detail' pk=stake.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fas fa-eye"></i></a>

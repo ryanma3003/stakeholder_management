@@ -89,6 +89,14 @@
                                 <tbody>
                                     
                                     {% for csm in object_list %}
+                                    {%
+                                        tatakelola = (csm.kesadaran + csm.audit + csm.kontrol + csm.pemenuhan + csm.kebijakan + csm.proses) / 6
+                                        identifikasi = (csm.manajemen_aset + csm.inventaris + csm.manajemen_risiko + csm.prioritas + csm.pelaporan_identifikasi + csm.klasifikasi) / 6
+                                        proteksi = (csm.jaringan + csm.aplikasi + csm.pengguna + csm.manajemen_identitas + csm.cloud + csm.data) / 6
+                                        deteksi = (csm.perubahan + csm.monitor + csm.peringatan + csm.pemberitahuan + csm.intelijen + csm.pelaporan_deteksi) / 6
+                                        respon = (csm.penahanan + csm.penanggulanan + csm.pemulihan + csm.kegiatan_pasca + csm.pelaporan_respon) / 5
+                                        maturitas = (tatakelola + identifikasi + proteksi + deteksi + respon) / 5    
+                                    %}
                                     <tr>
                                         <td>{{forloop.counter}}</td>
                                         <td>{{csm.month}} {{csm.year}}</td>

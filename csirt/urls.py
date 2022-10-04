@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required
+from django.conf.urls.static import static
+from django.conf import settings
 
 # import views
-from .views import loginView, logoutView, DashboardIndexView
+from .views import loginView, logoutView, DashboardIndexView, UserView, LandingPageView
 
 urlpatterns = [
     path('', loginView, name='login'),
@@ -26,12 +28,19 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('dashboard/', login_required(DashboardIndexView.as_view()), name='home'),
+    path('user/', login_required(UserView.as_view()), name='user'),
 
     path('stakeholder/', include('compro.urls', namespace='stakeholder')),
     path('csm/', include('csm.urls', namespace='csm')),
     path('se/', include('se.urls', namespace='se')),
     path('ikami/', include('ikami.urls', namespace='ikami')),
+    path('tmpi/', include('tmpi.urls', namespace='tmpi')),
     path('kompetensi/', include('workshop.urls', namespace='workshop')),
+    path('ttis/', include('tahap_csirt.urls', namespace='ttis')),
+    path('profile/', include('phrasalword.urls', namespace='profile')),
 
     path('logout/', login_required(logoutView), name='logout'),
 ]
+
+if settings.DEBUG:
+     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
