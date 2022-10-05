@@ -14,13 +14,15 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 import os
 
 def pdf_view(request, show_id):
-    query = Penerapan.objects.get(id = show_id)
+    query = Penerapan.objects.get(stakeholder_id = show_id)
     if request.POST.get('file') == 'sk':
         pdf_file = query.file_sk
     elif request.POST.get('file') == 'rfc':
         pdf_file = query.file_rfc
-    else:
+    elif request.POST.get('file') == 'sumber_daya':
         pdf_file = query.file_sumber_daya
+    else:
+        pdf_file = query.file_registrasi
             
     directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
 
@@ -192,18 +194,19 @@ class PenerapanCreateView(CreateView):
         file_sk = self.request.FILES.get('file_sk')
         file_rfc = self.request.FILES.get('file_rfc')
         file_sumber_daya = self.request.FILES.get('file_sumber_daya')
+        file_registrasi = self.request.FILES.get('file_registrasi')
 
         form.instance.stakeholder_id = self.kwargs['s_id']
 
-        perencanaan = form.save(commit=False)
+        penerapan = form.save(commit=False)
 
         directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
         phrasalword = Phrasalword.objects.get(user_id = self.request.user.id).passphrase
         password = decrypt_aes(phrasalword)
 
         if file_sk :
-            perencanaan.file_sk = file_sk
-            perencanaan.save()
+            penerapan.file_sk = file_sk
+            penerapan.save()
         
             out = PdfFileWriter()
             file_1 = PdfFileReader(os.path.join(directory,file_sk.name))
@@ -219,8 +222,8 @@ class PenerapanCreateView(CreateView):
                 out.write(f)
 
         if file_rfc :
-            perencanaan.file_rfc = file_rfc
-            perencanaan.save()
+            penerapan.file_rfc = file_rfc
+            penerapan.save()
         
             out = PdfFileWriter()
             file_2 = PdfFileReader(os.path.join(directory,file_rfc.name))
@@ -236,8 +239,8 @@ class PenerapanCreateView(CreateView):
                 out.write(f)
 
         if file_sumber_daya :
-            perencanaan.file_sumber_daya = file_sumber_daya
-            perencanaan.save()
+            penerapan.file_sumber_daya = file_sumber_daya
+            penerapan.save()
         
             out = PdfFileWriter()
             file_3 = PdfFileReader(os.path.join(directory,file_sumber_daya.name))
@@ -250,6 +253,23 @@ class PenerapanCreateView(CreateView):
             out.encrypt(password)
             
             with open(os.path.join(directory,file_sumber_daya.name), 'wb') as f:
+                out.write(f)
+
+        if file_registrasi :
+            penerapan.file_registrasi = file_registrasi
+            penerapan.save()
+        
+            out = PdfFileWriter()
+            file_3 = PdfFileReader(os.path.join(directory,file_registrasi.name))
+            
+            num = file_3.numPages
+            for idx in range(num):
+                page = file_3.getPage(idx)
+                out.addPage(page)
+
+            out.encrypt(password)
+            
+            with open(os.path.join(directory,file_registrasi.name), 'wb') as f:
                 out.write(f)
 
         return redirect('stakeholder:detail', self.request.GET.get('s_id'))
@@ -280,18 +300,19 @@ class PenerapanUpdateView(UpdateView):
         file_sk = self.request.FILES.get('file_sk')
         file_rfc = self.request.FILES.get('file_rfc')
         file_sumber_daya = self.request.FILES.get('file_sumber_daya')
+        file_registrasi = self.request.FILES.get('file_registrasi')
 
         form.instance.stakeholder_id = self.kwargs['s_id']
 
-        perencanaan = form.save(commit=False)
+        penerapan = form.save(commit=False)
 
         directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
         phrasalword = Phrasalword.objects.get(user_id = self.request.user.id).passphrase
         password = decrypt_aes(phrasalword)
 
         if file_sk :
-            perencanaan.file_sk = file_sk
-            perencanaan.save()
+            penerapan.file_sk = file_sk
+            penerapan.save()
         
             out = PdfFileWriter()
             file_1 = PdfFileReader(os.path.join(directory,file_sk.name))
@@ -307,8 +328,8 @@ class PenerapanUpdateView(UpdateView):
                 out.write(f)
 
         if file_rfc :
-            perencanaan.file_rfc = file_rfc
-            perencanaan.save()
+            penerapan.file_rfc = file_rfc
+            penerapan.save()
         
             out = PdfFileWriter()
             file_2 = PdfFileReader(os.path.join(directory,file_rfc.name))
@@ -324,8 +345,8 @@ class PenerapanUpdateView(UpdateView):
                 out.write(f)
 
         if file_sumber_daya :
-            perencanaan.file_sumber_daya = file_sumber_daya
-            perencanaan.save()
+            penerapan.file_sumber_daya = file_sumber_daya
+            penerapan.save()
         
             out = PdfFileWriter()
             file_3 = PdfFileReader(os.path.join(directory,file_sumber_daya.name))
@@ -338,6 +359,23 @@ class PenerapanUpdateView(UpdateView):
             out.encrypt(password)
             
             with open(os.path.join(directory,file_sumber_daya.name), 'wb') as f:
+                out.write(f)
+
+        if file_registrasi :
+            penerapan.file_registrasi = file_registrasi
+            penerapan.save()
+        
+            out = PdfFileWriter()
+            file_3 = PdfFileReader(os.path.join(directory,file_registrasi.name))
+            
+            num = file_3.numPages
+            for idx in range(num):
+                page = file_3.getPage(idx)
+                out.addPage(page)
+
+            out.encrypt(password)
+            
+            with open(os.path.join(directory,file_registrasi.name), 'wb') as f:
                 out.write(f)
 
         return redirect('stakeholder:detail', self.request.GET.get('s_id'))

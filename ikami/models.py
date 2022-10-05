@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 # Create your models here.
 class Ikami(models.Model):
@@ -9,11 +10,11 @@ class Ikami(models.Model):
     month = models.ForeignKey('month.Month', on_delete=models.CASCADE)
     year = models.IntegerField()
 
-    tata_kelola = models.IntegerField()
-    pengelolaan_risiko = models.IntegerField()
-    kerangka_kerja = models.IntegerField()
-    pengelolaan_aset = models.IntegerField()
-    teknologi_keamanan = models.IntegerField()
+    tata_kelola = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(126)])
+    pengelolaan_risiko = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(72)])
+    kerangka_kerja = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(159)])
+    pengelolaan_aset = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(168)])
+    teknologi_keamanan = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(120)])
 
     keterlibatan_pihak_ketiga = models.IntegerField(blank=True, null=True)
     layanan_infrastruktur_awan = models.IntegerField(blank=True, null=True)

@@ -86,7 +86,7 @@
 											Edukasi CSIRT
 										</div>
 										<div class="row">
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-file-powerpoint text-white" aria-hidden="true"></i> Sosialisasi
@@ -96,7 +96,7 @@
 														<div class="box-item"><strong>Tempat</strong>: {{edu.tempat}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:edu_update' pk=edu.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:edu_update' pk=edu.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 													</div>
 												</div>
 											</div>
@@ -112,7 +112,7 @@
 										</div>
 										<div class="row">
 											{% if prn.draft_sk == 1 %}
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-file-word text-primary" aria-hidden="true"></i> Draft SK
@@ -122,14 +122,14 @@
 														<div class="box-item"><strong>Tanggal</strong>: {{prn.tgl_draft_sk|date:'d M Y'}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:prn_update' pk=prn.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:prn_update' pk=prn.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 													</div>
 												</div>
 											</div>
 											{% endif %}
 
 											{% if prn.draft_rfc == 1 %}
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-file-word text-primary" aria-hidden="true"></i> Draft RFC 2350
@@ -139,14 +139,14 @@
 														<div class="box-item"><strong>Tanggal</strong>: {{prn.tgl_draft_sk|date:'d M Y'}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:prn_update' pk=prn.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:prn_update' pk=prn.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 													</div>
 												</div>
 											</div>
 											{% endif %}
 											
 											{% if prn.draft_sumber_daya == 1 %}
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-file-word text-primary" aria-hidden="true"></i> Draft Sumber Daya
@@ -156,7 +156,7 @@
 														<div class="box-item"><strong>Tanggal</strong>: {{prn.tgl_draft_sk|date:'d M Y'}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:prn_update' pk=prn.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:prn_update' pk=prn.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 													</div>
 												</div>
 											</div>
@@ -171,10 +171,10 @@
 										<div class="timeline-date">
 											Penerapan CSIRT
 										</div>
-										<div class="row">
+										<div class="row mb-3">
 
 											{% if pnr.doc_sk == 1 %}
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-file-pdf text-danger" aria-hidden="true"></i> Dokumen SK
@@ -184,7 +184,7 @@
 														<div class="box-item"><strong>Tanggal</strong>: {{pnr.tgl_doc_sk|date:'d M Y'}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:pnr_update' pk=pnr.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docSK"><i class="fa fa-search"></i> Show</button>
 														
 														<div class="modal fade" id="docSK">
@@ -196,7 +196,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.id %}" method="post" id="passSK">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passSK">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="sk">
 																			<div class="form-group">
@@ -217,7 +217,7 @@
 											{% endif %}
 											
 											{% if pnr.doc_rfc == 1 %}
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa  fa-file-pdf text-danger" aria-hidden="true"></i> Dokumen RFC 2350
@@ -227,7 +227,7 @@
 														<div class="box-item"><strong>Tanggal</strong>: {{pnr.tgl_doc_rfc|date:'d M Y'}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:pnr_update' pk=pnr.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docRFC"><i class="fa fa-search"></i> Show</button>
 														
 														<div class="modal fade" id="docRFC">
@@ -239,7 +239,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.id %}" method="post" id="passRFC">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passRFC">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="rfc">
 																			<div class="form-group">
@@ -260,7 +260,7 @@
 											{% endif %}
 											
 											{% if pnr.doc_sumber_daya == 1 %}
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa  fa-file-pdf text-danger" aria-hidden="true"></i> Dokumen Sumber Daya
@@ -270,7 +270,7 @@
 														<div class="box-item"><strong>Tanggal</strong>: {{pnr.tgl_doc_sumber_daya|date:'d M Y'}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:pnr_update' pk=pnr.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docSD"><i class="fa fa-search"></i> Show</button>
 														
 														<div class="modal fade" id="docSD">
@@ -282,7 +282,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.id %}" method="post" id="passSD">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passSD">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="sumber_daya">
 																			<div class="form-group">
@@ -301,11 +301,55 @@
 												</div>
 											</div>
 											{% endif %}
+
+											{% if pnr.doc_registrasi == 1 %}
+											<div class="col-sm-3">
+												<div class="timeline-box">
+													<div class="box-title text-white">
+														<i class="fa  fa-file-pdf text-danger" aria-hidden="true"></i> Dokumen Registrasi
+													</div>
+													<div class="box-content">
+														<div class="box-item"><strong>Nomor Dok Registrasi</strong>: {{pnr.no_doc_registrasi}}</div>
+														<div class="box-item"><strong>Tanggal</strong>: {{pnr.tgl_doc_registrasi|date:'d M Y'}}</div>
+													</div>
+													<div class="box-footer">
+														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docSD"><i class="fa fa-search"></i> Show</button>
+														
+														<div class="modal fade" id="docSD">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h5 class="modal-title">Passphrase</h5>
+																		<button type="button" class="btn-close" data-bs-dismiss="modal">
+																		</button>
+																	</div>
+																	<div class="modal-body">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passSD">
+																			{% csrf_token %}
+																			<input type="hidden" name="file" value="registrasi">
+																			<div class="form-group">
+																				<input type="password" class="form-control" autofocus id="passphrase" name="passphrase" placeholder="Enter your passphrase">
+																			</div>
+																		</form>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-danger light btn-xxs" data-bs-dismiss="modal">Close</button>
+																		<input type="submit" class="btn btn-success btn-xxs" form="passSD" value="Submit">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											{% endif %}
 										</div>
 
-										{% if pnr.portal_csirt == 1 %}
 										<div class="row">
-											<div class="col-sm-4">
+
+											{% if pnr.portal_csirt == 1 %}
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-globe text-warning" aria-hidden="true"></i> Portal Web CSIRT
@@ -314,12 +358,12 @@
 														<div class="box-item"><strong>URL</strong>: {{pnr.portal_csirt_url}}</div>
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'ttis:pnr_update' pk=pnr.id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
 													</div>
 												</div>
 											</div>
+											{% endif %}
 										</div>
-										{% endif %}
 									</div>
 									{% endif %}
 									
@@ -330,17 +374,48 @@
 											Penguatan CSIRT
 										</div>
 										<div class="row">
-											<div class="col-sm-4">
+											<div class="col-sm-12">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-certificate" aria-hidden="true"></i> Workshop
 													</div>
 													<div class="box-content">
-														<div class="box-item"><strong>Name</strong>: Workhsop Vulnerability and Compromise Attack</div>
-														<div class="box-item"><strong>Type</strong>: Advanced</div>
-														<div class="box-item"><strong>Tanggal</strong>: 10 Agustus 2022</div>
+														<div class="table-responsive">
+															<table class="table table-responsive-sm table-striped">
+																<thead>
+																	<tr>
+																		<th>No</th>
+																		<th>Nama Workshop</th>
+																		<th>Tanggal</th>
+																		<th>Lokasi</th>
+																		<th>Action</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	{% for lw in listworkshop %}
+																	<tr>
+																		<th>{{forloop.counter}}</th>
+																		<td>{{lw.workshop}}</td>
+																		<td>{{lw.workshop.tanggal|date:"d M, Y"}}</td>
+																		<td>{{lw.workshop.lokasi}}</td>
+																		<td>
+																			<div class="d-flex">
+																				<a href="{% url 'stakeholder:lw_update' pk=lw.id %}?s_id={{stakeholder.id}}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
+																				<form onsubmit="return confirm('Delete this item?')" action="{% url 'stakeholder:lw_delete' pk=lw.id %}?s_id={{stakeholder.id}}" method="post">
+																					{% csrf_token %}
+																					<button type="submit" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></button>
+																				</form>
+																			</div>
+																		</td>
+																	</tr>
+																	{% endfor %}
+																</tbody>
+															</table>
+														</div>
 													</div>
-													<div class="box-footer">- Carol</div>
+													<div class="box-footer">
+														<a href="{% url 'stakeholder:lw_create' %}?s_id={{stakeholder.id}}" class="btn btn-primary btn-xxs me-2  mb-2"><i class="fas fa-plus me-2"></i>Add Workshop</a>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -360,10 +435,12 @@
 														<i class="fa fa-archive text-success" aria-hidden="true"></i> TMPI
 													</div>
 													<div class="box-content">
-														<div class="box-item"><strong>Score</strong>: 3</div>
-														<div class="box-item"><strong>Tanggal</strong>: 08 Agustus 2022</div>
+														<div class="box-item"><strong>Score</strong>: {{eva.tmpi.nilai_akhir}}</div>
+														<div class="box-item"><strong>Tanggal</strong>: {{eva.tmpi.month}}</div>
 													</div>
-													<div class="box-footer">- Carol</div>
+													<div class="box-footer">
+														<a href="{% url 'ttis:eva_update' pk=eva.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -473,7 +550,7 @@
 					</div>	
                 </div>
 
-                <div class="row">
+                <!-- <div class="row">
 					<div class="col-xl-12 col-xxl-12">
 						<div class="row">
 							<div class="col-xl-12">
@@ -530,7 +607,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
                 <div class="row">
 					<div class="col-xl-12 col-xxl-12">

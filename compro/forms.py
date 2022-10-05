@@ -304,6 +304,7 @@ class ListWorkshopForm(forms.ModelForm):
                 'sdm',
                 'workshop',
                 'status',
+                'level',
             ]
 
         widgets = {
@@ -313,6 +314,11 @@ class ListWorkshopForm(forms.ModelForm):
                 }
             ),
             'workshop': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'level': forms.Select(
                 attrs={
                     'class': 'default-select wide form-control'
                 }

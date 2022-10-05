@@ -367,7 +367,6 @@ class PenerapanForm(forms.ModelForm):
 class PenguatanForm(forms.ModelForm):           
     def __init__(self, *args, **kwargs):
         super(PenguatanForm, self).__init__(*args, **kwargs)
-        self.fields['workshop'].empty_label = 'Please Select'
 
     error_css_class = 'is-invalid'
 

@@ -137,12 +137,19 @@ class ListWorkshop(models.Model):
         (NARASUMBER, 'Narasumber'),
     ]
 
+    LEVEL_CHOICES = [
+        ('bsc', 'Basic'),
+        ('int', 'Intermediate'),
+        ('adv', 'Advance'),
+    ]
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     stakeholder = models.ForeignKey('Stakeholder', on_delete=models.CASCADE)
     sdm = models.ForeignKey('Sdm', on_delete=models.CASCADE, null=True, blank=True)
     workshop = models.ForeignKey('workshop.Workshop', on_delete=models.CASCADE)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, null=True, blank=True)
+    level = models.CharField(max_length=3, choices=LEVEL_CHOICES, null=True, blank=True)
 
     def __str__(self):
         return "{}".format(self.stakeholder)
