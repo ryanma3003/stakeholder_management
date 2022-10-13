@@ -1,0 +1,147 @@
+{% extends 'base_landing.html' %}
+{% load static %}
+{% block content %}
+
+<section class="wrapper bg-gradient-primary mb-5" id="beranda">
+    <div class="container pt-10 pt-md-14">
+        <div class="row gx-2 gy-10 align-items-center">
+            <div class="col-md-10 offset-md-1 offset-lg-0 col-lg-5 text-center text-lg-start order-2 order-lg-0"
+                data-cues="slideInDown" data-group="page-title" data-delay="600">
+                <h1 class="display-1 mb-5 mx-md-10 mx-lg-0">Direktorat KSSI <br /><span
+                        class="typer text-primary text-nowrap" data-delay="100" data-delim=":"
+                        data-words="Industri:Konstruksi:Kamsiber"></span><span
+                        class="cursor text-primary" data-owner="typer"></span></h1>
+                <p class="lead fs-23 mb-7">Penguatan kapasitas keamanan siber pada sektor industri dan jasa
+                    konstruksi serta sektor industri keamanan siber.</p>
+                <!-- <div class="d-flex justify-content-center justify-content-lg-start mb-4" data-cues="slideInDown"
+                    data-group="page-title-buttons" data-delay="900">
+                    <span><a class="btn btn-lg btn-primary rounded-pill me-2 scroll" href="#demos">Check
+                            Demos</a></span>
+                </div> -->
+            </div>
+            <!-- /column -->
+            <div class="col-lg-6 ms-auto position-relative">
+                <div class="row g-4">
+                    <div class="col-12 d-flex flex-column ms-auto" data-cues="fadeIn" data-group="col-start"
+                        data-delay="900">
+                        <div class="ms-auto mt-6"><img class="img-fluid rounded" src="{% static 'img/landing/main_page.png' %}"
+                                alt="" /></div>
+                </div>
+                <!-- /.row -->
+                <div class="position-relative mt-n20 mb-20" data-cue="fadeIn" data-delay="1800">
+                    <div class="btn btn-circle btn-primary disabled ripple position-absolute counter-wrapper flex-column d-none d-md-flex"
+                        style="bottom: 0; right: -8%; width: 120px; height: 120px;">
+                        <h3 class="text-white mt-n1 mb-0">MorpIS</h3>
+                        <p class="fs-14"></p>
+                    </div>
+                </div>
+            </div>
+            <!-- /column -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /section -->
+
+
+<section class="wrapper bg-gradient-reverse-primary" id="tentang">
+    <div class="container">
+        <div class="row gx-lg-0 gy-10 mb-15 mb-md-18 align-items-center">
+            <div class="col-lg-6">
+                <div class="row g-6 text-center">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <figure class="rounded mb-6"><img src="{% static 'img/landing/ttis1.png' %}"
+                                        alt=""></figure>
+                            </div>
+                            <!-- /column -->
+                            <div class="col-lg-12">
+                                <div class="card shadow-lg">
+                                    <div class="card-body">
+                                        <div class="icon btn btn-circle btn-lg btn-soft-purple disabled mb-3"> <i
+                                                class="uil uil-monitor"></i> </div>
+                                        <h4>Fungsi</h4>
+                                        <p class="mb-2">Pelaksanaan
+                                            pemantauan, evaluasi, dan pelaporan pelaksanaan kebijakan teknis di bidang tata kelola,
+                                            manajemen risiko, pengembangan ekosistem, dan pengukuran tingkat kematangan
+                                            keamanan siber dan sandi sektor industri dan jasa konstruksi.</p>
+                                    </div>
+                                    <!--/.card-body -->
+                                </div>
+                                <!--/.card -->
+                            </div>
+                            <!-- /column -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /column -->
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-lg-12 order-md-2">
+                                <figure class="rounded mb-6 mb-md-0"><img src="{% static 'img/landing/ttis2.png' %}"
+                                        alt=""></figure>
+                            </div>
+                            <!-- /column -->
+                            <div class="col-lg-12">
+                                <div class="card shadow-lg mb-md-6 mt-lg-6">
+                                    <div class="card-body">
+                                        <div class="icon btn btn-circle btn-lg btn-soft-purple disabled mb-3"> <i
+                                                class="uil uil-mobile-android"></i> </div>
+                                        <h4>Tugas</h4>
+                                        <p class="mb-2">Menyelenggarakan
+                                            perumusan, pelaksanaan, evaluasi dan pelaporan kebijakan teknis di bidang peningkatan
+                                            kapasitas keamanan siber dan sandi sektor industri dan jasa konstruksi.</p>
+                                    </div>
+                                    <!--/.card-body -->
+                                </div>
+                                <!--/.card -->
+                            </div>
+                            <!-- /column -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /column -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /column -->
+            <div class="col-lg-5 offset-lg-1">
+                <h2 class="display-4 mb-3">Tim Tanggap Insiden Siber</h2>
+                <p class="lead fs-lg lh-sm">Sekelompok orang yang bertanggung jawab menangani Insiden Siber dalam ruang lingkup yang ditentukan terhadapnya.</p>
+                <p>Menyelenggarakan layanan Tim Tanggap Insiden Siber sesuai dengan kebutuhan penanganan Insiden Siber, 
+                    mengoordinasikan penanganan Insiden Siber tingkat sektor dan Insiden Siber tingkat organisasi yang terjadi dalam lingkup sektor, dan 
+                    merumuskan panduan teknis penanganan Insiden Siber tingkat sektor.
+                </p>
+                <!-- <a href="#" class="btn btn-primary rounded-pill mt-3">More Details</a> -->
+            </div>
+            <!-- /column -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-9 col-xl-8 col-xxl-7 mx-auto text-center">
+                <h3 class="display-4 mb-8">Kegiatan</h3>
+            </div>
+            <!-- /column -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+    <div class="container-fluid px-md-6" id="kegiatan">
+        <div class="carousel owl-carousel blog grid-view mb-16 mb-md-19" data-margin="30" data-nav="true"
+            data-dots="true" data-autoplay="false" data-autoplay-timeout="5000"
+            data-responsive='{"0":{"items": "1"}, "768":{"items": "2"}, "1500":{"items": "3"}}'>
+            {% for kegiatan in kegiatans %}
+            <div class="item">
+                <figure class="rounded"><img src="{{kegiatan.image.url}}" alt="" /><a class="item-link"
+                        href="{% url 'kegiatan' slug=kegiatan.slug %}"><i class="uil uil-link"></i></a></figure>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- /.owl-carousel -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /section -->
+{% endblock %}

@@ -16,7 +16,7 @@ class TmpiForm(forms.ModelForm):
 
     file_tmpi = forms.FileField(
         label = 'TMPI Excel (.xlsx)',
-        help_text = 'max size 1 megabytes',
+        help_text = 'Please use underscore not space in file name and max size 1 megabytes',
         required = False,
         widget = forms.FileInput(
             attrs={

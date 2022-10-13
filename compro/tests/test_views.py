@@ -14,16 +14,24 @@ class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
 
+        user = User.objects.create_superuser(username='d441')
+        user.set_password('csirtd441')
+        user.save()
+
+        self.client.login(username='d441', password='csirtd441')
+
         self.stakeholder1 = Stakeholder.objects.create(
             name="stakeholder1",
             type="BUMN",
-            field="Manufaktur",
+            field="IN",
             address="test",
             info="test",
             phone="01812812",
             email="asd@adsa.com",
             landing_page="",
-            kode_pos="12312"
+            kode_pos="12312",
+            image="stakeholder_logo/test.png",
+            pic=user
         )
 
         self.compro_list_url = reverse('stakeholder:index')
@@ -36,12 +44,6 @@ class TestViews(TestCase):
         self.compro_se_create_url = '%s?s_id=%s' % (reverse('stakeholder:se_create'), self.stakeholder1.id)
         self.compro_pr_create_url = '%s?s_id=%s' % (reverse('stakeholder:pr_create'), self.stakeholder1.id)
         self.compro_lw_create_url = '%s?s_id=%s' % (reverse('stakeholder:lw_create'), self.stakeholder1.id)
-
-        user = User.objects.create_superuser(username='d441')
-        user.set_password('csirtd441')
-        user.save()
-
-        self.client.login(username='d441', password='csirtd441')
 
     def test_compro_list_GET(self):
         response = self.client.get(self.compro_list_url)
@@ -190,7 +192,7 @@ class TestViews(TestCase):
         self.assertEquals(ListWorkshop.objects.filter(stakeholder=self.stakeholder1.id).count(), 1)
 
     def test_compro_lw_delete_DELETE_deletes_lw(self):
-        sdm_lw_delete = Sdm.objects.create(
+        sdm1 = Sdm.objects.create(
             stakeholder= self.stakeholder1,
             nama= 'Alex',
             jabatan= 'manager',
@@ -203,6 +205,22 @@ class TestViews(TestCase):
             narahubung= 'no',
             gender= 'm'
         )
+        sdm2 = Sdm.objects.create(
+            stakeholder= self.stakeholder1,
+            nama= 'John',
+            jabatan= 'staff',
+            unit_kerja= 'IT',
+            kompetensi= 'network',
+            sertifikat= 'CCNA',
+            telepon= '123123123',
+            email= 'hawa@gmail.com',
+            csirt= 'yes',
+            narahubung= 'no',
+            gender= 'm'
+        )
+
+        get_sdm = Sdm.objects.filter(stakeholder_id = self.stakeholder1)
+
 
         workshop_lw_delete = Workshop.objects.create(
             nama='workshop1',
@@ -212,10 +230,13 @@ class TestViews(TestCase):
 
         lw_delete = ListWorkshop.objects.create(
             stakeholder= self.stakeholder1,
-            sdm= sdm_lw_delete,
             workshop= workshop_lw_delete,
             status= 'PS',
+            level= 'int'
         )
+
+        lw_delete.sdm.set(get_sdm)
+        lw_delete.save()
 
         url = '%s?s_id=%s' % (reverse('stakeholder:lw_delete', kwargs={'pk':lw_delete.id}), self.stakeholder1.id)
 

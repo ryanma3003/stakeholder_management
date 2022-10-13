@@ -10,6 +10,9 @@ class TestModels(TestCase):
             nama="Workshop",
             tanggal=timezone.now(),
             lokasi="Jakarta",
+            deskripsi="lorem ipsum",
+            jenis="WS",
+            image="workshop/image.png"
         )
 
         self.assertEqual(Workshop.objects.count(), 1)

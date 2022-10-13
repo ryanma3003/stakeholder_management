@@ -1,27 +1,27 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 
-from se.views import SeListView, SeDetailView, SeCreateView, SeUpdateView, SeDeleteView
+from tmpi.views import *
 
 class TestUrls(SimpleTestCase):
     
     # Se
     def test_index_url_resolves(self):
-        url = reverse('se:index')
-        self.assertEqual(resolve(url).func.view_class, SeListView)
+        url = reverse('tmpi:index')
+        self.assertEqual(resolve(url).func.view_class, TmpiListView)
 
     def test_create_url_resolves(self):
-        url = reverse('se:create')
-        self.assertEqual(resolve(url).func.view_class, SeCreateView)
+        url = reverse('tmpi:create')
+        self.assertEqual(resolve(url).func.view_class, TmpiCreateView)
 
     def test_detail_url_resolves(self):
-        url = reverse('se:detail', kwargs={'pk': 'some-pk'})
-        self.assertEqual(resolve(url).func.view_class, SeDetailView)
+        url = reverse('tmpi:detail', kwargs={'pk': 'some-pk'})
+        self.assertEqual(resolve(url).func.view_class, TmpiDetailView)
 
     def test_update_url_resolves(self):
-        url = reverse('se:update', kwargs={'pk': 'some-pk'})
-        self.assertEqual(resolve(url).func.view_class, SeUpdateView)
+        url = reverse('tmpi:update', kwargs={'pk': 'some-pk'})
+        self.assertEqual(resolve(url).func.view_class, TmpiUpdateView)
 
     def test_delete_url_resolves(self):
-        url = reverse('se:delete', args=['some-pk'])
-        self.assertEqual(resolve(url).func.view_class, SeDeleteView)
+        url = reverse('tmpi:delete', args=['some-pk'])
+        self.assertEqual(resolve(url).func.view_class, TmpiDeleteView)

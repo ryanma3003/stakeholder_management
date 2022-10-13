@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import TemplateView
+from django.views.generic import DetailView
 from django.db.models import Sum, Avg, Count
 from django.contrib.auth import get_user_model
 import json
@@ -10,10 +11,20 @@ from compro.models import Stakeholder
 from csm.models import Csm
 from ikami.models import Ikami
 from se.models import Se
+from workshop.models import Workshop
+from tahap_csirt.models import *
 
 from django.views.decorators.http import require_http_methods
 
 # method view
+def handler404(request, exception):
+    context = {'foo': 'bar'}
+    return render(request, 'error/404.html', context) 
+
+def handler500(request, exception=None):
+    context = {'foo': 'bar'}
+    return render(request, 'error/500.html', context) 
+
 @require_http_methods(["GET", "POST"])
 def loginView(request):
     context = {
@@ -49,8 +60,21 @@ class LandingPageView(TemplateView):
     template_name = 'landing/index.html'
 
     def get_context_data(self, *args, **kwargs):
+
+        kegiatans = Workshop.objects.order_by('-id')[:10]
         context = super(LandingPageView, self).get_context_data(**kwargs)
-        pass
+        context['kegiatans'] = kegiatans
+        return context
+
+class KegiatanShowView(DetailView):
+    query_pk_and_slug = 'slug'
+    template_name = 'landing/berita.html'
+    context_object_name = 'post'
+    model = Workshop
+
+    def get_context_data(self, *args, **kwargs):
+
+        context = super(KegiatanShowView, self).get_context_data(**kwargs)
         return context
 
 class UserView(TemplateView):
@@ -77,6 +101,20 @@ class DashboardIndexView(TemplateView):
         total_csm = Csm.objects.count()
         total_se = Se.objects.count()
         total_ikami = Ikami.objects.count()
+        total_workshop = Workshop.objects.count()
+
+        total_edukasi = Edukasi.objects.count()
+        total_perencanaan = Perencanaan.objects.count()
+        total_penerapan = Penerapan.objects.count()
+        total_penguatan = Penguatan.objects.count()
+        total_evaluasi = Evaluasi.objects.count()
+
+        # TTIS
+        overall_edukasi = (total_edukasi / total_stakeholder) * 100
+        overall_perencanaan = (total_perencanaan / total_stakeholder) * 100
+        overall_penerapan = (total_penerapan / total_stakeholder) * 100
+        overall_penguatan = (total_penguatan / total_stakeholder) * 100
+        overall_evaluasi = (total_evaluasi / total_stakeholder) * 100
 
         # IKAMI
         tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count()
@@ -200,12 +238,35 @@ class DashboardIndexView(TemplateView):
 
         bar_se_json = json.dumps(bar_se_arr)
 
+        pie_ttis_arr = [[overall_edukasi], 
+                [overall_perencanaan],
+                [overall_penerapan],
+                [overall_penguatan],
+                [overall_evaluasi],
+                ]
+
+        pie_ttis_json = json.dumps(pie_ttis_arr)
+
         context = super(DashboardIndexView, self).get_context_data(**kwargs)
         context['title'] = 'Dashboard'
         context['total_stakeholder'] = total_stakeholder
         context['total_ikami'] = total_ikami
         context['total_csm'] = total_csm
         context['total_se'] = total_se
+        context['total_workshop'] = total_workshop
+
+        context['total_edukasi'] = total_edukasi
+        context['total_perencanaan'] = total_perencanaan
+        context['total_penerapan'] = total_penerapan
+        context['total_penguatan'] = total_penguatan
+        context['total_evaluasi'] = total_evaluasi
+
+        context['overall_edukasi'] = overall_edukasi
+        context['overall_perencanaan'] = overall_perencanaan
+        context['overall_penerapan'] = overall_penerapan
+        context['overall_penguatan'] = overall_penguatan
+        context['overall_evaluasi'] = overall_evaluasi
+        context['pie_ttis_json'] = pie_ttis_json
 
         context['spider_ikami_json'] = spider_ikami_json
         context['skor_ikami'] = skor_ikami

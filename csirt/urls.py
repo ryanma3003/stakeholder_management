@@ -20,10 +20,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 # import views
-from .views import loginView, logoutView, DashboardIndexView, UserView, LandingPageView
+from .views import loginView, logoutView, DashboardIndexView, UserView, LandingPageView, KegiatanShowView
 
 urlpatterns = [
-    path('', loginView, name='login'),
+    path('', LandingPageView.as_view(), name='landing'),
+    path('kegiatan/<slug:slug>', KegiatanShowView.as_view(), name='kegiatan'),
     path('login/', loginView, name='login'),
     path('admin/', admin.site.urls),
 
@@ -42,5 +43,8 @@ urlpatterns = [
     path('logout/', login_required(logoutView), name='logout'),
 ]
 
-if settings.DEBUG:
-     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+handler404 = 'csirt.views.handler404'
+handler500 = 'csirt.views.handler500'
+
+# if settings.DEBUG:
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

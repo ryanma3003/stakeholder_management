@@ -9,6 +9,7 @@ from .views import (
     TmpiCreateView, 
     TmpiUpdateView,
     TmpiDeleteView, 
+    downloadExcel,
     )
 
 app_name = 'tmpi'
@@ -20,4 +21,5 @@ urlpatterns = [
     path('detail/<slug:pk>', login_required(TmpiDetailView.as_view()), name='detail'),
     path('update/<slug:pk>', login_required(TmpiUpdateView.as_view()), name='update'),
     path('delete/<slug:pk>', login_required(TmpiDeleteView.as_view()), name='delete'),
+    path('download/<int:show_id>', login_required(downloadExcel), name='tmpi_download'),
 ]

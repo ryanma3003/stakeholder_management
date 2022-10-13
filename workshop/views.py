@@ -57,6 +57,10 @@ class WorkshopCreateView(CreateView):
         return super(WorkshopCreateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        photo = self.request.FILES.get('image')
+        if photo :
+            form.instance.image = photo
+            
         return super().form_valid(form)
 
 class WorkshopUpdateView(UpdateView):
@@ -73,6 +77,10 @@ class WorkshopUpdateView(UpdateView):
         return super(WorkshopUpdateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        photo = self.request.FILES.get('image')
+        if photo :
+            form.instance.image = photo
+
         return super().form_valid(form)
 
 class WorkshopDeleteView(DeleteView):

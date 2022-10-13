@@ -10,6 +10,9 @@ class TestForms(TestCase):
             "nama":"Workshop",
             "tanggal":timezone.now(),
             "lokasi":"Jakarta",
+            "deskripsi":"lorem ipsum",
+            "image":"workshop/image.png",
+            "jenis":"WS"
         })
 
         self.assertTrue(form.is_valid())

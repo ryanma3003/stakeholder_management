@@ -1,8 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import UpdateView
 from django.conf import settings
-from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import HttpResponse
 
 from .models import *
 from .forms import *
@@ -40,8 +39,8 @@ def showPass(request):
 
     if request.method == 'POST' and check:
         return HttpResponse(json.dumps({'success': check}), content_type="application/json")
-    else :
-        return HttpResponse(json.dumps({'success': check}), content_type="application/json")
+
+    return HttpResponse(json.dumps({}), content_type="application/json")
 
 class PhrasalwordUpdateView(UpdateView):
     model = Phrasalword

@@ -1,5 +1,5 @@
 // console.log(str_tatakelola);
-var spider_result = JSON.parse(spider_json).map(i=>Number(i));
+var spider_result = JSON.parse(spider_ikami_json).map(i=>Number(i));
 // console.log(spider_result);
 
 Highcharts.chart('highchart-radar-ikami', {

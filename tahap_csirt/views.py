@@ -12,6 +12,7 @@ from phrasalword.models import Phrasalword
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import os
+import tempfile
 
 def pdf_view(request, show_id):
     query = Penerapan.objects.get(stakeholder_id = show_id)
@@ -39,16 +40,16 @@ def pdf_view(request, show_id):
                 for idx in range(file.numPages):
                     page = file.getPage(idx)
                     out.addPage(page)
-                with open('decrypted_file', 'wb') as f:
+                tmp = tempfile.NamedTemporaryFile(delete=False)
+                with open(tmp.name, 'wb') as f:
                     out.write(f)
-                    
-                return FileResponse(open('decrypted_file', 'rb'), content_type='application/pdf')
+                return FileResponse(open(tmp.name, 'rb'), content_type='application/pdf')
             except FileNotFoundError:
                 messages.error(request, "File not found.")
-                return HttpResponseRedirect(request.path_info)
+                return HttpResponseRedirect(reverse('stakeholder:detail', kwargs={'pk':request.GET.get('s_id')} ))
     else :
         messages.error(request, "Wrong passphrase.")
-        return HttpResponseRedirect(request.path_info)
+        return HttpResponseRedirect(reverse('stakeholder:detail', kwargs={'pk':request.GET.get('s_id')} ))
 
 # Create your views here.
 # Edukasi

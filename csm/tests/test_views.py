@@ -22,7 +22,7 @@ class TestViews(TestCase):
         self.stakeholder1 = Stakeholder.objects.create(
             name="stakeholder1",
             type="BUMN",
-            field="Manufaktur",
+            field="IN",
             address="test",
             info="test",
             phone="01812812",

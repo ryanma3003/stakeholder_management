@@ -1,7 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from compro.forms import *
 from compro.models import *
 from workshop.models import Workshop
+from django.contrib.auth.models import User
 
 from django.utils import timezone
 
@@ -9,16 +10,25 @@ from django.utils import timezone
 # Create your tests here.
 class TestForms(TestCase):
     def setUp(self):
+        self.client = Client()
+
+        user = User.objects.create_superuser(
+            username='d441', email='d441@bssn.go.id', password='my_secret')
+        
+        self.client.login(username='d441', password='csirtd441')
+
         self.stakeholder1 = Stakeholder.objects.create(
             name="stakeholder test",
             type="BUMN",
-            field="Manufaktur",
+            field="IN",
             address="test",
             info="test",
             phone="01812812",
             email="asd@adsa.com",
             landing_page="",
-            kode_pos="12312"
+            kode_pos="12312",
+            image="stakeholder_logo/test.png",
+            pic=user
         )
 
     def get_form_kwargs(self):
@@ -29,7 +39,7 @@ class TestForms(TestCase):
         form = ComproForm(data={
             "name":"stakeholder1",
             "type":"BUMN",
-            "field":"Manufaktur",
+            "field":"IN",
             "address":"test",
             "info":"test",
             "phone":"01812812",
@@ -117,6 +127,21 @@ class TestForms(TestCase):
             narahubung= 'no',
             gender= 'm'
         )
+        sdm2 = Sdm.objects.create(
+            stakeholder= self.stakeholder1,
+            nama= 'John',
+            jabatan= 'staff',
+            unit_kerja= 'IT',
+            kompetensi= 'network',
+            sertifikat= 'CCNA',
+            telepon= '123123123',
+            email= 'hawa@gmail.com',
+            csirt= 'yes',
+            narahubung= 'no',
+            gender= 'm'
+        )
+
+        get_sdm = Sdm.objects.filter(stakeholder_id = self.stakeholder1)
 
         workshop1 = Workshop.objects.create(
             nama='workshop1',
@@ -126,9 +151,10 @@ class TestForms(TestCase):
 
         form = ListWorkshopForm(data={
             'stakeholder': self.stakeholder1.id,
-            'sdm': sdm1.id,
+            'sdm': get_sdm,
             'workshop': workshop1.id,
             'status': 'PS',
+            'level': 'int'
         }, **self.get_form_kwargs())
 
         self.assertTrue(form.is_valid())

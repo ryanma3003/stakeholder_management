@@ -15,6 +15,9 @@ class TestViews(TestCase):
             nama="Workshop",
             tanggal=timezone.now(),
             lokasi="Jakarta",
+            deskripsi="lorem ipsum",
+            jenis="WS",
+            image="workshop/image.png"
         )
 
         self.workshop_list_url = reverse('workshop:index')

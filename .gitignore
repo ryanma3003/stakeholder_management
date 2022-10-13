@@ -10,3 +10,4 @@ coverage.xml
 .tox/
 .scannerwork/
 tox.ini
+sonar-project.properties

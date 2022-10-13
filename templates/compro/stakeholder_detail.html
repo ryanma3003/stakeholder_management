@@ -1,6 +1,16 @@
         {% extends 'base.html' %}
         {% load static %}
             {% block content %}
+				{% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-danger alert-dismissible fade show">
+					<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+					<strong>Error!</strong> {{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+				</div>
+				{% endfor %}
+				{% endif %}
+				
 				<div class="row page-titles">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item active"><a href="{% url 'stakeholder:index' %}">Stakeholder</a></li>
@@ -196,7 +206,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passSK">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" method="post" id="passSK">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="sk">
 																			<div class="form-group">
@@ -206,7 +216,7 @@
 																	</div>
 																	<div class="modal-footer">
 																		<button type="button" class="btn btn-danger light btn-xxs" data-bs-dismiss="modal">Close</button>
-																		<input type="submit" class="btn btn-success btn-xxs" form="passSK" value="Submit">
+																		<input type="submit" class="btn btn-success btn-xxs" id="btnModal" form="passSK" value="Submit">
 																	</div>
 																</div>
 															</div>
@@ -239,7 +249,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passRFC">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" method="post" id="passRFC">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="rfc">
 																			<div class="form-group">
@@ -249,7 +259,7 @@
 																	</div>
 																	<div class="modal-footer">
 																		<button type="button" class="btn btn-danger light btn-xxs" data-bs-dismiss="modal">Close</button>
-																		<input type="submit" class="btn btn-success btn-xxs" form="passRFC" value="Submit">
+																		<input type="submit" class="btn btn-success btn-xxs" id="btnModal" form="passRFC" value="Submit">
 																	</div>
 																</div>
 															</div>
@@ -282,7 +292,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passSD">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" method="post" id="passSD">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="sumber_daya">
 																			<div class="form-group">
@@ -292,7 +302,7 @@
 																	</div>
 																	<div class="modal-footer">
 																		<button type="button" class="btn btn-danger light btn-xxs" data-bs-dismiss="modal">Close</button>
-																		<input type="submit" class="btn btn-success btn-xxs" form="passSD" value="Submit">
+																		<input type="submit" class="btn btn-success btn-xxs" id="btnModal" form="passSD" value="Submit">
 																	</div>
 																</div>
 															</div>
@@ -314,9 +324,9 @@
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
-														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docSD"><i class="fa fa-search"></i> Show</button>
+														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docRegistrasi"><i class="fa fa-search"></i> Show</button>
 														
-														<div class="modal fade" id="docSD">
+														<div class="modal fade" id="docRegistrasi">
 															<div class="modal-dialog" role="document">
 																<div class="modal-content">
 																	<div class="modal-header">
@@ -325,7 +335,7 @@
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}" method="post" id="passSD">
+																		<form action="{% url 'ttis:pnr_show' show_id=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" method="post" id="passSD">
 																			{% csrf_token %}
 																			<input type="hidden" name="file" value="registrasi">
 																			<div class="form-group">
@@ -335,7 +345,7 @@
 																	</div>
 																	<div class="modal-footer">
 																		<button type="button" class="btn btn-danger light btn-xxs" data-bs-dismiss="modal">Close</button>
-																		<input type="submit" class="btn btn-success btn-xxs" form="passSD" value="Submit">
+																		<input type="submit" class="btn btn-success btn-xxs" id="btnModal" form="passSD" value="Submit">
 																	</div>
 																</div>
 															</div>
@@ -374,7 +384,7 @@
 											Penguatan CSIRT
 										</div>
 										<div class="row">
-											<div class="col-sm-12">
+											<div class="col-sm-8">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-certificate" aria-hidden="true"></i> Workshop
@@ -386,6 +396,7 @@
 																	<tr>
 																		<th>No</th>
 																		<th>Nama Workshop</th>
+																		<th>Daftar Hadir</th>
 																		<th>Tanggal</th>
 																		<th>Lokasi</th>
 																		<th>Action</th>
@@ -396,6 +407,7 @@
 																	<tr>
 																		<th>{{forloop.counter}}</th>
 																		<td>{{lw.workshop}}</td>
+																		<td>{% for sdm in lw.sdm.all %}{{ sdm }}<br/>{% endfor %}</td>
 																		<td>{{lw.workshop.tanggal|date:"d M, Y"}}</td>
 																		<td>{{lw.workshop.lokasi}}</td>
 																		<td>
@@ -429,17 +441,42 @@
 											Evaluasi CSIRT
 										</div>
 										<div class="row">
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="timeline-box">
 													<div class="box-title text-white">
 														<i class="fa fa-archive text-success" aria-hidden="true"></i> TMPI
 													</div>
 													<div class="box-content">
-														<div class="box-item"><strong>Score</strong>: {{eva.tmpi.nilai_akhir}}</div>
-														<div class="box-item"><strong>Tanggal</strong>: {{eva.tmpi.month}}</div>
+														<div class="box-item"><strong>Score</strong>: {{eva.tmpi.nilai_akhir|floatformat:2}}</div>
+														<div class="box-item"><strong>Tanggal</strong>: {{eva.tmpi.month}} {{eva.tmpi.year}}</div>
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:eva_update' pk=eva.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docTMPI"><i class="fa fa-search"></i> Show</button>
+														
+														<div class="modal fade" id="docTMPI">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h5 class="modal-title">Passphrase</h5>
+																		<button type="button" class="btn-close" data-bs-dismiss="modal">
+																		</button>
+																	</div>
+																	<div class="modal-body">
+																		<form action="{% url 'tmpi:tmpi_download' show_id=eva.tmpi_id %}?s_id={{stakeholder.id}}" method="post" id="passTmpi">
+																			{% csrf_token %}
+																			<div class="form-group">
+																				<input type="password" class="form-control" autofocus id="passphrase" name="passphrase" placeholder="Enter your passphrase">
+																			</div>
+																		</form>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-danger light btn-xxs" data-bs-dismiss="modal">Close</button>
+																		<input type="submit" class="btn btn-success btn-xxs" id="btnModal" form="passTmpi" value="Submit">
+																	</div>
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -790,5 +827,20 @@
 				</script>
 				<script src="{% static 'js/plugins-init/highchart-ikami.js' %}"></script>
 				{% endif %}
+
+				<script type="text/javascript">
+					$('.modal').on('shown.bs.modal', function() {
+						$(this).find('[autofocus]').focus();
+					});
+
+					$('#btnModal').click(function() {
+						// Coding
+						$('#docSK').modal('hide'); 
+						$('#docRFC').modal('hide'); 
+						$('#docSD').modal('hide'); 
+						$('#docRegistrasi').modal('hide');
+						$('#docTMPI').modal('hide');  //or  $('#IDModal').modal('hide');
+					});
+				</script>
 
             {% endblock %}

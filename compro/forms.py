@@ -272,15 +272,6 @@ class ProsedurForm(forms.ModelForm):
         }
         
 class ListWorkshopForm(forms.ModelForm):
-    
-    # sdm = forms.ModelChoiceField(
-    #     label='Sdm', 
-    #     queryset=Sdm.objects.all(), 
-    #     widget=forms.Select(
-    #         attrs={
-    #             'class': 'default-select wide form-control'
-    #         }
-    #     ))
            
     def __init__(self, *args, **kwargs):
         # get kwargs from view.py
@@ -288,10 +279,22 @@ class ListWorkshopForm(forms.ModelForm):
 
         super(ListWorkshopForm, self).__init__(*args, **kwargs)
 
-        self.fields['sdm'].empty_label = 'Please Select'
+        # self.fields['sdm'].empty_label = 'Please Select'
         self.fields['sdm'].queryset = Sdm.objects.filter(stakeholder__id=s_id)
+        self.fields['sdm'].required = False
 
         self.fields['workshop'].empty_label = 'Please Select'
+
+        # sdm = forms.ModelMultipleChoiceField(
+        #         label='Nama',
+        #         queryset=Sdm.objects.filter(stakeholder__id=s_id), 
+        #         widget=forms.CheckboxSelectMultiple(
+        #             attrs={
+        #                 'class': 'form-control wide'
+        #             }
+        #         ), 
+        #         required=False
+        #     )
 
     error_css_class = 'is-invalid'
 
@@ -308,9 +311,9 @@ class ListWorkshopForm(forms.ModelForm):
             ]
 
         widgets = {
-            'sdm': forms.Select(
+            'sdm': forms.CheckboxSelectMultiple(
                 attrs={
-                    'class': 'default-select wide form-control'
+                    'class': ''
                 }
             ),
             'workshop': forms.Select(

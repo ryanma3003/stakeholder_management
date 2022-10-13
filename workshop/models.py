@@ -4,10 +4,16 @@ from django.urls import reverse
 
 # Create your models here.
 class Workshop(models.Model):
+    
+    JENIS_CHOICES = [
+        ('WS', 'Workshop'),
+        ('RP', 'Rapat'),
+    ]
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     nama = models.CharField(max_length=255)
+    jenis = models.CharField(max_length=2, blank=True, null=True, choices=JENIS_CHOICES)
     slug = models.SlugField(blank=True, editable=False)
     tanggal = models.DateTimeField(blank=True, null=True)
     lokasi = models.CharField(max_length=255, blank=True, null=True)

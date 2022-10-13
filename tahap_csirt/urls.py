@@ -28,6 +28,5 @@ urlpatterns = [
     
     path('evaluasi/create', login_required(EvaluasiCreateView.as_view()), name='eva_create'),
     path('evaluasi/update/<slug:pk>', login_required(EvaluasiUpdateView.as_view()), name='eva_update'),
-    path('evaluasi/show', login_required(pdf_view), name='eva_show'),
     path('evaluasi/delete/<slug:pk>', login_required(EvaluasiDeleteView.as_view()), name='eva_delete'),
 ]
