@@ -1,5 +1,8 @@
 # Ignore Env
 .env
+.scannerwork/
+*.properties
+media/
 
 htmlcov/
 .coverage
@@ -8,6 +11,4 @@ htmlcov/
 coverage.xml
 *.cover
 .tox/
-.scannerwork/
 tox.ini
-sonar-project.properties
