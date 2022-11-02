@@ -1,6 +1,6 @@
-# MorpIS
+# Simindi
 
-MorpIS adalah aplikasi untuk melakukan kegiatan monitoring dan pengelolaan data stakeholder industri. Aplikasi ini dibangun dengan menggunakan django framework 4.11.
+Simindi adalah aplikasi untuk melakukan kegiatan monitoring dan pengelolaan data stakeholder industri. Aplikasi ini dibangun dengan menggunakan django framework 4.11.
 
 ## Installation
 
