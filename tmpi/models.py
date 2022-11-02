@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
 import os
 
 # Create your models here.
@@ -33,6 +34,12 @@ class Tmpi(models.Model):
     total_fase_3 = models.FloatField()
 
     nilai_akhir = models.FloatField()
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
     @property
     def filename(self):

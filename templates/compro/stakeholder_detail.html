@@ -102,8 +102,12 @@
 														<i class="fa fa-file-powerpoint text-white" aria-hidden="true"></i> Sosialisasi
 													</div>
 													<div class="box-content">
+														{% if edu.sosialisasi == 1 %}
 														<div class="box-item"><strong>Tanggal</strong>: {{edu.tanggal|date:'d M Y'}}</div>
 														<div class="box-item"><strong>Tempat</strong>: {{edu.tempat}}</div>
+														{% else %}
+														<div class="box-item"><strong>No Data</strong></div>
+														{% endif %}
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:edu_update' pk=edu.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -195,7 +199,16 @@
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														{% if pnr.user_id == request.user.id %}
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docSK"><i class="fa fa-search"></i> Show</button>
+														{% else %}
+														<form action="{% url 'message' %}?s_id={{stakeholder.id}}"  id="form_message{{ user.id }}" method="post" enctype="multipart/form-data">
+															{% csrf_token %}
+															<input type="hidden" name="message" value="Halo, mohon izin meminta passphrase" >
+															<input type="hidden" name="user_id" value='{{ pnr.user_id }}'>
+														</form>
+														<button type="submit" form="form_message{{ user.id }}" value="Submit" class="btn btn-xxs btn-success"><i class="fa fa-lock"></i> Request Passphrase</button>
+														{% endif %}
 														
 														<div class="modal fade" id="docSK">
 															<div class="modal-dialog" role="document">
@@ -238,7 +251,16 @@
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														{% if pnr.user_id == request.user.id %}
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docRFC"><i class="fa fa-search"></i> Show</button>
+														{% else %}
+														<form action="{% url 'message' %}?s_id={{stakeholder.id}}"  id="form_message{{ user.id }}" method="post" enctype="multipart/form-data">
+															{% csrf_token %}
+															<input type="hidden" name="message" value="Halo, mohon izin meminta passphrase" >
+															<input type="hidden" name="user_id" value='{{ pnr.user_id }}'>
+														</form>
+														<button type="submit" form="form_message{{ user.id }}" value="Submit" class="btn btn-xxs btn-success"><i class="fa fa-lock"></i> Request Passphrase</button>
+														{% endif %}
 														
 														<div class="modal fade" id="docRFC">
 															<div class="modal-dialog" role="document">
@@ -281,7 +303,16 @@
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														{% if pnr.user_id == request.user.id %}
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docSD"><i class="fa fa-search"></i> Show</button>
+														{% else %}
+														<form action="{% url 'message' %}?s_id={{stakeholder.id}}"  id="form_message{{ user.id }}" method="post" enctype="multipart/form-data">
+															{% csrf_token %}
+															<input type="hidden" name="message" value="Halo, mohon izin meminta passphrase" >
+															<input type="hidden" name="user_id" value='{{ pnr.user_id }}'>
+														</form>
+														<button type="submit" form="form_message{{ user.id }}" value="Submit" class="btn btn-xxs btn-success"><i class="fa fa-lock"></i> Request Passphrase</button>
+														{% endif %}
 														
 														<div class="modal fade" id="docSD">
 															<div class="modal-dialog" role="document">
@@ -324,7 +355,16 @@
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:pnr_update' pk=pnr.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														{% if pnr.user_id == request.user.id %}
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docRegistrasi"><i class="fa fa-search"></i> Show</button>
+														{% else %}
+														<form action="{% url 'message' %}?s_id={{stakeholder.id}}"  id="form_message{{ user.id }}" method="post" enctype="multipart/form-data">
+															{% csrf_token %}
+															<input type="hidden" name="message" value="Halo, mohon izin meminta passphrase" >
+															<input type="hidden" name="user_id" value='{{ pnr.user_id }}'>
+														</form>
+														<button type="submit" form="form_message{{ user.id }}" value="Submit" class="btn btn-xxs btn-success"><i class="fa fa-lock"></i> Request Passphrase</button>
+														{% endif %}
 														
 														<div class="modal fade" id="docRegistrasi">
 															<div class="modal-dialog" role="document">
@@ -390,6 +430,7 @@
 														<i class="fa fa-certificate" aria-hidden="true"></i> Workshop
 													</div>
 													<div class="box-content">
+														{% if png.status == 1 %}
 														<div class="table-responsive">
 															<table class="table table-responsive-sm table-striped">
 																<thead>
@@ -424,9 +465,13 @@
 																</tbody>
 															</table>
 														</div>
+														{% else %}
+														<div class="box-item"><strong>No Data</strong></div>
+														{% endif %}
 													</div>
 													<div class="box-footer">
-														<a href="{% url 'stakeholder:lw_create' %}?s_id={{stakeholder.id}}" class="btn btn-primary btn-xxs me-2  mb-2"><i class="fas fa-plus me-2"></i>Add Workshop</a>
+														<a href="{% url 'ttis:png_update' pk=png.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														<a href="{% url 'stakeholder:lw_create' %}?s_id={{stakeholder.id}}" class="btn btn-warning btn-xxs"><i class="fas fa-plus"></i>Add Workshop</a>
 													</div>
 												</div>
 											</div>
@@ -447,12 +492,27 @@
 														<i class="fa fa-archive text-success" aria-hidden="true"></i> TMPI
 													</div>
 													<div class="box-content">
+														{% if eva.status == 1 %}
 														<div class="box-item"><strong>Score</strong>: {{eva.tmpi.nilai_akhir|floatformat:2}}</div>
 														<div class="box-item"><strong>Tanggal</strong>: {{eva.tmpi.month}} {{eva.tmpi.year}}</div>
+														{% else %}
+														<div class="box-item"><strong>No Data</strong></div>
+														{% endif %}
 													</div>
 													<div class="box-footer">
 														<a href="{% url 'ttis:eva_update' pk=eva.stakeholder_id %}?s_id={{stakeholder.id}}" class="btn btn-xxs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+														{% if eva.status == 1 %}
+														{% if pnr.user_id == request.user.id %}
 														<button type="button" class="btn btn-xxs btn-secondary" data-bs-toggle="modal" data-bs-target="#docTMPI"><i class="fa fa-search"></i> Show</button>
+														{% else %}
+														<form action="{% url 'message' %}?s_id={{stakeholder.id}}"  id="form_message{{ user.id }}" method="post" enctype="multipart/form-data">
+															{% csrf_token %}
+															<input type="hidden" name="message" value="Halo, mohon izin meminta passphrase" >
+															<input type="hidden" name="user_id" value='{{ pnr.user_id }}'>
+														</form>
+														<button type="submit" form="form_message{{ user.id }}" value="Submit" class="btn btn-xxs btn-success"><i class="fa fa-lock"></i> Request Passphrase</button>
+														{% endif %}
+														{% endif %}
 														
 														<div class="modal fade" id="docTMPI">
 															<div class="modal-dialog" role="document">
@@ -829,9 +889,6 @@
 				{% endif %}
 
 				<script type="text/javascript">
-					$('.modal').on('shown.bs.modal', function() {
-						$(this).find('[autofocus]').focus();
-					});
 
 					$('#btnModal').click(function() {
 						// Coding

@@ -66,7 +66,11 @@ INSTALLED_APPS = [
     'month',
     'tahap_csirt',
     'phrasalword',
+    'channels',
+    'notifications',
 ]
+
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -98,6 +102,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'csirt.wsgi.application'
+# ASGI_APPLICATION = 'csirt.asgi.application'
 
 
 # Database

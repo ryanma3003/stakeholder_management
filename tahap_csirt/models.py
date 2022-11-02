@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.urls import reverse
 
 # Create your models here.
@@ -100,6 +101,12 @@ class Penerapan(models.Model):
     no_doc_registrasi = models.CharField(max_length=250, null=True, blank=True)
     tgl_doc_registrasi = models.DateTimeField(null=True, blank=True)
     file_registrasi = models.FileField(upload_to='ttis_penerapan', null=True, blank=True)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
     portal_csirt = models.IntegerField(choices=STATUS_CHOICES)
     portal_csirt_url = models.CharField(max_length=250, null=True, blank=True)

@@ -5,6 +5,9 @@ from django.views.generic.base import TemplateView
 from django.views.generic import DetailView
 from django.db.models import Sum, Avg, Count
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseRedirect
+from notifications.signals import notify
+from notifications.models import Notification
 import json
 
 from compro.models import Stakeholder
@@ -24,6 +27,42 @@ def handler404(request, exception):
 def handler500(request, exception=None):
     context = {'foo': 'bar'}
     return render(request, 'error/500.html', context) 
+
+def showPassChat(request):
+    check = request.user.check_password(request.POST['password'])
+    Notification.objects.mark_all_as_read()
+
+    if request.method == 'POST' and check:
+        return HttpResponse(json.dumps({'success': check}), content_type="application/json")
+
+    return HttpResponse(json.dumps({}), content_type="application/json")
+
+def messageView(request):
+    try:
+        if request.method == 'POST':
+            sender = get_user_model().objects.get(username=request.user)
+            receiver = get_user_model().objects.get(id=request.POST.get('user_id'))
+            notify.send(sender, recipient=receiver, verb='Message', description=request.POST.get('message'))
+            return redirect('stakeholder:detail', request.GET.get('s_id'))
+        else:
+            return HttpResponse("Invalid request")
+    except Exception as e:
+        print(e)
+        return HttpResponse("Please login from admin site for sending messages")
+
+def messageReplyView(request):
+    try:
+        if request.method == 'POST':
+            sender = get_user_model().objects.get(username=request.user)
+            receiver = get_user_model().objects.get(id=request.POST.get('user_id'))
+            Notification.objects.mark_all_as_read()
+            notify.send(sender, recipient=receiver, verb='Message', level='warning', description=request.POST.get('message'))
+            return redirect('home')
+        else:
+            return HttpResponse("Invalid request")
+    except Exception as e:
+        print(e)
+        return HttpResponse("Please login from admin site for sending messages")
 
 @require_http_methods(["GET", "POST"])
 def loginView(request):
@@ -110,11 +149,11 @@ class DashboardIndexView(TemplateView):
         total_evaluasi = Evaluasi.objects.count()
 
         # TTIS
-        overall_edukasi = (total_edukasi / total_stakeholder) * 100
-        overall_perencanaan = (total_perencanaan / total_stakeholder) * 100
-        overall_penerapan = (total_penerapan / total_stakeholder) * 100
-        overall_penguatan = (total_penguatan / total_stakeholder) * 100
-        overall_evaluasi = (total_evaluasi / total_stakeholder) * 100
+        overall_edukasi = "{:.2f}".format((total_edukasi / total_stakeholder) * 100)
+        overall_perencanaan = "{:.2f}".format((total_perencanaan / total_stakeholder) * 100)
+        overall_penerapan = "{:.2f}".format((total_penerapan / total_stakeholder) * 100)
+        overall_penguatan = "{:.2f}".format((total_penguatan / total_stakeholder) * 100)
+        overall_evaluasi = "{:.2f}".format((total_evaluasi / total_stakeholder) * 100)
 
         # IKAMI
         tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count()
@@ -134,11 +173,11 @@ class DashboardIndexView(TemplateView):
         elif(skor_ikami >= 584 and skor_ikami <= 645):
             evaluasi_ikami = 'Baik'
 
-        str_tatakelola = "{:}".format(tata_kelola)
-        str_pengelolaan_risiko = "{:}".format(pengelolaan_risiko)
-        str_kerangka_kerja = "{:}".format(kerangka_kerja)
-        str_pengelolaan_aset = "{:}".format(pengelolaan_aset)
-        str_teknologi_keamanan = "{:}".format(teknologi_keamanan)
+        str_tatakelola = "{:.2f}".format(tata_kelola)
+        str_pengelolaan_risiko = "{:.2f}".format(pengelolaan_risiko)
+        str_kerangka_kerja = "{:.2f}".format(kerangka_kerja)
+        str_pengelolaan_aset = "{:.2f}".format(pengelolaan_aset)
+        str_teknologi_keamanan = "{:.2f}".format(teknologi_keamanan)
 
         spider_arr = [str_tatakelola, str_pengelolaan_risiko, str_kerangka_kerja, str_pengelolaan_aset, str_teknologi_keamanan]
         spider_ikami_json = json.dumps(spider_arr)

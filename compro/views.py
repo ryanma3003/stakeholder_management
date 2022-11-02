@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.db.models import Q
 import json
 
 # Create your views here.
@@ -17,7 +18,8 @@ from tahap_csirt.models import *
 class ComproListView(ListView):
     model = Stakeholder
     context_object_name = 'stakeholder_list'
-    ordering = ['id']
+    # for descending order use -
+    ordering = ['-id']
     # paginate_by: 3
 
     def get_context_data(self, *args, **kwargs):
@@ -115,9 +117,29 @@ class ComproDetailView(DetailView):
             edu = None
 
         try:
+            edu_sos = Edukasi.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(sosialisasi=1) )
+        except Edukasi.DoesNotExist:
+            edu_sos = None
+
+        try:
             prn = Perencanaan.objects.get(stakeholder_id=self.kwargs.get('pk'))
         except Perencanaan.DoesNotExist:
             prn = None
+
+        try:
+            prn_draft_sk = Perencanaan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(draft_sk=1) )
+        except Perencanaan.DoesNotExist:
+            prn_draft_sk = None
+
+        try:
+            prn_draft_rfc = Perencanaan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(draft_rfc=1) )
+        except Perencanaan.DoesNotExist:
+            prn_draft_rfc = None
+
+        try:
+            prn_draft_sd = Perencanaan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(draft_sumber_daya=1) )
+        except Perencanaan.DoesNotExist:
+            prn_draft_sd = None
 
         try:
             pnr = Penerapan.objects.get(stakeholder_id=self.kwargs.get('pk'))
@@ -125,29 +147,76 @@ class ComproDetailView(DetailView):
             pnr = None
 
         try:
+            pnr_doc_sk = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_sk=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_sk = None
+
+        try:
+            pnr_doc_rfc = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_rfc=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_rfc = None
+
+        try:
+            pnr_doc_sd = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_sumber_daya=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_sd = None
+
+        try:
+            pnr_doc_reg = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_registrasi=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_reg = None
+
+        try:
+            pnr_portal = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(portal_csirt=1) )
+        except Penerapan.DoesNotExist:
+            pnr_portal = None
+
+        try:
             png = Penguatan.objects.get(stakeholder_id=self.kwargs.get('pk'))
         except Penguatan.DoesNotExist:
             png = None
+
+        try:
+            png_stat = Penguatan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(status=1) )
+        except Penguatan.DoesNotExist:
+            png_stat = None
 
         try:
             eva = Evaluasi.objects.get(stakeholder_id=self.kwargs.get('pk'))
         except Evaluasi.DoesNotExist:
             eva = None
 
+        try:
+            eva_stat = Evaluasi.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(status=1) )
+        except Evaluasi.DoesNotExist:
+            eva_stat = None
+
         # Progress
         fulfill = 0
-        if edu:
+        if edu_sos:
             fulfill += 1
-        if prn:
+        if prn_draft_sk:
             fulfill += 1
-        if pnr:
+        if prn_draft_rfc:
             fulfill += 1
-        if png:
+        if prn_draft_sd:
             fulfill += 1
-        if eva:
+        if pnr_doc_sk:
+            fulfill += 1
+        if pnr_doc_rfc:
+            fulfill += 1
+        if pnr_doc_sd:
+            fulfill += 1
+        if pnr_doc_reg:
+            fulfill += 1
+        if pnr_portal:
+            fulfill += 1
+        if png_stat:
+            fulfill += 1
+        if eva_stat:
             fulfill += 1
 
-        progress = (fulfill / 5) * 100
+        progress = (fulfill / 11) * 100
 
         # CSIRT
         try:

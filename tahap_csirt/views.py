@@ -196,8 +196,10 @@ class PenerapanCreateView(CreateView):
         file_rfc = self.request.FILES.get('file_rfc')
         file_sumber_daya = self.request.FILES.get('file_sumber_daya')
         file_registrasi = self.request.FILES.get('file_registrasi')
+        user = self.request.user
 
         form.instance.stakeholder_id = self.kwargs['s_id']
+        form.instance.user_id = user.id
 
         penerapan = form.save(commit=False)
 
@@ -302,8 +304,10 @@ class PenerapanUpdateView(UpdateView):
         file_rfc = self.request.FILES.get('file_rfc')
         file_sumber_daya = self.request.FILES.get('file_sumber_daya')
         file_registrasi = self.request.FILES.get('file_registrasi')
+        user = self.request.user
 
         form.instance.stakeholder_id = self.kwargs['s_id']
+        form.instance.user_id = user.id
 
         penerapan = form.save(commit=False)
 

@@ -185,6 +185,7 @@ class TmpiCreateView(CreateView):
     def form_valid(self, form):
         # file_tmpi = form.cleaned_data.get('file_tmpi', False)
         file_tmpi = self.request.FILES.get('file_tmpi')
+        user = self.request.user
 
         if file_tmpi :
             wb = openpyxl.load_workbook(file_tmpi, data_only=True)
@@ -222,6 +223,7 @@ class TmpiCreateView(CreateView):
             form.instance.total_fase_3 = worksheet["AA20"].value if worksheet["AA20"].value else worksheet["Z20"].value
 
             form.instance.nilai_akhir = worksheet["AA22"].value if worksheet["AA22"].value else worksheet["Z22"].value
+            form.instance.user_id = user.id
 
             tmpi = form.save(commit=False)
             tmpi.file_tmpi = file_tmpi
@@ -252,6 +254,7 @@ class TmpiUpdateView(UpdateView):
 
     def form_valid(self, form):
         file_tmpi = self.request.FILES.get('file_tmpi')
+        user = self.request.user
 
         if file_tmpi :
             wb = openpyxl.load_workbook(file_tmpi, data_only=True)
@@ -280,6 +283,7 @@ class TmpiUpdateView(UpdateView):
             form.instance.total_fase_3 = worksheet["AA20"].value if worksheet["AA20"].value else worksheet["Z20"].value
 
             form.instance.nilai_akhir = worksheet["AA22"].value if worksheet["AA22"].value else worksheet["Z22"].value
+            form.instance.user_id = user.id
 
             tmpi = form.save(commit=False)
             tmpi.file_tmpi = file_tmpi

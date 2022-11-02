@@ -18,9 +18,11 @@ from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static
 from django.conf import settings
+import notifications.urls
+from django.urls import re_path as url
 
 # import views
-from .views import loginView, logoutView, DashboardIndexView, UserView, LandingPageView, KegiatanShowView
+from .views import showPassChat, messageView, messageReplyView, loginView, logoutView, DashboardIndexView, UserView, LandingPageView, KegiatanShowView
 
 urlpatterns = [
     path('', LandingPageView.as_view(), name='landing'),
@@ -39,6 +41,11 @@ urlpatterns = [
     path('kompetensi/', include('workshop.urls', namespace='workshop')),
     path('ttis/', include('tahap_csirt.urls', namespace='ttis')),
     path('profile/', include('phrasalword.urls', namespace='profile')),
+
+    path('message', login_required(messageView), name='message'),
+    path('messageReply', login_required(messageReplyView), name='messageReply'),
+    path('showPassChat', login_required(showPassChat), name='showPassChat'),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
     path('logout/', login_required(logoutView), name='logout'),
 ]

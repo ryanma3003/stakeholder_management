@@ -62,10 +62,8 @@ class PhrasalwordUpdateView(UpdateView):
         kwargs.update(self.extra_context)
         if self.object.passphrase:
             kwargs['passphrase'] = decrypt(self.object.passphrase)
-
-        self.kwargs.update({'passphrase' : kwargs['passphrase']})
-
-        kwargs = self.kwargs
+            self.kwargs.update({'passphrase' : kwargs['passphrase']})
+            kwargs = self.kwargs
         return super(PhrasalwordUpdateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
