@@ -149,18 +149,18 @@ class DashboardIndexView(TemplateView):
         total_evaluasi = Evaluasi.objects.count()
 
         # TTIS
-        overall_edukasi = "{:.2f}".format((total_edukasi / total_stakeholder) * 100)
-        overall_perencanaan = "{:.2f}".format((total_perencanaan / total_stakeholder) * 100)
-        overall_penerapan = "{:.2f}".format((total_penerapan / total_stakeholder) * 100)
-        overall_penguatan = "{:.2f}".format((total_penguatan / total_stakeholder) * 100)
-        overall_evaluasi = "{:.2f}".format((total_evaluasi / total_stakeholder) * 100)
+        overall_edukasi = "{:.2f}".format((total_edukasi / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_perencanaan = "{:.2f}".format((total_perencanaan / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_penerapan = "{:.2f}".format((total_penerapan / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_penguatan = "{:.2f}".format((total_penguatan / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_evaluasi = "{:.2f}".format((total_evaluasi / total_stakeholder) * 100) if total_stakeholder > 0 else 0
 
         # IKAMI
-        tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count()
-        pengelolaan_risiko = Ikami.objects.aggregate(Sum('pengelolaan_risiko'))['pengelolaan_risiko__sum'] / Ikami.objects.count()
-        kerangka_kerja = Ikami.objects.aggregate(Sum('kerangka_kerja'))['kerangka_kerja__sum'] / Ikami.objects.count()
-        pengelolaan_aset = Ikami.objects.aggregate(Sum('pengelolaan_aset'))['pengelolaan_aset__sum'] / Ikami.objects.count()
-        teknologi_keamanan = Ikami.objects.aggregate(Sum('teknologi_keamanan'))['teknologi_keamanan__sum'] / Ikami.objects.count()
+        tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        pengelolaan_risiko = Ikami.objects.aggregate(Sum('pengelolaan_risiko'))['pengelolaan_risiko__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        kerangka_kerja = Ikami.objects.aggregate(Sum('kerangka_kerja'))['kerangka_kerja__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        pengelolaan_aset = Ikami.objects.aggregate(Sum('pengelolaan_aset'))['pengelolaan_aset__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        teknologi_keamanan = Ikami.objects.aggregate(Sum('teknologi_keamanan'))['teknologi_keamanan__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
         
         skor_ikami = (tata_kelola + pengelolaan_aset + kerangka_kerja + pengelolaan_risiko + teknologi_keamanan)
         
