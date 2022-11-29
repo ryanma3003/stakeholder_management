@@ -35,7 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ["127.0.0.1",'app.simindi.id','192.168.100.25']
+ALLOWED_HOSTS = ["127.0.0.1",'app.simindi.id','192.168.100.25','localhost']
 
 # AES KEY
 # AES_KEY = b'\x1a>\xf8\xcd\xe2\x8e_~V\x14\x98\xc2\x1f\xf9\xea\xf8\xd7c\xb3`!d\xd4\xe3+\xf7Q\x83\xb5~\x8f\xdd'
