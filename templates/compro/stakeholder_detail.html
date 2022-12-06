@@ -576,7 +576,7 @@
 				</div>
                 
 				<div class="row">
-					<div class="col-xl-4 col-xxl-4">
+					<div class="col-xl-3 col-xxl-3">
 						<div class="row">
 							<div class="col-xl-12">
 								<div class="card">
@@ -596,7 +596,7 @@
 							</div>
 						</div>
 					</div>	
-					<div class="col-xl-4 col-xxl-4">
+					<div class="col-xl-3 col-xxl-3">
 						<div class="row">
 							<div class="col-xl-12">
 								<div class="card">
@@ -616,11 +616,11 @@
 							</div>
 						</div>
 					</div>	
-					<div class="col-xl-4 col-xxl-4">
+					<div class="col-xl-3 col-xxl-3">
 						<div class="row">
 							<div class="col-xl-12">
 								<div class="card">
-									<div class="card-header border-0 bg-danger">
+									<div class="card-header border-0 bg-primary">
 										<h4 class="fs-20 mb-0 text-white">Kategorisasi SE</h4>
 									</div>
                                     <div class="card-body text-center">
@@ -640,6 +640,31 @@
 											Data not available.
 										</h5>
 										{% endif %}
+                                    </div>
+								</div>
+							</div>
+						</div>
+					</div>	
+					<div class="col-xl-3 col-xxl-3">
+						<div class="row">
+							<div class="col-xl-12">
+								<div class="card">
+									<div class="card-header border-0 bg-danger">
+										<h4 class="fs-20 mb-0 text-white">ISO 27001 
+											<i class="fa fa-check-circle fs-20"></i>
+										</h4>
+									</div>
+                                    <div class="card-body text-center">
+										{% if stakeholder_iso %}
+										<img src="{% static 'images/ISO Certified Logo.png' %}" class="w-50 mb-3" alt=""/>
+										{% else %}
+                                        <h5 class="mb-3">
+											Data not available.
+										</h5>
+										{% endif %}
+										<div>
+											<a href="{% url 'stakeholder:iso_update' pk=stakeholder.id %}?s_id={{stakeholder.id}}" class="btn btn-success btn-xs me-2  mb-2"><i class="fas fa-edit me-2"></i> Update</a>
+										</div>
                                     </div>
 								</div>
 							</div>

@@ -247,6 +247,12 @@ class ComproDetailView(DetailView):
             listworkshop = ListWorkshop.objects.filter(stakeholder_id=self.kwargs.get('pk'))
         except ListWorkshop.DoesNotExist:
             listworkshop = None
+
+        # ISO
+        try:
+            stakeholder_iso = Iso.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Iso.DoesNotExist:
+            stakeholder_iso = None
         
         context = super(ComproDetailView, self).get_context_data(*args, **kwargs)
         context['title'] = "%s %s" % (self.object.name, 'Profile')
@@ -255,6 +261,7 @@ class ComproDetailView(DetailView):
         context['sistemelektronik'] = sistemelektronik
         context['prosedur'] = prosedur
         context['listworkshop'] = listworkshop
+        context['stakeholder_iso'] = stakeholder_iso
 
         context['other_stakeholder'] = other_stakeholder
         context['progress'] = progress
@@ -581,3 +588,36 @@ class ListWorkshopDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('stakeholder:detail', kwargs={'pk': self.object.stakeholder_id})
+
+#Iso
+class IsoUpdateView(UpdateView):
+    model = Iso
+    form_class = IsoForm
+    template_name = 'compro/iso_create.html'
+    extra_context = {
+        'title' : 'Update Stakeholder ISO',
+        'breadcrumb': 'Update'
+    }
+
+    def get_queryset(self):
+        obj, created = self.model.objects.get_or_create(
+            stakeholder_id = self.request.GET.get('s_id'),
+        )
+        return super(IsoUpdateView, self).get_queryset()
+
+    def get_context_data(self, *args, **kwargs):
+        kwargs.update(self.extra_context)
+
+        if self.request.GET.__contains__('s_id'):
+            kwargs['s_id'] = self.request.GET.get('s_id')
+
+        self.kwargs.update({'s_id' : kwargs['s_id']})
+        kwargs = self.kwargs
+        return super(IsoUpdateView, self).get_context_data(*args, **kwargs)
+
+    def form_valid(self, form):
+        if self.request.GET.__contains__('s_id'):
+            self.kwargs['s_id'] = self.request.GET.get('s_id')
+
+        form.instance.stakeholder_id = self.kwargs['s_id']
+        return super().form_valid(form)

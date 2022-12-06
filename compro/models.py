@@ -159,3 +159,32 @@ class ListWorkshop(models.Model):
             'pk': self.stakeholder_id,
         }
         return reverse('stakeholder:detail', kwargs=url_reverse)
+
+class Iso(models.Model):
+    YES = 1
+    NO = 0
+
+    STATUS_CHOICES = [
+        (YES, 'Yes'),
+        (NO, 'No'),
+    ]
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    stakeholder = models.OneToOneField(
+        'Stakeholder',
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+
+    def __str__(self):
+        return "{}".format(self.stakeholder)
+
+    def get_absolute_url(self):
+        url_reverse = {
+            'pk': self.stakeholder_id,
+        }
+        return reverse('stakeholder:detail', kwargs=url_reverse)

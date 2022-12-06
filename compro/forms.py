@@ -1,5 +1,5 @@
 from django import forms
-from .models import Stakeholder, Sdm, Sistemelektronik, Prosedur, ListWorkshop
+from .models import Stakeholder, Sdm, Sistemelektronik, Prosedur, ListWorkshop, Iso
 from django.core.exceptions import ValidationError
 
 class ComproForm(forms.ModelForm):
@@ -326,6 +326,30 @@ class ListWorkshopForm(forms.ModelForm):
                     'class': 'default-select wide form-control'
                 }
             ),
+            'status': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+        }
+        
+class IsoForm(forms.ModelForm):
+           
+    def __init__(self, *args, **kwargs):
+        super(IsoForm, self).__init__(*args, **kwargs)
+
+    error_css_class = 'is-invalid'
+
+    class Meta:
+        model = Iso
+
+        exclude = ['stakeholder']
+        
+        fields = [
+                'status',
+            ]
+
+        widgets = {
             'status': forms.Select(
                 attrs={
                     'class': 'default-select wide form-control'
