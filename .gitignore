@@ -3,6 +3,19 @@
 .scannerwork/
 *.properties
 media/
+__pycache__
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+pip-log.txt
+pip-delete-this-directory.txt
 
 htmlcov/
 .coverage
