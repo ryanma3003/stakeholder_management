@@ -216,12 +216,12 @@ class DashboardIndexView(TemplateView):
                     avg_pelaporan_respon=Avg('pelaporan_respon')
                 )
 
-        tatakelola_csm = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6 if total_stakeholder > 0 else 0
-        identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6 if total_stakeholder > 0 else 0
-        proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6 if total_stakeholder > 0 else 0
-        deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6 if total_stakeholder > 0 else 0
-        respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5 if total_stakeholder > 0 else 0
-        maturitas = (tatakelola_csm + identifikasi + proteksi + deteksi + respon) / 5 if total_stakeholder > 0 else 0
+        tatakelola_csm = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6 if total_csm > 0 else 0
+        identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6 if total_csm > 0 else 0
+        proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6 if total_csm > 0 else 0
+        deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6 if total_csm > 0 else 0
+        respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5 if total_csm > 0 else 0
+        maturitas = (tatakelola_csm + identifikasi + proteksi + deteksi + respon) / 5 if total_csm > 0 else 0
 
         str_tatakelola_csm = "{:.2f}".format(tatakelola_csm)
         str_identifikasi = "{:.2f}".format(identifikasi)
@@ -232,35 +232,35 @@ class DashboardIndexView(TemplateView):
         spider_csm_arr = [str_tatakelola_csm, str_identifikasi, str_proteksi, str_deteksi, str_respon]
         spider_json = json.dumps(spider_csm_arr)
 
-        bar_arr = [[float("{:.2f}".format(avgs['avg_kesadaran'])) if total_stakeholder > 0 else 0], 
-                [float("{:.2f}".format(avgs['avg_audit'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_kontrol'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pemenuhan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_kebijakan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_proses'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_manajemen_aset'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_inventaris'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_manajemen_risiko'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_prioritas'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pelaporan_identifikasi'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_klasifikasi'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_jaringan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_aplikasi'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pengguna'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_manajemen_identitas'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_cloud'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_data'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_perubahan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_monitor'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_peringatan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pemberitahuan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_intelijen'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pelaporan_deteksi'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_penahanan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_penanggulanan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pemenuhan'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_kegiatan_pasca'])) if total_stakeholder > 0 else 0],
-                [float("{:.2f}".format(avgs['avg_pelaporan_respon'])) if total_stakeholder > 0 else 0],
+        bar_arr = [[float("{:.2f}".format(avgs['avg_kesadaran'])) if total_csm > 0 else 0], 
+                [float("{:.2f}".format(avgs['avg_audit'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_kontrol'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pemenuhan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_kebijakan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_proses'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_manajemen_aset'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_inventaris'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_manajemen_risiko'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_prioritas'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pelaporan_identifikasi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_klasifikasi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_jaringan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_aplikasi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pengguna'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_manajemen_identitas'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_cloud'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_data'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_perubahan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_monitor'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_peringatan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pemberitahuan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_intelijen'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pelaporan_deteksi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_penahanan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_penanggulanan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pemenuhan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_kegiatan_pasca'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pelaporan_respon'])) if total_csm > 0 else 0],
                 ]
 
         bar_json = json.dumps(bar_arr)
