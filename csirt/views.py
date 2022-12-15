@@ -216,12 +216,21 @@ class DashboardIndexView(TemplateView):
                     avg_pelaporan_respon=Avg('pelaporan_respon')
                 )
 
-        tatakelola_csm = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6 if total_csm > 0 else 0
-        identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6 if total_csm > 0 else 0
-        proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6 if total_csm > 0 else 0
-        deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6 if total_csm > 0 else 0
-        respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5 if total_csm > 0 else 0
-        maturitas = (tatakelola_csm + identifikasi + proteksi + deteksi + respon) / 5 if total_csm > 0 else 0
+        if(total_csm == 0):
+            tatakelola_csm = 0
+            identifikasi = 0
+            proteksi = 0
+            deteksi = 0
+            respon = 0
+            maturitas = 0
+        else:
+            tatakelola_csm = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6
+            identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6
+            proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6
+            deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6
+            respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5
+            maturitas = (tatakelola_csm + identifikasi + proteksi + deteksi + respon) / 5
+        
 
         str_tatakelola_csm = "{:.2f}".format(tatakelola_csm)
         str_identifikasi = "{:.2f}".format(identifikasi)
