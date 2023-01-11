@@ -256,7 +256,9 @@ class PenerapanForm(forms.ModelForm):
                 'tgl_doc_registrasi',
 
                 'portal_csirt',
-                'portal_csirt_url'
+                'portal_csirt_url',
+
+                'user'
             ]
 
         labels = {
@@ -278,6 +280,8 @@ class PenerapanForm(forms.ModelForm):
 
                 'portal_csirt': 'Portal TTIS',
                 'portal_csirt_url': 'URL Portal TTIS',
+
+                'user': 'PIC',
             }
 
         widgets = {
@@ -358,6 +362,12 @@ class PenerapanForm(forms.ModelForm):
             'portal_csirt_url': forms.TextInput(
                 attrs={
                     'class': 'form-control'
+                }
+            ),
+            
+            'user': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
                 }
             ),
 
