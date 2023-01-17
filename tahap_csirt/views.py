@@ -201,81 +201,84 @@ class PenerapanCreateView(CreateView):
         form.instance.stakeholder_id = self.kwargs['s_id']
         form.instance.user_id = user.id
 
-        penerapan = form.save(commit=False)
+        if file_sk or file_rfc or file_sumber_daya or file_registrasi :
+            penerapan = form.save(commit=False)
 
-        directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
-        phrasalword = Phrasalword.objects.get(user_id = self.request.user.id).passphrase
-        password = decrypt_aes(phrasalword)
+            directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
+            phrasalword = Phrasalword.objects.get(user_id = self.request.user.id).passphrase
+            password = decrypt_aes(phrasalword)
 
-        if file_sk :
-            penerapan.file_sk = file_sk
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_1 = PdfFileReader(os.path.join(directory,file_sk.name))
+            if file_sk :
+                penerapan.file_sk = file_sk
+                penerapan.save()
             
-            num = file_1.numPages
-            for idx in range(num):
-                page = file_1.getPage(idx)
-                out.addPage(page)
+                out = PdfFileWriter()
+                file_1 = PdfFileReader(os.path.join(directory,file_sk.name))
+                
+                num = file_1.numPages
+                for idx in range(num):
+                    page = file_1.getPage(idx)
+                    out.addPage(page)
 
-            out.encrypt(password)
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_sk.name), 'wb') as f:
+                    out.write(f)
+
+            if file_rfc :
+                penerapan.file_rfc = file_rfc
+                penerapan.save()
             
-            with open(os.path.join(directory,file_sk.name), 'wb') as f:
-                out.write(f)
+                out = PdfFileWriter()
+                file_2 = PdfFileReader(os.path.join(directory,file_rfc.name))
+                
+                num = file_2.numPages
+                for idx in range(num):
+                    page = file_2.getPage(idx)
+                    out.addPage(page)
 
-        if file_rfc :
-            penerapan.file_rfc = file_rfc
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_2 = PdfFileReader(os.path.join(directory,file_rfc.name))
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_rfc.name), 'wb') as f:
+                    out.write(f)
+
+            if file_sumber_daya :
+                penerapan.file_sumber_daya = file_sumber_daya
+                penerapan.save()
             
-            num = file_2.numPages
-            for idx in range(num):
-                page = file_2.getPage(idx)
-                out.addPage(page)
+                out = PdfFileWriter()
+                file_3 = PdfFileReader(os.path.join(directory,file_sumber_daya.name))
+                
+                num = file_3.numPages
+                for idx in range(num):
+                    page = file_3.getPage(idx)
+                    out.addPage(page)
 
-            out.encrypt(password)
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_sumber_daya.name), 'wb') as f:
+                    out.write(f)
+
+            if file_registrasi :
+                penerapan.file_registrasi = file_registrasi
+                penerapan.save()
             
-            with open(os.path.join(directory,file_rfc.name), 'wb') as f:
-                out.write(f)
+                out = PdfFileWriter()
+                file_3 = PdfFileReader(os.path.join(directory,file_registrasi.name))
+                
+                num = file_3.numPages
+                for idx in range(num):
+                    page = file_3.getPage(idx)
+                    out.addPage(page)
 
-        if file_sumber_daya :
-            penerapan.file_sumber_daya = file_sumber_daya
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_3 = PdfFileReader(os.path.join(directory,file_sumber_daya.name))
-            
-            num = file_3.numPages
-            for idx in range(num):
-                page = file_3.getPage(idx)
-                out.addPage(page)
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_registrasi.name), 'wb') as f:
+                    out.write(f)
 
-            out.encrypt(password)
-            
-            with open(os.path.join(directory,file_sumber_daya.name), 'wb') as f:
-                out.write(f)
-
-        if file_registrasi :
-            penerapan.file_registrasi = file_registrasi
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_3 = PdfFileReader(os.path.join(directory,file_registrasi.name))
-            
-            num = file_3.numPages
-            for idx in range(num):
-                page = file_3.getPage(idx)
-                out.addPage(page)
-
-            out.encrypt(password)
-            
-            with open(os.path.join(directory,file_registrasi.name), 'wb') as f:
-                out.write(f)
-
-        return redirect('stakeholder:detail', self.request.GET.get('s_id'))
+            return redirect('stakeholder:detail', self.request.GET.get('s_id'))
+        else :
+            return super().form_valid(form)
 
 class PenerapanUpdateView(UpdateView):
     model = Penerapan
@@ -309,81 +312,85 @@ class PenerapanUpdateView(UpdateView):
         form.instance.stakeholder_id = self.kwargs['s_id']
         form.instance.user_id = user.id
 
-        penerapan = form.save(commit=False)
+        if file_sk or file_rfc or file_sumber_daya or file_registrasi :
+            penerapan = form.save(commit=False)
 
-        directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
-        phrasalword = Phrasalword.objects.get(user_id = self.request.user.id).passphrase
-        password = decrypt_aes(phrasalword)
+            directory = 'C:\\xampp\\htdocs\\csirt-py\\csirt\\media\\ttis_penerapan'
+            phrasalword = Phrasalword.objects.get(user_id = self.request.user.id).passphrase
+            password = decrypt_aes(phrasalword)
 
-        if file_sk :
-            penerapan.file_sk = file_sk
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_1 = PdfFileReader(os.path.join(directory,file_sk.name))
+            if file_sk :
+                penerapan.file_sk = file_sk
+                penerapan.save()
             
-            num = file_1.numPages
-            for idx in range(num):
-                page = file_1.getPage(idx)
-                out.addPage(page)
+                out = PdfFileWriter()
+                file_1 = PdfFileReader(os.path.join(directory,file_sk.name))
+                
+                num = file_1.numPages
+                for idx in range(num):
+                    page = file_1.getPage(idx)
+                    out.addPage(page)
 
-            out.encrypt(password)
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_sk.name), 'wb') as f:
+                    out.write(f)
+
+            if file_rfc :
+                penerapan.file_rfc = file_rfc
+                penerapan.save()
             
-            with open(os.path.join(directory,file_sk.name), 'wb') as f:
-                out.write(f)
+                out = PdfFileWriter()
+                file_2 = PdfFileReader(os.path.join(directory,file_rfc.name))
+                
+                num = file_2.numPages
+                for idx in range(num):
+                    page = file_2.getPage(idx)
+                    out.addPage(page)
 
-        if file_rfc :
-            penerapan.file_rfc = file_rfc
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_2 = PdfFileReader(os.path.join(directory,file_rfc.name))
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_rfc.name), 'wb') as f:
+                    out.write(f)
+
+            if file_sumber_daya :
+                penerapan.file_sumber_daya = file_sumber_daya
+                penerapan.save()
             
-            num = file_2.numPages
-            for idx in range(num):
-                page = file_2.getPage(idx)
-                out.addPage(page)
+                out = PdfFileWriter()
+                file_3 = PdfFileReader(os.path.join(directory,file_sumber_daya.name))
+                
+                num = file_3.numPages
+                for idx in range(num):
+                    page = file_3.getPage(idx)
+                    out.addPage(page)
 
-            out.encrypt(password)
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_sumber_daya.name), 'wb') as f:
+                    out.write(f)
+
+            if file_registrasi :
+                penerapan.file_registrasi = file_registrasi
+                penerapan.save()
             
-            with open(os.path.join(directory,file_rfc.name), 'wb') as f:
-                out.write(f)
+                out = PdfFileWriter()
+                file_3 = PdfFileReader(os.path.join(directory,file_registrasi.name))
+                
+                num = file_3.numPages
+                for idx in range(num):
+                    page = file_3.getPage(idx)
+                    out.addPage(page)
 
-        if file_sumber_daya :
-            penerapan.file_sumber_daya = file_sumber_daya
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_3 = PdfFileReader(os.path.join(directory,file_sumber_daya.name))
-            
-            num = file_3.numPages
-            for idx in range(num):
-                page = file_3.getPage(idx)
-                out.addPage(page)
+                out.encrypt(password)
+                
+                with open(os.path.join(directory,file_registrasi.name), 'wb') as f:
+                    out.write(f)
 
-            out.encrypt(password)
-            
-            with open(os.path.join(directory,file_sumber_daya.name), 'wb') as f:
-                out.write(f)
+            return redirect('stakeholder:detail', self.request.GET.get('s_id'))
+        else :
+            return super().form_valid(form)
 
-        if file_registrasi :
-            penerapan.file_registrasi = file_registrasi
-            penerapan.save()
-        
-            out = PdfFileWriter()
-            file_3 = PdfFileReader(os.path.join(directory,file_registrasi.name))
-            
-            num = file_3.numPages
-            for idx in range(num):
-                page = file_3.getPage(idx)
-                out.addPage(page)
-
-            out.encrypt(password)
-            
-            with open(os.path.join(directory,file_registrasi.name), 'wb') as f:
-                out.write(f)
-
-        return redirect('stakeholder:detail', self.request.GET.get('s_id'))
 
 class PenerapanDeleteView(DeleteView):
     model = Penerapan

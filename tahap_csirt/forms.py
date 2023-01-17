@@ -236,7 +236,7 @@ class PenerapanForm(forms.ModelForm):
     class Meta:
         model = Penerapan
 
-        exclude = ['stakeholder']
+        exclude = ['stakeholder', 'user']
         
         fields = [
                 'doc_sk',
@@ -258,7 +258,7 @@ class PenerapanForm(forms.ModelForm):
                 'portal_csirt',
                 'portal_csirt_url',
 
-                'user'
+                # 'user'
             ]
 
         labels = {
@@ -281,7 +281,7 @@ class PenerapanForm(forms.ModelForm):
                 'portal_csirt': 'Portal TTIS',
                 'portal_csirt_url': 'URL Portal TTIS',
 
-                'user': 'PIC',
+                # 'user': 'PIC',
             }
 
         widgets = {
@@ -365,11 +365,11 @@ class PenerapanForm(forms.ModelForm):
                 }
             ),
             
-            'user': forms.Select(
-                attrs={
-                    'class': 'default-select wide form-control'
-                }
-            ),
+            # 'user': forms.Select(
+            #     attrs={
+            #         'class': 'default-select wide form-control'
+            #     }
+            # ),
 
             
         }
