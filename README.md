@@ -7,7 +7,7 @@ Simindi adalah aplikasi untuk melakukan kegiatan monitoring dan pengelolaan data
 Clone repositori.
 
 ```git
-git clone https://github.com/ryanma3003/stakeholder_management.git
+git clone --branch development https://github.com/ryanma3003/stakeholder_management.git
 ```
 
 ## Create your own virtual environment
