@@ -3,7 +3,7 @@
     {% block content %}
         <div class="row page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="{% url 'csm:index' %}">CSM</a></li>
+                <li class="breadcrumb-item active"><a href="{% url 'tmpi:index' %}">TMPI</a></li>
                 <!-- <li class="breadcrumb-item"><a href="javascript:void(0)">{{ subtitle }}</a></li> -->
             </ol>
         </div>
@@ -15,7 +15,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">{{title}}</h4>
-                        <a href="{% url 'csm:create' %}" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i> Create CSM</a>
+                        <a href="{% url 'tmpi:create' %}" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i> Create TMPI</a>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -28,9 +28,9 @@
                                         Stakeholder
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{% url 'csm:index' %}">All Stakeholder</a>
+                                        <a class="dropdown-item" href="{% url 'tmpi:index' %}">All Stakeholder</a>
                                         {% for item in list_stakeholder %}
-                                        <a class="dropdown-item {% if request.GET.filter|add:'0' == item.stakeholder %}active{% endif %}" href="{% url 'csm:index' %}?filter={{item.stakeholder}}">{{item.stakeholder__name}}</a>
+                                        <a class="dropdown-item {% if request.GET.filter|add:'0' == item.stakeholder %}active{% endif %}" href="{% url 'tmpi:index' %}?filter={{item.stakeholder}}">{{item.stakeholder__name}}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -48,16 +48,16 @@
                                 </thead>
                                 <tbody>
                                     
-                                    {% for csm in object_list %}
+                                    {% for tmpi in tmpi_list %}
                                     <tr>
                                         <td>{{forloop.counter}}</td>
-                                        <td>{{csm.month}} {{csm.year}}</td>
-                                        <td>{{csm.stakeholder}}</td>
+                                        <td>{{tmpi.month}} {{tmpi.year}}</td>
+                                        <td>{{tmpi.stakeholder}}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{% url 'csm:detail' pk=csm.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fas fa-eye"></i></a>
-                                                <a href="{% url 'csm:update' pk=csm.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-                                                <form onsubmit="return confirm('Delete this item?')" action="{% url 'csm:delete' pk=csm.id %}" method="post">
+                                                <a href="{% url 'tmpi:detail' pk=tmpi.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fas fa-eye"></i></a>
+                                                <a href="{% url 'tmpi:update' pk=tmpi.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
+                                                <form onsubmit="return confirm('Delete this item?')" action="{% url 'tmpi:delete' pk=tmpi.id %}" method="post">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></button>
                                                 </form>

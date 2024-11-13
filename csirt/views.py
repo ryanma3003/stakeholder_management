@@ -2,15 +2,69 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import TemplateView
+from django.views.generic import DetailView
 from django.db.models import Sum, Avg, Count
+from django.contrib.auth import get_user_model
+from django.http import HttpResponseRedirect
+from notifications.signals import notify
+from notifications.models import Notification
 import json
 
 from compro.models import Stakeholder
 from csm.models import Csm
 from ikami.models import Ikami
 from se.models import Se
-# method view
+from workshop.models import Workshop
+from tahap_csirt.models import *
 
+from django.views.decorators.http import require_http_methods
+
+# method view
+def handler404(request, exception):
+    context = {'foo': 'bar'}
+    return render(request, 'error/404.html', context) 
+
+def handler500(request, exception=None):
+    context = {'foo': 'bar'}
+    return render(request, 'error/500.html', context) 
+
+def showPassChat(request):
+    check = request.user.check_password(request.POST['password'])
+    Notification.objects.mark_all_as_read()
+
+    if request.method == 'POST' and check:
+        return HttpResponse(json.dumps({'success': check}), content_type="application/json")
+
+    return HttpResponse(json.dumps({}), content_type="application/json")
+
+def messageView(request):
+    try:
+        if request.method == 'POST':
+            sender = get_user_model().objects.get(username=request.user)
+            receiver = get_user_model().objects.get(id=request.POST.get('user_id'))
+            notify.send(sender, recipient=receiver, verb='Message', description=request.POST.get('message'))
+            return redirect('stakeholder:detail', request.GET.get('s_id'))
+        else:
+            return HttpResponse("Invalid request")
+    except Exception as e:
+        print(e)
+        return HttpResponse("Please login from admin site for sending messages")
+
+def messageReplyView(request):
+    try:
+        if request.method == 'POST':
+            sender = get_user_model().objects.get(username=request.user)
+            receiver = get_user_model().objects.get(id=request.POST.get('user_id'))
+            Notification.objects.mark_all_as_read()
+            notify.send(sender, recipient=receiver, verb='Message', level='warning', description=request.POST.get('message'))
+            return redirect('home')
+        else:
+            return HttpResponse("Invalid request")
+    except Exception as e:
+        print(e)
+        return HttpResponse("Please login from admin site for sending messages")
+
+@require_http_methods(["GET", "POST"])
 def loginView(request):
     context = {
         'title': 'Sign in to your account'
@@ -40,6 +94,39 @@ def logoutView(request):
     if request.method == 'POST':
         logout(request)
         return redirect('login')
+
+class LandingPageView(TemplateView):
+    template_name = 'landing/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+
+        kegiatans = Workshop.objects.order_by('-id')[:10]
+        context = super(LandingPageView, self).get_context_data(**kwargs)
+        context['kegiatans'] = kegiatans
+        return context
+
+class KegiatanShowView(DetailView):
+    query_pk_and_slug = 'slug'
+    template_name = 'landing/berita.html'
+    context_object_name = 'post'
+    model = Workshop
+
+    def get_context_data(self, *args, **kwargs):
+
+        context = super(KegiatanShowView, self).get_context_data(**kwargs)
+        return context
+
+class UserView(TemplateView):
+    template_name = 'user/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        
+        User = get_user_model()
+        users = User.objects.all()
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['title'] = 'User List'
+        context['list_user'] = users
+        return context
     
 class DashboardIndexView(TemplateView):
     # inheritance dari TemplateResponseMixin
@@ -53,13 +140,27 @@ class DashboardIndexView(TemplateView):
         total_csm = Csm.objects.count()
         total_se = Se.objects.count()
         total_ikami = Ikami.objects.count()
+        total_workshop = Workshop.objects.count()
+
+        total_edukasi = Edukasi.objects.count()
+        total_perencanaan = Perencanaan.objects.count()
+        total_penerapan = Penerapan.objects.count()
+        total_penguatan = Penguatan.objects.count()
+        total_evaluasi = Evaluasi.objects.count()
+
+        # TTIS
+        overall_edukasi = "{:.2f}".format((total_edukasi / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_perencanaan = "{:.2f}".format((total_perencanaan / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_penerapan = "{:.2f}".format((total_penerapan / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_penguatan = "{:.2f}".format((total_penguatan / total_stakeholder) * 100) if total_stakeholder > 0 else 0
+        overall_evaluasi = "{:.2f}".format((total_evaluasi / total_stakeholder) * 100) if total_stakeholder > 0 else 0
 
         # IKAMI
-        tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count()
-        pengelolaan_risiko = Ikami.objects.aggregate(Sum('pengelolaan_risiko'))['pengelolaan_risiko__sum'] / Ikami.objects.count()
-        kerangka_kerja = Ikami.objects.aggregate(Sum('kerangka_kerja'))['kerangka_kerja__sum'] / Ikami.objects.count()
-        pengelolaan_aset = Ikami.objects.aggregate(Sum('pengelolaan_aset'))['pengelolaan_aset__sum'] / Ikami.objects.count()
-        teknologi_keamanan = Ikami.objects.aggregate(Sum('teknologi_keamanan'))['teknologi_keamanan__sum'] / Ikami.objects.count()
+        tata_kelola = Ikami.objects.aggregate(Sum('tata_kelola'))['tata_kelola__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        pengelolaan_risiko = Ikami.objects.aggregate(Sum('pengelolaan_risiko'))['pengelolaan_risiko__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        kerangka_kerja = Ikami.objects.aggregate(Sum('kerangka_kerja'))['kerangka_kerja__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        pengelolaan_aset = Ikami.objects.aggregate(Sum('pengelolaan_aset'))['pengelolaan_aset__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
+        teknologi_keamanan = Ikami.objects.aggregate(Sum('teknologi_keamanan'))['teknologi_keamanan__sum'] / Ikami.objects.count() if total_ikami > 0 else 0
         
         skor_ikami = (tata_kelola + pengelolaan_aset + kerangka_kerja + pengelolaan_risiko + teknologi_keamanan)
         
@@ -72,11 +173,11 @@ class DashboardIndexView(TemplateView):
         elif(skor_ikami >= 584 and skor_ikami <= 645):
             evaluasi_ikami = 'Baik'
 
-        str_tatakelola = "{:}".format(tata_kelola)
-        str_pengelolaan_risiko = "{:}".format(pengelolaan_risiko)
-        str_kerangka_kerja = "{:}".format(kerangka_kerja)
-        str_pengelolaan_aset = "{:}".format(pengelolaan_aset)
-        str_teknologi_keamanan = "{:}".format(teknologi_keamanan)
+        str_tatakelola = "{:.2f}".format(tata_kelola)
+        str_pengelolaan_risiko = "{:.2f}".format(pengelolaan_risiko)
+        str_kerangka_kerja = "{:.2f}".format(kerangka_kerja)
+        str_pengelolaan_aset = "{:.2f}".format(pengelolaan_aset)
+        str_teknologi_keamanan = "{:.2f}".format(teknologi_keamanan)
 
         spider_arr = [str_tatakelola, str_pengelolaan_risiko, str_kerangka_kerja, str_pengelolaan_aset, str_teknologi_keamanan]
         spider_ikami_json = json.dumps(spider_arr)
@@ -115,12 +216,21 @@ class DashboardIndexView(TemplateView):
                     avg_pelaporan_respon=Avg('pelaporan_respon')
                 )
 
-        tatakelola_csm = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6
-        identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6
-        proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6
-        deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6
-        respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5
-        maturitas = (tatakelola_csm + identifikasi + proteksi + deteksi + respon) / 5
+        if(total_csm == 0):
+            tatakelola_csm = 0
+            identifikasi = 0
+            proteksi = 0
+            deteksi = 0
+            respon = 0
+            maturitas = 0
+        else:
+            tatakelola_csm = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6
+            identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6
+            proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6
+            deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6
+            respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5
+            maturitas = (tatakelola_csm + identifikasi + proteksi + deteksi + respon) / 5
+        
 
         str_tatakelola_csm = "{:.2f}".format(tatakelola_csm)
         str_identifikasi = "{:.2f}".format(identifikasi)
@@ -131,35 +241,35 @@ class DashboardIndexView(TemplateView):
         spider_csm_arr = [str_tatakelola_csm, str_identifikasi, str_proteksi, str_deteksi, str_respon]
         spider_json = json.dumps(spider_csm_arr)
 
-        bar_arr = [[float("{:.2f}".format(avgs['avg_kesadaran']))], 
-                [float("{:.2f}".format(avgs['avg_audit']))],
-                [float("{:.2f}".format(avgs['avg_kontrol']))],
-                [float("{:.2f}".format(avgs['avg_pemenuhan']))],
-                [float("{:.2f}".format(avgs['avg_kebijakan']))],
-                [float("{:.2f}".format(avgs['avg_proses']))],
-                [float("{:.2f}".format(avgs['avg_manajemen_aset']))],
-                [float("{:.2f}".format(avgs['avg_inventaris']))],
-                [float("{:.2f}".format(avgs['avg_manajemen_risiko']))],
-                [float("{:.2f}".format(avgs['avg_prioritas']))],
-                [float("{:.2f}".format(avgs['avg_pelaporan_identifikasi']))],
-                [float("{:.2f}".format(avgs['avg_klasifikasi']))],
-                [float("{:.2f}".format(avgs['avg_jaringan']))],
-                [float("{:.2f}".format(avgs['avg_aplikasi']))],
-                [float("{:.2f}".format(avgs['avg_pengguna']))],
-                [float("{:.2f}".format(avgs['avg_manajemen_identitas']))],
-                [float("{:.2f}".format(avgs['avg_cloud']))],
-                [float("{:.2f}".format(avgs['avg_data']))],
-                [float("{:.2f}".format(avgs['avg_perubahan']))],
-                [float("{:.2f}".format(avgs['avg_monitor']))],
-                [float("{:.2f}".format(avgs['avg_peringatan']))],
-                [float("{:.2f}".format(avgs['avg_pemberitahuan']))],
-                [float("{:.2f}".format(avgs['avg_intelijen']))],
-                [float("{:.2f}".format(avgs['avg_pelaporan_deteksi']))],
-                [float("{:.2f}".format(avgs['avg_penahanan']))],
-                [float("{:.2f}".format(avgs['avg_penanggulanan']))],
-                [float("{:.2f}".format(avgs['avg_pemenuhan']))],
-                [float("{:.2f}".format(avgs['avg_kegiatan_pasca']))],
-                [float("{:.2f}".format(avgs['avg_pelaporan_respon']))],
+        bar_arr = [[float("{:.2f}".format(avgs['avg_kesadaran'])) if total_csm > 0 else 0], 
+                [float("{:.2f}".format(avgs['avg_audit'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_kontrol'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pemenuhan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_kebijakan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_proses'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_manajemen_aset'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_inventaris'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_manajemen_risiko'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_prioritas'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pelaporan_identifikasi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_klasifikasi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_jaringan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_aplikasi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pengguna'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_manajemen_identitas'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_cloud'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_data'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_perubahan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_monitor'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_peringatan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pemberitahuan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_intelijen'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pelaporan_deteksi'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_penahanan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_penanggulanan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pemenuhan'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_kegiatan_pasca'])) if total_csm > 0 else 0],
+                [float("{:.2f}".format(avgs['avg_pelaporan_respon'])) if total_csm > 0 else 0],
                 ]
 
         bar_json = json.dumps(bar_arr)
@@ -176,12 +286,35 @@ class DashboardIndexView(TemplateView):
 
         bar_se_json = json.dumps(bar_se_arr)
 
+        pie_ttis_arr = [[overall_edukasi], 
+                [overall_perencanaan],
+                [overall_penerapan],
+                [overall_penguatan],
+                [overall_evaluasi],
+                ]
+
+        pie_ttis_json = json.dumps(pie_ttis_arr)
+
         context = super(DashboardIndexView, self).get_context_data(**kwargs)
         context['title'] = 'Dashboard'
         context['total_stakeholder'] = total_stakeholder
         context['total_ikami'] = total_ikami
         context['total_csm'] = total_csm
         context['total_se'] = total_se
+        context['total_workshop'] = total_workshop
+
+        context['total_edukasi'] = total_edukasi
+        context['total_perencanaan'] = total_perencanaan
+        context['total_penerapan'] = total_penerapan
+        context['total_penguatan'] = total_penguatan
+        context['total_evaluasi'] = total_evaluasi
+
+        context['overall_edukasi'] = overall_edukasi
+        context['overall_perencanaan'] = overall_perencanaan
+        context['overall_penerapan'] = overall_penerapan
+        context['overall_penguatan'] = overall_penguatan
+        context['overall_evaluasi'] = overall_evaluasi
+        context['pie_ttis_json'] = pie_ttis_json
 
         context['spider_ikami_json'] = spider_ikami_json
         context['skor_ikami'] = skor_ikami

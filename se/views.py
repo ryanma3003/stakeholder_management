@@ -32,9 +32,6 @@ class SeListView(SearchList, ListView):
     context_object_name = 'se_list'
     ordering = ['stakeholder']
     # paginate_by: 3
-    extra_context = {
-        'title' : 'Kategorisasi SE',
-    }
 
     def get_queryset(self):
         self.queryset = self.get_list_data(self.request.GET)
@@ -42,23 +39,23 @@ class SeListView(SearchList, ListView):
 
     def get_context_data(self, *args, **kwargs):
         list_stakeholder = self.model.objects.values('stakeholder', 'stakeholder__name').distinct()
+        
+        context = super(SeListView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Kategorisasi SE'
+        context['list_stakeholder'] = list_stakeholder
 
-        self.kwargs.update({'list_stakeholder': list_stakeholder})
-        kwargs = self.kwargs
-        return super(SeListView, self).get_context_data(*args, **kwargs)
+        return context
 
 class SeDetailView(DetailView):
     model = Se
-    extra_context = {
-        'title' : 'Detail SE',
-    }
 
     def get_context_data(self, *args, **kwargs):
-        self.kwargs.update(self.extra_context)
         other_se = self.model.objects.exclude(stakeholder=self.kwargs.get('pk'))
-        self.kwargs.update({'other_se' : other_se})
-        kwargs = self.kwargs
-        return super(SeDetailView, self).get_context_data(*args, **kwargs)
+
+        context = super(SeDetailView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Detail SE'
+        context['other_se'] = other_se
+        return context
 
 class SeFormView(FormView):
     form_class = SeForm
@@ -73,13 +70,27 @@ class SeFormView(FormView):
         return super(SeFormView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
-        if form.cleaned_data.get('indeks_nilai') >= 36 and form.cleaned_data.get('indeks_nilai') <= 50:
+        bobot_ni = form.cleaned_data.get('bobot_nilai_investasi')
+        bobot_ta = form.cleaned_data.get('bobot_total_anggaran')
+        bobot_ke = form.cleaned_data.get('bobot_kewajiban')
+        bobot_kr = form.cleaned_data.get('bobot_kriptografi')
+        bobot_pe = form.cleaned_data.get('bobot_pengguna')
+        bobot_dp = form.cleaned_data.get('bobot_data_pribadi')
+        bobot_kd = form.cleaned_data.get('bobot_kritis_data')
+        bobot_kp = form.cleaned_data.get('bobot_kritis_proses')
+        bobot_dk = form.cleaned_data.get('bobot_dampak_kegagalan')
+        bobot_pk = form.cleaned_data.get('bobot_potensi_kerugian')
+
+        indeks_nilai = bobot_ni + bobot_ta + bobot_ke + bobot_kr + bobot_pe + bobot_dp + bobot_kd + bobot_kp + bobot_dk + bobot_pk
+
+        if indeks_nilai >= 36 and indeks_nilai <= 50:
             ik = 'Strategis'
-        elif form.cleaned_data.get('indeks_nilai') >= 16 and form.cleaned_data.get('indeks_nilai') <= 35:
+        elif indeks_nilai >= 16 and indeks_nilai <= 35:
             ik = 'Tinggi'
-        elif form.cleaned_data.get('indeks_nilai') >= 10 and form.cleaned_data.get('indeks_nilai') <= 15:
+        elif indeks_nilai >= 10 and indeks_nilai <= 15:
             ik = 'Rendah'
 
+        form.instance.indeks_nilai = indeks_nilai
         form.instance.indeks_ket = ik
         form.save()
         return super(SeFormView, self).form_valid(form)
@@ -97,13 +108,27 @@ class SeCreateView(CreateView):
         return super(SeCreateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
-        if form.cleaned_data.get('indeks_nilai') >= 36 and form.cleaned_data.get('indeks_nilai') <= 50:
+        bobot_ni = form.cleaned_data.get('bobot_nilai_investasi')
+        bobot_ta = form.cleaned_data.get('bobot_total_anggaran')
+        bobot_ke = form.cleaned_data.get('bobot_kewajiban')
+        bobot_kr = form.cleaned_data.get('bobot_kriptografi')
+        bobot_pe = form.cleaned_data.get('bobot_pengguna')
+        bobot_dp = form.cleaned_data.get('bobot_data_pribadi')
+        bobot_kd = form.cleaned_data.get('bobot_kritis_data')
+        bobot_kp = form.cleaned_data.get('bobot_kritis_proses')
+        bobot_dk = form.cleaned_data.get('bobot_dampak_kegagalan')
+        bobot_pk = form.cleaned_data.get('bobot_potensi_kerugian')
+
+        indeks_nilai = int(bobot_ni) + int(bobot_ta) + int(bobot_ke) + int(bobot_kr) + int(bobot_pe) + int(bobot_dp) + int(bobot_kd) + int(bobot_kp) + int(bobot_dk) + int(bobot_pk)
+
+        if indeks_nilai >= 36 and indeks_nilai <= 50:
             ik = 'Strategis'
-        elif form.cleaned_data.get('indeks_nilai') >= 16 and form.cleaned_data.get('indeks_nilai') <= 35:
+        elif indeks_nilai >= 16 and indeks_nilai <= 35:
             ik = 'Tinggi'
-        elif form.cleaned_data.get('indeks_nilai') >= 10 and form.cleaned_data.get('indeks_nilai') <= 15:
+        elif indeks_nilai >= 10 and indeks_nilai <= 15:
             ik = 'Rendah'
 
+        form.instance.indeks_nilai = indeks_nilai
         form.instance.indeks_ket = ik
         return super().form_valid(form)
 
@@ -121,13 +146,27 @@ class SeUpdateView(UpdateView):
         return super(SeUpdateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
-        if form.cleaned_data.get('indeks_nilai') >= 36 and form.cleaned_data.get('indeks_nilai') <= 50:
+        bobot_ni = form.cleaned_data.get('bobot_nilai_investasi')
+        bobot_ta = form.cleaned_data.get('bobot_total_anggaran')
+        bobot_ke = form.cleaned_data.get('bobot_kewajiban')
+        bobot_kr = form.cleaned_data.get('bobot_kriptografi')
+        bobot_pe = form.cleaned_data.get('bobot_pengguna')
+        bobot_dp = form.cleaned_data.get('bobot_data_pribadi')
+        bobot_kd = form.cleaned_data.get('bobot_kritis_data')
+        bobot_kp = form.cleaned_data.get('bobot_kritis_proses')
+        bobot_dk = form.cleaned_data.get('bobot_dampak_kegagalan')
+        bobot_pk = form.cleaned_data.get('bobot_potensi_kerugian')
+
+        indeks_nilai = int(bobot_ni) + int(bobot_ta) + int(bobot_ke) + int(bobot_kr) + int(bobot_pe) + int(bobot_dp) + int(bobot_kd) + int(bobot_kp) + int(bobot_dk) + int(bobot_pk)
+
+        if indeks_nilai >= 36 and indeks_nilai <= 50:
             ik = 'Strategis'
-        elif form.cleaned_data.get('indeks_nilai') >= 16 and form.cleaned_data.get('indeks_nilai') <= 35:
+        elif indeks_nilai >= 16 and indeks_nilai <= 35:
             ik = 'Tinggi'
-        elif form.cleaned_data.get('indeks_nilai') >= 10 and form.cleaned_data.get('indeks_nilai') <= 15:
+        elif indeks_nilai >= 10 and indeks_nilai <= 15:
             ik = 'Rendah'
 
+        form.instance.indeks_nilai = indeks_nilai
         form.instance.indeks_ket = ik
         return super().form_valid(form)
 

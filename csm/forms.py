@@ -1,7 +1,30 @@
 from django import forms
 from .models import Csm
+from django.core.exceptions import ValidationError
 
 class CsmForm(forms.ModelForm):
+
+    def clean_file_csm(self):
+        file_csm = self.cleaned_data.get('file_csm', False)
+        if file_csm:
+            if file_csm.name.lower().endswith(('.xlsx')) :
+                if file_csm.size > 8*1024*1024:
+                    raise ValidationError("File too large ( > 1mb )")
+                return file_csm
+            else :
+                raise ValidationError("Not .xlsx format")
+
+    file_csm = forms.FileField(
+        label = 'CSM Excel (.xlsx)',
+        help_text = 'max. 8 megabytes',
+        required = False,
+        widget = forms.FileInput(
+            attrs={
+                'class' : 'form-file-input form-control',
+                'type' : 'file',
+            }
+        )
+    )
         
     def __init__(self, *args, **kwargs):
         super(CsmForm, self).__init__(*args, **kwargs)
@@ -18,39 +41,39 @@ class CsmForm(forms.ModelForm):
                 'month',
                 'year',
 
-                'kesadaran',
-                'audit',
-                'kontrol',
-                'pemenuhan',
-                'kebijakan',
-                'proses',
+                # 'kesadaran',
+                # 'audit',
+                # 'kontrol',
+                # 'pemenuhan',
+                # 'kebijakan',
+                # 'proses',
 
-                'manajemen_aset',
-                'inventaris',
-                'manajemen_risiko',
-                'prioritas',
-                'pelaporan_identifikasi',
-                'klasifikasi',
+                # 'manajemen_aset',
+                # 'inventaris',
+                # 'manajemen_risiko',
+                # 'prioritas',
+                # 'pelaporan_identifikasi',
+                # 'klasifikasi',
 
-                'jaringan',
-                'aplikasi',
-                'pengguna',
-                'manajemen_identitas',
-                'cloud',
-                'data',
+                # 'jaringan',
+                # 'aplikasi',
+                # 'pengguna',
+                # 'manajemen_identitas',
+                # 'cloud',
+                # 'data',
 
-                'perubahan',
-                'monitor',
-                'peringatan',
-                'pemberitahuan',
-                'intelijen',
-                'pelaporan_deteksi',
+                # 'perubahan',
+                # 'monitor',
+                # 'peringatan',
+                # 'pemberitahuan',
+                # 'intelijen',
+                # 'pelaporan_deteksi',
 
-                'penahanan',
-                'penanggulanan',
-                'pemulihan',
-                'kegiatan_pasca',
-                'pelaporan_respon'
+                # 'penahanan',
+                # 'penanggulanan',
+                # 'pemulihan',
+                # 'kegiatan_pasca',
+                # 'pelaporan_respon'
             ]
 
         labels = {

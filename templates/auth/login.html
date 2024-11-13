@@ -2,20 +2,28 @@
     {% load static %}
     {% block content_error %}
         <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-md-12 text-center pt-5">
+                <img src="{% static 'images/BSSN.png' %}" width="10%" alt=""> 
+                <h1>Simindi Tim Tanggap Insiden Siber</h1>
+                <h5>Direktorat Keamanan Siber dan Sandi Industri</h5>
+            </div>
             <div class="col-md-6">
-                <div class="authincation-content">
+                <img src="{% static 'img/landing/login.png' %}" width="100%" alt="">
+            </div>
+            <div class="col-md-6">
+                <div class="">
                     <div class="row no-gutters">
                         <div class="col-xl-12">
                             <div class="auth-form">
                                 <div class="text-center mb-3">
-                                    <a href=""><img src="{% static 'images/BSSN.png' %}" height="60" alt=""></a>
+                                    <a href=""><img src="{% static 'img/simindi-logo.png' %}" height="60" alt=""></a>
                                 </div>
                                 <h4 class="text-center mb-4">{{title}}</h4>
                                 <form action="" method="post">
                                     {% csrf_token %}
                                     <div class="mb-3">
                                         <label class="mb-1" for="username"><strong>Username</strong></label>
-                                        <input type="text" name="username" id="username" class="form-control" value="">
+                                        <input type="text" name="username" autofocus id="username" class="form-control" value="">
                                     </div>
                                     <div class="mb-3">
                                         <label class="mb-1" for="password"><strong>Password</strong></label>

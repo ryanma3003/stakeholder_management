@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.db.models import Q
 import json
 
 # Create your views here.
@@ -10,32 +11,31 @@ from .models import *
 from csm.models import Csm
 from ikami.models import Ikami
 from se.models import Se
+from tahap_csirt.models import *
 
 # method view
 # Company Profile
 class ComproListView(ListView):
     model = Stakeholder
     context_object_name = 'stakeholder_list'
-    ordering = ['id']
+    # for descending order use -
+    ordering = ['-id']
     # paginate_by: 3
-    extra_context = {
-        'title' : 'Stakeholder',
-    }
 
     def get_context_data(self, *args, **kwargs):
         list_stakeholder = self.model.objects.values('id', 'name').distinct()
-
-        self.kwargs.update({'list_stakeholder': list_stakeholder})
-        kwargs = self.kwargs
-        return super(ComproListView, self).get_context_data(*args, **kwargs)
+        
+        context = super(ComproListView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Stakeholder'
+        context['list_stakeholder'] = list_stakeholder
+        return context
 
 class ComproDetailView(DetailView):
     model = Stakeholder
+    # content_type='application/xml'
     extra_context = {}
 
     def get_context_data(self, *args, **kwargs):
-        self.extra_context = {'title' : "%s %s" % (self.object.name, 'Profile'),}
-        self.kwargs.update(self.extra_context)
 
         other_stakeholder = self.model.objects.exclude(id=self.kwargs.get('pk'))
 
@@ -110,16 +110,113 @@ class ComproDetailView(DetailView):
             indeks_nilai = None
             indeks_ket = None
 
+        # Tahap CSIRT
+        try:
+            edu = Edukasi.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Edukasi.DoesNotExist:
+            edu = None
+
+        try:
+            edu_sos = Edukasi.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(sosialisasi=1) )
+        except Edukasi.DoesNotExist:
+            edu_sos = None
+
+        try:
+            prn = Perencanaan.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Perencanaan.DoesNotExist:
+            prn = None
+
+        try:
+            prn_draft_sk = Perencanaan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(draft_sk=1) )
+        except Perencanaan.DoesNotExist:
+            prn_draft_sk = None
+
+        try:
+            prn_draft_rfc = Perencanaan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(draft_rfc=1) )
+        except Perencanaan.DoesNotExist:
+            prn_draft_rfc = None
+
+        try:
+            prn_draft_sd = Perencanaan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(draft_sumber_daya=1) )
+        except Perencanaan.DoesNotExist:
+            prn_draft_sd = None
+
+        try:
+            pnr = Penerapan.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Penerapan.DoesNotExist:
+            pnr = None
+
+        try:
+            pnr_doc_sk = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_sk=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_sk = None
+
+        try:
+            pnr_doc_rfc = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_rfc=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_rfc = None
+
+        try:
+            pnr_doc_sd = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_sumber_daya=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_sd = None
+
+        try:
+            pnr_doc_reg = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(doc_registrasi=1) )
+        except Penerapan.DoesNotExist:
+            pnr_doc_reg = None
+
+        try:
+            pnr_portal = Penerapan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(portal_csirt=1) )
+        except Penerapan.DoesNotExist:
+            pnr_portal = None
+
+        try:
+            png = Penguatan.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Penguatan.DoesNotExist:
+            png = None
+
+        try:
+            png_stat = Penguatan.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(status=1) )
+        except Penguatan.DoesNotExist:
+            png_stat = None
+
+        try:
+            eva = Evaluasi.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Evaluasi.DoesNotExist:
+            eva = None
+
+        try:
+            eva_stat = Evaluasi.objects.get(Q(stakeholder_id=self.kwargs.get('pk')), Q(status=1) )
+        except Evaluasi.DoesNotExist:
+            eva_stat = None
+
         # Progress
         fulfill = 0
-        if csm:
+        if edu_sos:
             fulfill += 1
-        if ikami:
+        if prn_draft_sk:
             fulfill += 1
-        if se:
+        if prn_draft_rfc:
+            fulfill += 1
+        if prn_draft_sd:
+            fulfill += 1
+        if pnr_doc_sk:
+            fulfill += 1
+        if pnr_doc_rfc:
+            fulfill += 1
+        if pnr_doc_sd:
+            fulfill += 1
+        if pnr_doc_reg:
+            fulfill += 1
+        if pnr_portal:
+            fulfill += 1
+        if png_stat:
+            fulfill += 1
+        if eva_stat:
             fulfill += 1
 
-        progress = (fulfill / 3) * 100
+        progress = (fulfill / 11) * 100
 
         # CSIRT
         try:
@@ -150,36 +247,47 @@ class ComproDetailView(DetailView):
             listworkshop = ListWorkshop.objects.filter(stakeholder_id=self.kwargs.get('pk'))
         except ListWorkshop.DoesNotExist:
             listworkshop = None
+
+        # ISO
+        try:
+            stakeholder_iso = Iso.objects.get(stakeholder_id=self.kwargs.get('pk'))
+        except Iso.DoesNotExist:
+            stakeholder_iso = None
         
+        context = super(ComproDetailView, self).get_context_data(*args, **kwargs)
+        context['title'] = "%s %s" % (self.object.name, 'Profile')
+        context['narahubung'] = narahubung
+        context['csirt'] = csirt
+        context['sistemelektronik'] = sistemelektronik
+        context['prosedur'] = prosedur
+        context['listworkshop'] = listworkshop
+        context['stakeholder_iso'] = stakeholder_iso
 
-        self.kwargs.update({
-            'narahubung' : narahubung,
-            'csirt' : csirt,
-            'sistemelektronik' : sistemelektronik,
-            'prosedur' : prosedur,
-            'listworkshop' : listworkshop,
-
-            'other_stakeholder' : other_stakeholder,
-            'progress' : progress,
+        context['other_stakeholder'] = other_stakeholder
+        context['progress'] = progress
             
-            'tatakelola' : tatakelola,
-            'identifikasi' : identifikasi,
-            'proteksi' : proteksi,
-            'deteksi' : deteksi,
-            'respon' : respon,
-            'maturitas' : maturitas,
-            'spider_json' : spider_json,
+        context['tatakelola'] = tatakelola
+        context['identifikasi'] = identifikasi
+        context['proteksi'] = proteksi
+        context['deteksi'] = deteksi
+        context['respon'] = respon
+        context['maturitas'] = maturitas
+        context['spider_json'] = spider_json
 
-            'skor': skor,
-            'evaluasi' : evaluasi,
-            'spider_json_ikami' : spider_json_ikami,
+        context['skor'] = skor
+        context['evaluasi'] = evaluasi
+        context['spider_json_ikami'] = spider_json_ikami
 
-            'indeks_nilai' : indeks_nilai,
-            'indeks_ket' : indeks_ket,
-            })
+        context['indeks_nilai'] = indeks_nilai
+        context['indeks_ket'] = indeks_ket
 
-        kwargs = self.kwargs
-        return super(ComproDetailView, self).get_context_data(*args, **kwargs)
+        context['edu'] = edu
+        context['prn'] = prn
+        context['pnr'] = pnr
+        context['png'] = png
+        context['eva'] = eva
+
+        return context
 
 class ComproCreateView(CreateView):
     form_class = ComproForm
@@ -194,6 +302,9 @@ class ComproCreateView(CreateView):
         return super(ComproCreateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        photo = self.request.FILES.get('image')
+        if photo :
+            form.instance.image = photo
         return super().form_valid(form)
 
 class ComproUpdateView(UpdateView):
@@ -210,6 +321,9 @@ class ComproUpdateView(UpdateView):
         return super(ComproUpdateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        photo = self.request.FILES.get('image')
+        if photo :
+            form.instance.image = photo
         return super().form_valid(form)
 
 class ComproDeleteView(DeleteView):
@@ -474,3 +588,36 @@ class ListWorkshopDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('stakeholder:detail', kwargs={'pk': self.object.stakeholder_id})
+
+#Iso
+class IsoUpdateView(UpdateView):
+    model = Iso
+    form_class = IsoForm
+    template_name = 'compro/iso_create.html'
+    extra_context = {
+        'title' : 'Update Stakeholder ISO',
+        'breadcrumb': 'Update'
+    }
+
+    def get_queryset(self):
+        obj, created = self.model.objects.get_or_create(
+            stakeholder_id = self.request.GET.get('s_id'),
+        )
+        return super(IsoUpdateView, self).get_queryset()
+
+    def get_context_data(self, *args, **kwargs):
+        kwargs.update(self.extra_context)
+
+        if self.request.GET.__contains__('s_id'):
+            kwargs['s_id'] = self.request.GET.get('s_id')
+
+        self.kwargs.update({'s_id' : kwargs['s_id']})
+        kwargs = self.kwargs
+        return super(IsoUpdateView, self).get_context_data(*args, **kwargs)
+
+    def form_valid(self, form):
+        if self.request.GET.__contains__('s_id'):
+            self.kwargs['s_id'] = self.request.GET.get('s_id')
+
+        form.instance.stakeholder_id = self.kwargs['s_id']
+        return super().form_valid(form)

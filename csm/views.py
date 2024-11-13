@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.db.models import Sum, Avg
+import openpyxl
 import json
 
 # Create your views here.
@@ -28,9 +29,6 @@ class CsmListView(SearchList, ListView):
     context_object_name = 'csm_list'
     ordering = ['stakeholder']
     # paginate_by: 3
-    extra_context = {
-        'title' : 'Stakeholder Csm',
-    }
 
     def get_queryset(self):
         self.queryset = self.get_list_data(self.request.GET)
@@ -39,7 +37,6 @@ class CsmListView(SearchList, ListView):
     def get_context_data(self, *args, **kwargs):
         list_stakeholder = self.model.objects.values('stakeholder', 'stakeholder__name').distinct()
 
-        
         avgs = Csm.objects.aggregate(
                     avg_kesadaran=Avg('kesadaran'),
                     avg_audit=Avg('audit'),
@@ -72,12 +69,20 @@ class CsmListView(SearchList, ListView):
                     avg_pelaporan_respon=Avg('pelaporan_respon')
                 )
 
-        tatakelola = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6
-        identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6
-        proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6
-        deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6
-        respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5
-        maturitas = (tatakelola + identifikasi + proteksi + deteksi + respon) / 5
+        try:
+            tatakelola = (avgs['avg_kesadaran'] + avgs['avg_audit'] + avgs['avg_kontrol'] + avgs['avg_pemenuhan'] + avgs['avg_kebijakan'] + avgs['avg_proses']) / 6
+            identifikasi = (avgs['avg_manajemen_aset'] + avgs['avg_inventaris'] + avgs['avg_manajemen_risiko'] + avgs['avg_prioritas'] + avgs['avg_pelaporan_identifikasi'] + avgs['avg_klasifikasi']) / 6
+            proteksi = (avgs['avg_jaringan'] + avgs['avg_aplikasi'] + avgs['avg_pengguna'] + avgs['avg_manajemen_identitas'] + avgs['avg_cloud'] + avgs['avg_data']) / 6
+            deteksi = (avgs['avg_perubahan'] + avgs['avg_monitor'] + avgs['avg_peringatan'] + avgs['avg_pemberitahuan'] + avgs['avg_intelijen'] + avgs['avg_pelaporan_deteksi']) / 6
+            respon = (avgs['avg_penahanan'] + avgs['avg_penanggulanan'] + avgs['avg_pemulihan'] + avgs['avg_kegiatan_pasca'] + avgs['avg_pelaporan_respon']) / 5
+            maturitas = (tatakelola + identifikasi + proteksi + deteksi + respon) / 5
+        except Csm.DoesNotExist:
+            tatakelola = 0
+            identifikasi = 0
+            proteksi = 0
+            deteksi = 0
+            respon = 0
+            maturitas = 0
 
         str_tatakelola = "{:.2f}".format(tatakelola)
         str_identifikasi = "{:.2f}".format(identifikasi)
@@ -122,26 +127,26 @@ class CsmListView(SearchList, ListView):
         bar_json = json.dumps(bar_arr)
 
         other_csm = self.model.objects.exclude(stakeholder=self.kwargs.get('pk'))
-        self.kwargs.update({
-            'other_csm' : other_csm,
-            'tatakelola' : tatakelola,
-            'identifikasi' : identifikasi,
-            'proteksi' : proteksi,
-            'deteksi' : deteksi,
-            'respon' : respon,
-            'maturitas' : maturitas,
-            'spider_json' : spider_json,
-            'str_tatakelola' : str_tatakelola,
-            'str_identifikasi' : str_identifikasi,
-            'str_proteksi' : str_proteksi,
-            'str_deteksi' : str_deteksi,
-            'str_respon' : str_respon,
-            'bar_json' : bar_json,
-            'list_stakeholder': list_stakeholder
-            })
 
-        kwargs = self.kwargs
-        return super(CsmListView, self).get_context_data(*args, **kwargs)
+        context = super(CsmListView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Stakeholder CSM'
+        context['other_csm'] = other_csm
+        context['tatakelola'] = tatakelola
+        context['identifikasi'] = identifikasi
+        context['proteksi'] = proteksi
+        context['deteksi'] = deteksi
+        context['respon'] = respon
+        context['maturitas'] = maturitas
+        context['spider_json'] = spider_json
+        context['str_tatakelola'] = str_tatakelola
+        context['str_identifikasi'] = str_identifikasi
+        context['str_proteksi'] = str_proteksi
+        context['str_deteksi'] = str_deteksi
+        context['str_respon'] = str_respon
+        context['bar_json'] = bar_json
+        context['list_stakeholder'] = list_stakeholder
+        return context
+
 
 class CsmDetailView(DetailView):
     model = Csm
@@ -197,29 +202,26 @@ class CsmDetailView(DetailView):
 
         bar_json = json.dumps(bar_arr)
 
-        self.extra_context = {'title' : "%s %s" % (self.object.stakeholder, 'CSM'),}
-        self.kwargs.update(self.extra_context)
-
         other_csm = self.model.objects.exclude(stakeholder=self.kwargs.get('pk'))
-        self.kwargs.update({
-            'other_csm' : other_csm,
-            'tatakelola' : tatakelola,
-            'identifikasi' : identifikasi,
-            'proteksi' : proteksi,
-            'deteksi' : deteksi,
-            'respon' : respon,
-            'maturitas' : maturitas,
-            'spider_json' : spider_json,
-            'str_tatakelola' : str_tatakelola,
-            'str_identifikasi' : str_identifikasi,
-            'str_proteksi' : str_proteksi,
-            'str_deteksi' : str_deteksi,
-            'str_respon' : str_respon,
-            'bar_json' : bar_json,
-            })
 
-        kwargs = self.kwargs
-        return super(CsmDetailView, self).get_context_data(*args, **kwargs)
+        context = super(CsmDetailView, self).get_context_data(*args, **kwargs)
+        context['title'] = "%s %s" % (self.object.stakeholder, 'CSM')
+        context['other_csm'] = other_csm
+        context['tatakelola'] = tatakelola
+        context['identifikasi'] = identifikasi
+        context['proteksi'] = proteksi
+        context['deteksi'] = deteksi
+        context['respon'] = respon
+        context['maturitas'] = maturitas
+        context['spider_json'] = spider_json
+        context['str_tatakelola'] = str_tatakelola
+        context['str_identifikasi'] = str_identifikasi
+        context['str_proteksi'] = str_proteksi
+        context['str_deteksi'] = str_deteksi
+        context['str_respon'] = str_respon
+        context['bar_json'] = bar_json
+        return context
+
 
 class CsmCreateView(CreateView):
     form_class = CsmForm
@@ -234,6 +236,47 @@ class CsmCreateView(CreateView):
         return super(CsmCreateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        file_csm = self.request.FILES.get('file_csm')
+
+        if file_csm :
+            wb = openpyxl.load_workbook(file_csm, data_only=True)
+
+            # getting a particular sheet by name out of many sheets
+            worksheet = wb["Rangkuman"]
+
+            form.instance.kesadaran = worksheet["B13"].value
+            form.instance.audit = worksheet["B14"].value
+            form.instance.kontrol = worksheet["B15"].value
+            form.instance.pemenuhan = worksheet["B16"].value
+            form.instance.kebijakan = worksheet["B17"].value
+            form.instance.proses = worksheet["B18"].value
+
+            form.instance.manajemen_aset = worksheet["D13"].value
+            form.instance.inventaris = worksheet["D14"].value
+            form.instance.manajemen_risiko = worksheet["D15"].value
+            form.instance.prioritas = worksheet["D16"].value
+            form.instance.pelaporan_identifikasi = worksheet["D17"].value
+            form.instance.klasifikasi = worksheet["D18"].value
+
+            form.instance.jaringan = worksheet["F13"].value
+            form.instance.aplikasi = worksheet["F14"].value
+            form.instance.pengguna = worksheet["F15"].value
+            form.instance.manajemen_identitas = worksheet["F16"].value
+            form.instance.cloud = worksheet["F17"].value
+            form.instance.data = worksheet["F18"].value
+            
+            form.instance.perubahan = worksheet["H13"].value
+            form.instance.monitor = worksheet["H14"].value
+            form.instance.peringatan = worksheet["H15"].value
+            form.instance.pemberitahuan = worksheet["H16"].value
+            form.instance.intelijen = worksheet["H17"].value
+            form.instance.pelaporan_deteksi = worksheet["H18"].value
+            
+            form.instance.penahanan = worksheet["J13"].value
+            form.instance.penanggulanan = worksheet["J14"].value
+            form.instance.pemulihan = worksheet["J15"].value
+            form.instance.kegiatan_pasca = worksheet["J16"].value
+            form.instance.pelaporan_respon = worksheet["J17"].value
         return super().form_valid(form)
 
 class CsmUpdateView(UpdateView):
@@ -250,6 +293,48 @@ class CsmUpdateView(UpdateView):
         return super(CsmUpdateView, self).get_context_data(*args, **kwargs)
 
     def form_valid(self, form):
+        file_csm = self.request.FILES.get('file_csm')
+
+        if file_csm :
+            wb = openpyxl.load_workbook(file_csm, data_only=True)
+
+            # getting a particular sheet by name out of many sheets
+            worksheet = wb["Rangkuman"]
+
+            form.instance.kesadaran = worksheet["B13"].value
+            form.instance.audit = worksheet["B14"].value
+            form.instance.kontrol = worksheet["B15"].value
+            form.instance.pemenuhan = worksheet["B16"].value
+            form.instance.kebijakan = worksheet["B17"].value
+            form.instance.proses = worksheet["B18"].value
+
+            form.instance.manajemen_aset = worksheet["D13"].value
+            form.instance.inventaris = worksheet["D14"].value
+            form.instance.manajemen_risiko = worksheet["D15"].value
+            form.instance.prioritas = worksheet["D16"].value
+            form.instance.pelaporan_identifikasi = worksheet["D17"].value
+            form.instance.klasifikasi = worksheet["D18"].value
+
+            form.instance.jaringan = worksheet["F13"].value
+            form.instance.aplikasi = worksheet["F14"].value
+            form.instance.pengguna = worksheet["F15"].value
+            form.instance.manajemen_identitas = worksheet["F16"].value
+            form.instance.cloud = worksheet["F17"].value
+            form.instance.data = worksheet["F18"].value
+            
+            form.instance.perubahan = worksheet["H13"].value
+            form.instance.monitor = worksheet["H14"].value
+            form.instance.peringatan = worksheet["H15"].value
+            form.instance.pemberitahuan = worksheet["H16"].value
+            form.instance.intelijen = worksheet["H17"].value
+            form.instance.pelaporan_deteksi = worksheet["H18"].value
+            
+            form.instance.penahanan = worksheet["J13"].value
+            form.instance.penanggulanan = worksheet["J14"].value
+            form.instance.pemulihan = worksheet["J15"].value
+            form.instance.kegiatan_pasca = worksheet["J16"].value
+            form.instance.pelaporan_respon = worksheet["J17"].value
+            
         return super().form_valid(form)
 
 class CsmDeleteView(DeleteView):

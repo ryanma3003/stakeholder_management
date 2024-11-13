@@ -1,23 +1,37 @@
 from django.db import models
+from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
 
 # Create your models here.
 class Stakeholder(models.Model):
+    
+    INDUSTRI = 'IN'
+    KONSTRUKSI = 'KN'
+    KAMSIBER = 'KM'
+    
+    FIELD_CHOICES = [
+        (INDUSTRI, 'Industri'),
+        (KONSTRUKSI, 'Konstruksi'),
+        (KAMSIBER, 'Kamsiber'),
+    ]
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='stakeholder_logo', blank=True, null=True)
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(blank=True, editable=False)
     type = models.CharField(max_length=255)
-    field = models.CharField(max_length=255)
+    field = models.CharField(max_length=5, choices=FIELD_CHOICES)
     address = models.TextField()
     info = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, default='info@corporate.com')
     landing_page = models.CharField(max_length=255, blank=True, null=True)
     kode_pos = models.CharField(max_length=10, blank=True, null=True)
-    
-    def save(self):
+    pic = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Stakeholder, self).save()
 
@@ -123,12 +137,48 @@ class ListWorkshop(models.Model):
         (NARASUMBER, 'Narasumber'),
     ]
 
+    LEVEL_CHOICES = [
+        ('bsc', 'Basic'),
+        ('int', 'Intermediate'),
+        ('adv', 'Advance'),
+    ]
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     stakeholder = models.ForeignKey('Stakeholder', on_delete=models.CASCADE)
-    sdm = models.ForeignKey('Sdm', on_delete=models.CASCADE, null=True, blank=True)
+    sdm = models.ManyToManyField('Sdm')
     workshop = models.ForeignKey('workshop.Workshop', on_delete=models.CASCADE)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, null=True, blank=True)
+    level = models.CharField(max_length=3, choices=LEVEL_CHOICES, null=True, blank=True)
+
+    def __str__(self):
+        return "{}".format(self.stakeholder)
+
+    def get_absolute_url(self):
+        url_reverse = {
+            'pk': self.stakeholder_id,
+        }
+        return reverse('stakeholder:detail', kwargs=url_reverse)
+
+class Iso(models.Model):
+    YES = 1
+    NO = 0
+
+    STATUS_CHOICES = [
+        (YES, 'Yes'),
+        (NO, 'No'),
+    ]
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    stakeholder = models.OneToOneField(
+        'Stakeholder',
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
 
     def __str__(self):
         return "{}".format(self.stakeholder)

@@ -7,6 +7,11 @@ class IkamiForm(forms.ModelForm):
         super(IkamiForm, self).__init__(*args, **kwargs)
         self.fields['stakeholder'].empty_label = 'Please Select'
         self.fields['month'].empty_label = 'Please Select'
+        self.fields['tata_kelola'].help_text = 'Max value is 126'
+        self.fields['pengelolaan_risiko'].help_text = 'Max value is 72'
+        self.fields['kerangka_kerja'].help_text = 'Max value is 159'
+        self.fields['pengelolaan_aset'].help_text = 'Max value is 168'
+        self.fields['teknologi_keamanan'].help_text = 'Max value is 120'
 
     error_css_class = 'is-invalid'
 

@@ -15,15 +15,37 @@ class SeForm(forms.ModelForm):
     class Meta:
         model = Se
 
-        exclude = ['indeks_ket']
+        exclude = ['indeks_ket', 'indeks_nilai']
         
         fields = [
                 'stakeholder',
                 'month',
                 'year',
-                'indeks_nilai',
+                'jenis_usaha',
                 'sistem',
-                'keterangan'
+                'keterangan',
+                
+                'nilai_investasi',
+                'total_anggaran',
+                'kewajiban',
+                'kriptografi',
+                'pengguna',
+                'data_pribadi',
+                'kritis_data',
+                'kritis_proses',
+                'dampak_kegagalan',
+                'potensi_kerugian',
+                
+                'bobot_nilai_investasi',
+                'bobot_total_anggaran',
+                'bobot_kewajiban',
+                'bobot_kriptografi',
+                'bobot_pengguna',
+                'bobot_data_pribadi',
+                'bobot_kritis_data',
+                'bobot_kritis_proses',
+                'bobot_dampak_kegagalan',
+                'bobot_potensi_kerugian'
             ]
 
         labels = {
@@ -47,6 +69,11 @@ class SeForm(forms.ModelForm):
                     'class': 'form-control numberOnly',
                 }
             ),
+            'jenis_usaha': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'indeks_nilai': forms.TextInput(
                 attrs={
                     'class': 'form-control numberAndDot'
@@ -62,6 +89,72 @@ class SeForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+
+            'jenis_usaha': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'nilai_investasi': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_nilai_investasi': forms.HiddenInput(),
+            'total_anggaran': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_total_anggaran': forms.HiddenInput(),
+            'kewajiban': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_kewajiban': forms.HiddenInput(),
+            'kriptografi': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_kriptografi': forms.HiddenInput(),
+            'pengguna': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_pengguna': forms.HiddenInput(),
+            'data_pribadi': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_data_pribadi': forms.HiddenInput(),
+            'kritis_data': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_kritis_data': forms.HiddenInput(),
+            'kritis_proses': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_kritis_proses': forms.HiddenInput(),
+            'dampak_kegagalan': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_dampak_kegagalan': forms.HiddenInput(),
+            'potensi_kerugian': forms.Select(
+                attrs={
+                    'class': 'default-select wide form-control'
+                }
+            ),
+            'bobot_potensi_kerugian': forms.HiddenInput(),
         }
 
 

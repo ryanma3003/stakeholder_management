@@ -22,6 +22,7 @@ from .views import (
     ListWorkshopCreateView,
     ListWorkshopUpdateView,
     ListWorkshopDeleteView,
+    IsoUpdateView,
     )
 
 app_name = 'compro'
@@ -49,4 +50,6 @@ urlpatterns = [
     path('listworkshop/create', login_required(ListWorkshopCreateView.as_view()), name='lw_create'),
     path('listworkshop/update/<slug:pk>', login_required(ListWorkshopUpdateView.as_view()), name='lw_update'),
     path('listworkshop/delete/<slug:pk>', login_required(ListWorkshopDeleteView.as_view()), name='lw_delete'),
+    
+    path('iso/update/<slug:pk>', login_required(IsoUpdateView.as_view()), name='iso_update'),
 ]

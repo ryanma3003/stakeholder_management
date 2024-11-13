@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <div class="row page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{% url 'home' %}">Dashboard</a></li>
+            </ol>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{title}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-validation">
+                            <form action="" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-xl-12">
+
+                                        <div class="form-group">
+                                            <div class="mb-3 row">
+                                                <label class="col-lg-4 col-form-label" for="id_passphrase">Passphrase
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                {% if object.passphrase == None %}
+                                                <div class="col-lg-6">
+                                                    <input type="password" class="form-control" name="passphrase" id="id_passphrase">
+                                                    <small class="form-text text-muted font-italic">Use strong passphrase with combination letter, number, and symbol.</small>
+                                                </div>
+                                                {% else %}
+                                                <div class="col-lg-6">
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" name="passphrase" id="id_passphrase" value="{{passphrase}}" disabled>
+                                                        <button type="button" class="btn btn-secondary toggle-password" data-bs-toggle="modal" data-bs-target="#showPass"><i class="far fa-eye"></i></button>
+														
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="mb-3 row">
+                                                <label class="col-lg-4 col-form-label" for="{{ form.unit_kerja.auto_id }}">{{ form.unit_kerja.label }}
+                                                    {% if form.unit_kerja.field.required %} <span class="text-danger">*</span> {% endif %}
+                                                </label>
+                                                <div class="col-lg-6">
+                                                    {{ form.unit_kerja }}
+                                                    {% if form.unit_kerja.help_text %}
+                                                        <small class="form-text text-muted font-italic">{{ form.unit_kerja.help_text }}</small>
+                                                    {% endif %}
+                                                    <div class="invalid-feedback">
+                                                        Please enter a {{form.unit_kerja.label}}.
+                                                    </div>
+                                                    {% for error in form.unit_kerja.errors %}
+                                                    <div class="alert alert-warning mt-2">
+                                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                                        <strong>{{ error|escape }}</strong>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="mb-3 row">
+                                                <label class="col-lg-4 col-form-label" for="{{ form.jabatan.auto_id }}">{{ form.jabatan.label }}
+                                                    {% if form.jabatan.field.required %} <span class="text-danger">*</span> {% endif %}
+                                                </label>
+                                                <div class="col-lg-6">
+                                                    {{ form.jabatan }}
+                                                    {% if form.jabatan.help_text %}
+                                                        <small class="form-text text-muted font-italic">{{ form.jabatan.help_text }}</small>
+                                                    {% endif %}
+                                                    <div class="invalid-feedback">
+                                                        Please enter a {{form.jabatan.label}}.
+                                                    </div>
+                                                    {% for error in form.jabatan.errors %}
+                                                    <div class="alert alert-warning mt-2">
+                                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                                        <strong>{{ error|escape }}</strong>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="mb-3 row">
+                                                <label class="col-lg-4 col-form-label" for="{{ form.golongan.auto_id }}">{{ form.golongan.label }}
+                                                    {% if form.golongan.field.required %} <span class="text-danger">*</span> {% endif %}
+                                                </label>
+                                                <div class="col-lg-6">
+                                                    {{ form.golongan }}
+                                                    {% if form.golongan.help_text %}
+                                                        <small class="form-text text-muted font-italic">{{ form.golongan.help_text }}</small>
+                                                    {% endif %}
+                                                    <div class="invalid-feedback">
+                                                        Please enter a {{form.golongan.label}}.
+                                                    </div>
+                                                    {% for error in form.golongan.errors %}
+                                                    <div class="alert alert-warning mt-2">
+                                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                                        <strong>{{ error|escape }}</strong>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <div class="col-lg-8 ms-auto">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="showPass">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'profile:show_pass' %}" method="post" id="formPass">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <input type="password" class="form-control" autofocus id="password" name="password" placeholder="Enter your password">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-xxs btn-success" id="submitPass" name="submitPass" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+
+        $("#formPass").submit(function(e) {
+
+            e.preventDefault();
+
+            var input = $("#id_passphrase");
+            var form = $(this);
+            var actionUrl = form.attr('action');
+            var password = $("#password").val();
+            var modal = $("#showPass");
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), 
+                success: function(data)
+                {
+                    if(data.success) {
+                        input.attr("type", "text");
+                        modal.modal('toggle');
+                    } else {
+                        alert('wrong password');
+                        modal.modal('toggle');
+                    }
+                }
+            });
+        });
+            
+        // $(".toggle-password").click(function() {
+        //     var input = $("#id_passphrase");
+
+        //     if (input.attr("type") == "password") {
+        //         input.attr("type", "text");
+        //     } else {
+        //         input.attr("type", "password");
+        //     }
+        // });
+        </script>
+        
+    {% endblock %}
