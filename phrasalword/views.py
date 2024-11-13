@@ -73,3 +73,4 @@ class PhrasalwordUpdateView(UpdateView):
             form.instance.passphrase = encrypted
 
         return super().form_valid(form)
+
