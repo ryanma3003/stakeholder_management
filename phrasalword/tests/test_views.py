@@ -32,8 +32,8 @@ class TestViews(TestCase):
         response = self.client.post(self.profile_show_pass_url, {
             'password': 'Mozart#30',
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_phrasalword_update_GET(self):
         response = self.client.get(self.profile_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)

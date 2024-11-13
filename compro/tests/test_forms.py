@@ -54,7 +54,7 @@ class TestForms(TestCase):
         form = ComproForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 6)
+        self.assertEqual(len(form.errors), 6)
 
     def test_sdm_form_valid_data(self):
         form = SdmForm(data={
@@ -77,7 +77,7 @@ class TestForms(TestCase):
         form = SdmForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 5)
+        self.assertEqual(len(form.errors), 5)
 
     def test_se_form_valid_data(self):
         form = SistemelektronikForm(data={
@@ -94,7 +94,7 @@ class TestForms(TestCase):
         form = SistemelektronikForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 1)
+        self.assertEqual(len(form.errors), 1)
 
     def test_pr_form_valid_data(self):
         form = ProsedurForm(data={
@@ -111,7 +111,7 @@ class TestForms(TestCase):
         form = ProsedurForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 2)
+        self.assertEqual(len(form.errors), 2)
 
     def test_lw_form_valid_data(self):
         sdm1 = Sdm.objects.create(
@@ -163,4 +163,4 @@ class TestForms(TestCase):
         form = ListWorkshopForm(data={}, **self.get_form_kwargs())
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 1)
+        self.assertEqual(len(form.errors), 1)

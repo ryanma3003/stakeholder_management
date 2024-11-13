@@ -55,22 +55,22 @@ class TestViews(TestCase):
 
     def test_se_list_GET(self):
         response = self.client.get(self.se_list_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_se_detail_GET(self):
         response = self.client.get(self.se_detail_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(self.se1.stakeholder.name, 'stakeholder1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.se1.stakeholder.name, 'stakeholder1')
 
     def test_se_create_GET(self):
         response = self.client.get(self.se_create_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_se_update_GET(self):
         response = self.client.get(self.se_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_se_delete_DELETE_deletes_stakeholder(self):
         response = self.client.delete(self.se_delete_url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Se.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Se.objects.count(), 0)

@@ -47,25 +47,25 @@ class TestViews(TestCase):
 
     def test_compro_list_GET(self):
         response = self.client.get(self.compro_list_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_compro_detail_GET(self):
         response = self.client.get(self.compro_detail_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(self.stakeholder1.name, 'stakeholder1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.stakeholder1.name, 'stakeholder1')
 
     def test_compro_create_GET(self):
         response = self.client.get(self.compro_create_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_compro_update_GET(self):
         response = self.client.get(self.compro_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_compro_delete_DELETE_deletes_stakeholder(self):
         response = self.client.delete(self.compro_delete_url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Stakeholder.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Stakeholder.objects.count(), 0)
 
     def test_compro_sdm_create_POST_adds_new_sdm(self):
         response = self.client.post(self.compro_sdm_create_url, {
@@ -82,8 +82,8 @@ class TestViews(TestCase):
             'gender': 'm'
         })
         
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Sdm.objects.filter(nama='Tony').count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Sdm.objects.filter(nama='Tony').count(), 1)
 
     def test_compro_sdm_delete_DELETE_deletes_sdm(self):
         sdm_delete = Sdm.objects.create(
@@ -103,8 +103,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('stakeholder:sdm_delete', kwargs={'pk':sdm_delete.id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Sdm.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Sdm.objects.count(), 0)
 
     def test_compro_se_create_POST_adds_new_se(self):
         response = self.client.post(self.compro_se_create_url, {
@@ -115,8 +115,8 @@ class TestViews(TestCase):
             'unit_pengelola': 'IT'
         })
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Sistemelektronik.objects.filter(nama='lenovo server').count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Sistemelektronik.objects.filter(nama='lenovo server').count(), 1)
 
     def test_compro_se_delete_DELETE_deletes_se(self):
         se_delete = Sistemelektronik.objects.create(
@@ -130,8 +130,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('stakeholder:se_delete', kwargs={'pk':se_delete.id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Sistemelektronik.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Sistemelektronik.objects.count(), 0)
 
     def test_compro_pr_create_POST_adds_new_pr(self):
         response = self.client.post(self.compro_pr_create_url, {
@@ -142,8 +142,8 @@ class TestViews(TestCase):
             'tahun': '2022',
         })
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Prosedur.objects.filter(nama='test').count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Prosedur.objects.filter(nama='test').count(), 1)
 
     def test_compro_pr_delete_DELETE_deletes_pr(self):
         pr_delete = Prosedur.objects.create(
@@ -157,8 +157,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('stakeholder:pr_delete', kwargs={'pk':pr_delete.id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Prosedur.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Prosedur.objects.count(), 0)
 
     def test_compro_lw_create_POST_adds_new_lw(self):
         sdm1 = Sdm.objects.create(
@@ -188,8 +188,8 @@ class TestViews(TestCase):
             'status': 'PS',
         })
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(ListWorkshop.objects.filter(stakeholder=self.stakeholder1.id).count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(ListWorkshop.objects.filter(stakeholder=self.stakeholder1.id).count(), 1)
 
     def test_compro_lw_delete_DELETE_deletes_lw(self):
         sdm1 = Sdm.objects.create(
@@ -241,5 +241,5 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('stakeholder:lw_delete', kwargs={'pk':lw_delete.id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(ListWorkshop.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(ListWorkshop.objects.count(), 0)

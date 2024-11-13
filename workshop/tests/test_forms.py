@@ -21,4 +21,4 @@ class TestForms(TestCase):
         form = WorkshopForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 1)
+        self.assertEqual(len(form.errors), 1)

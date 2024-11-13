@@ -70,22 +70,22 @@ class TestViews(TestCase):
 
     def test_tmpi_list_GET(self):
         response = self.client.get(self.tmpi_list_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_tmpi_detail_GET(self):
         response = self.client.get(self.tmpi_detail_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(self.tmpi.stakeholder.name, 'stakeholder1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.tmpi.stakeholder.name, 'stakeholder1')
 
     def test_tmpi_create_GET(self):
         response = self.client.get(self.tmpi_create_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_tmpi_update_GET(self):
         response = self.client.get(self.tmpi_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_tmpi_delete_DELETE_deletes_stakeholder(self):
         response = self.client.delete(self.tmpi_delete_url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Tmpi.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Tmpi.objects.count(), 0)
