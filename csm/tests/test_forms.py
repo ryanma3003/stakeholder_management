@@ -67,4 +67,4 @@ class TestForms(TestCase):
         form = CsmForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 3)
+        self.assertEqual(len(form.errors), 3)

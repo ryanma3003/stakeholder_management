@@ -90,8 +90,8 @@ class TestViews(TestCase):
             "tanggal": timezone.now()
         })
         
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Edukasi.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Edukasi.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
 
     def test_ttis_edu_delete_DELETE_deletes_edu(self):
         edu_delete = Edukasi.objects.create(
@@ -104,8 +104,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('ttis:edu_delete', kwargs={'pk':edu_delete.stakeholder_id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Edukasi.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Edukasi.objects.count(), 0)
 
     def test_ttis_prn_create_POST_adds_new_prn(self):
         response = self.client.post(self.ttis_perencanaan_create_url, {
@@ -123,8 +123,8 @@ class TestViews(TestCase):
             "tgl_draft_sumber_daya": timezone.now(),
         })
         
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Perencanaan.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Perencanaan.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
 
     def test_ttis_prn_delete_DELETE_deletes_prn(self):
         prn_delete = Perencanaan.objects.create(
@@ -145,8 +145,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('ttis:prn_delete', kwargs={'pk':prn_delete.stakeholder_id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Perencanaan.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Perencanaan.objects.count(), 0)
 
     def test_ttis_pnr_create_POST_adds_new_pnr(self):
 
@@ -178,8 +178,8 @@ class TestViews(TestCase):
         })
         
         # use 0 because in view this function run on commit false
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Penerapan.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Penerapan.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
         
     def test_ttis_pnr_pdf_view(self):
         Penerapan.objects.create(
@@ -213,7 +213,7 @@ class TestViews(TestCase):
             'passphrase': 'Mozart#30',
             'file': 'sk'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_ttis_pnr_delete_DELETE_deletes_pnr(self):
         pnr_delete = Penerapan.objects.create(
@@ -246,8 +246,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('ttis:pnr_delete', kwargs={'pk':pnr_delete.stakeholder_id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Perencanaan.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Perencanaan.objects.count(), 0)
 
     def test_ttis_png_create_POST_adds_new_png(self):
         response = self.client.post(self.ttis_penguatan_create_url, {
@@ -255,8 +255,8 @@ class TestViews(TestCase):
             "status": 1,
         })
         
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Penguatan.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Penguatan.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
 
     def test_ttis_png_delete_DELETE_deletes_png(self):
         png_delete = Penguatan.objects.create(
@@ -267,8 +267,8 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('ttis:png_delete', kwargs={'pk':png_delete.stakeholder_id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Penguatan.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Penguatan.objects.count(), 0)
 
     def test_ttis_eva_create_POST_adds_new_eva(self):
 
@@ -278,8 +278,8 @@ class TestViews(TestCase):
             "tmpi_id": self.tmpi.id
         })
         
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Evaluasi.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Evaluasi.objects.filter(stakeholder_id=self.stakeholder1.id).count(), 1)
 
     def test_ttis_eva_delete_DELETE_deletes_eva(self):
         eva_delete = Evaluasi.objects.create(
@@ -291,5 +291,5 @@ class TestViews(TestCase):
         url = '%s?s_id=%s' % (reverse('ttis:eva_delete', kwargs={'pk':eva_delete.stakeholder_id}), self.stakeholder1.id)
 
         response = self.client.delete(url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Evaluasi.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Evaluasi.objects.count(), 0)

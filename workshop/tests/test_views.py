@@ -34,22 +34,22 @@ class TestViews(TestCase):
 
     def test_workshop_list_GET(self):
         response = self.client.get(self.workshop_list_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_workshop_detail_GET(self):
         response = self.client.get(self.workshop_detail_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(self.workshop1.nama, 'Workshop')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.workshop1.nama, 'Workshop')
 
     def test_workshop_create_GET(self):
         response = self.client.get(self.workshop_create_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_workshop_update_GET(self):
         response = self.client.get(self.workshop_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_workshop_delete_DELETE_deletes_stakeholder(self):
         response = self.client.delete(self.workshop_delete_url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Workshop.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Workshop.objects.count(), 0)

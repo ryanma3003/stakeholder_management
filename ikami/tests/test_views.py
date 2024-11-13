@@ -59,22 +59,22 @@ class TestViews(TestCase):
 
     def test_ikami_list_GET(self):
         response = self.client.get(self.ikami_list_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_ikami_detail_GET(self):
         response = self.client.get(self.ikami_detail_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(self.ikami1.stakeholder.name, 'stakeholder1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.ikami1.stakeholder.name, 'stakeholder1')
 
     def test_ikami_create_GET(self):
         response = self.client.get(self.ikami_create_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_ikami_update_GET(self):
         response = self.client.get(self.ikami_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_ikami_delete_DELETE_deletes_stakeholder(self):
         response = self.client.delete(self.ikami_delete_url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Ikami.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Ikami.objects.count(), 0)

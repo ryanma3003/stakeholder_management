@@ -29,7 +29,7 @@ class TestModels(TestCase):
         )
 
     def test_stakeholder_is_assigned_slug_on_creation(self):
-        self.assertEquals(self.stakeholder1.slug, 'stakeholder-1')
+        self.assertEqual(self.stakeholder1.slug, 'stakeholder-1')
 
     def test_sdm_model(self):
         Sdm.objects.create(

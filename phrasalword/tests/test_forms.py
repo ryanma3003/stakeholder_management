@@ -27,4 +27,4 @@ class TestForms(TestCase):
         form = PhrasalwordForm(data={})
 
         self.assertTrue(form.is_valid())
-        self.assertEquals(len(form.errors), 0)
+        self.assertEqual(len(form.errors), 0)

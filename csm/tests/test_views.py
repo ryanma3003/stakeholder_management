@@ -80,22 +80,22 @@ class TestViews(TestCase):
 
     def test_csm_list_GET(self):
         response = self.client.get(self.csm_list_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_csm_detail_GET(self):
         response = self.client.get(self.csm_detail_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(self.csm1.stakeholder.name, 'stakeholder1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.csm1.stakeholder.name, 'stakeholder1')
 
     def test_csm_create_GET(self):
         response = self.client.get(self.csm_create_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_csm_update_GET(self):
         response = self.client.get(self.csm_update_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_csm_delete_DELETE_deletes_stakeholder(self):
         response = self.client.delete(self.csm_delete_url)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Csm.objects.count(), 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Csm.objects.count(), 0)

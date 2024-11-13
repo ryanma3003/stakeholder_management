@@ -45,4 +45,4 @@ class TestForms(TestCase):
         form = IkamiForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 8)
+        self.assertEqual(len(form.errors), 8)

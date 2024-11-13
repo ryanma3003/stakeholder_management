@@ -52,7 +52,7 @@ class TestForms(TestCase):
         form = EdukasiForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 1)
+        self.assertEqual(len(form.errors), 1)
 
     def test_perencanaan_form_valid_data(self):
         form = PerencanaanForm(data={
@@ -76,7 +76,7 @@ class TestForms(TestCase):
         form = PerencanaanForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 3)
+        self.assertEqual(len(form.errors), 3)
 
     def test_penerapan_form_valid_data(self):
         form = PenerapanForm(data={
@@ -112,7 +112,7 @@ class TestForms(TestCase):
         form = PenerapanForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 5)
+        self.assertEqual(len(form.errors), 5)
 
     def test_penguatan_form_valid_data(self):
         form = PenguatanForm(data={
@@ -126,7 +126,7 @@ class TestForms(TestCase):
         form = PenguatanForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 1)
+        self.assertEqual(len(form.errors), 1)
 
     def test_evaluasi_form_valid_data(self):
         tmpi = Tmpi.objects.create(
@@ -167,4 +167,4 @@ class TestForms(TestCase):
         form = EvaluasiForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 1)
+        self.assertEqual(len(form.errors), 1)

@@ -63,4 +63,4 @@ class TestForms(TestCase):
         form = SeForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 14)
+        self.assertEqual(len(form.errors), 14)
